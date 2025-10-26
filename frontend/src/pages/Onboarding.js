@@ -155,7 +155,7 @@ const Onboarding = ({ user }) => {
       <div className="w-full max-w-lg animate-fadeIn">
         <div className="mb-8">
           <div className="flex justify-between items-center mb-4">
-            {[1, 2, 3, 4, 5, 6, 7].map((s) => (
+            {[1, 2, 3, 4, 5, 6].map((s) => (
               <div
                 key={s}
                 className={`h-2 flex-1 mx-1 rounded-full transition-all ${
@@ -164,7 +164,7 @@ const Onboarding = ({ user }) => {
               />
             ))}
           </div>
-          <p className="text-gray-600 text-center">Step {step} of 7</p>
+          <p className="text-gray-600 text-center">Step {step} of 6</p>
         </div>
 
         <div className="bg-white rounded-3xl p-8 premium-shadow border border-gray-100">
