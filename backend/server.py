@@ -647,7 +647,7 @@ async def generate_schedule(current_user: User = Depends(get_current_user)):
     # Delete existing schedule
     await db.scheduled_workouts.delete_many({"user_id": current_user.id})
     
-    # Get workout plans filtered by experience level and time
+    # Get workout plans filtered by experience level
     all_plans = await db.workout_plans.find({}, {"_id": 0}).to_list(100)
     
     # Filter plans by difficulty
@@ -660,12 +660,12 @@ async def generate_schedule(current_user: User = Depends(get_current_user)):
     target_difficulty = experience_map.get(current_user.experience_level, "Beginner")
     suitable_plans = [p for p in all_plans if p['difficulty'] == target_difficulty or p['difficulty'] == 'Beginner']
     
-    # Filter by time if specified
-    if current_user.time_per_day:
-        suitable_plans = [p for p in suitable_plans if p['duration_minutes'] <= current_user.time_per_day]
-    
     if not suitable_plans:
         suitable_plans = all_plans  # Fallback to all plans
+    
+    # Create a map of day to minutes
+    day_minutes_map = {item['day']: item['minutes'] for item in current_user.available_days}
+    available_day_names = list(day_minutes_map.keys())
     
     # Generate schedule for next 4 weeks
     from datetime import date, timedelta
@@ -675,7 +675,7 @@ async def generate_schedule(current_user: User = Depends(get_current_user)):
     days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     
     # Calculate how many workout days per week
-    available_count = len(current_user.available_days)
+    available_count = len(available_day_names)
     
     # Determine rest day frequency (every 2-3 workout days)
     rest_frequency = 3 if available_count >= 4 else 2
@@ -689,7 +689,7 @@ async def generate_schedule(current_user: User = Depends(get_current_user)):
             day_name = days_of_week[schedule_date.weekday()]
             
             # Check if user is available on this day
-            if day_name in current_user.available_days:
+            if day_name in available_day_names:
                 # Check if it should be a rest day
                 is_rest = (workout_count > 0 and workout_count % rest_frequency == 0)
                 
@@ -704,8 +704,17 @@ async def generate_schedule(current_user: User = Depends(get_current_user)):
                         is_completed=False
                     )
                 else:
+                    # Get time available for this day
+                    minutes_available = day_minutes_map[day_name]
+                    
+                    # Filter workouts that fit this day's time
+                    day_suitable_plans = [p for p in suitable_plans if p['duration_minutes'] <= minutes_available]
+                    
+                    if not day_suitable_plans:
+                        day_suitable_plans = suitable_plans  # Fallback
+                    
                     # Schedule workout
-                    workout_plan = suitable_plans[workout_index % len(suitable_plans)]
+                    workout_plan = day_suitable_plans[workout_index % len(day_suitable_plans)]
                     scheduled = ScheduledWorkout(
                         user_id=current_user.id,
                         workout_plan_id=workout_plan['id'],
