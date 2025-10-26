@@ -140,9 +140,48 @@ const Home = ({ user, onLogout }) => {
 
       {/* Journey Path */}
       <div className="max-w-4xl mx-auto px-6">
-        <h2 className="text-2xl font-bold text-[#1A1A1A] mb-6">Your Workout Journey</h2>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-[#1A1A1A]">
+            {view === 'calendar' ? 'Your Workout Schedule' : 'Your Workout Journey'}
+          </h2>
+          <div className="flex gap-2">
+            <Button
+              onClick={handleResetSchedule}
+              data-testid="reset-schedule-button"
+              className="bg-white hover:bg-gray-50 text-[#1A1A1A] border-2 border-gray-200"
+            >
+              <RefreshCw className="w-4 h-4 mr-2" />
+              Reset Plan
+            </Button>
+            <Button
+              onClick={() => setView(view === 'calendar' ? 'journey' : 'calendar')}
+              data-testid="toggle-view-button"
+              className="bg-[#D4AF37] hover:bg-[#c19b2e] text-white"
+            >
+              <Calendar className="w-4 h-4 mr-2" />
+              {view === 'calendar' ? 'Journey View' : 'Calendar View'}
+            </Button>
+          </div>
+        </div>
         
-        <div className="relative">
+        {view === 'calendar' ? (
+          schedule.length > 0 ? (
+            <WorkoutCalendar schedule={schedule} />
+          ) : (
+            <div className="bg-white rounded-2xl p-12 text-center premium-shadow border border-gray-100">
+              <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-[#1A1A1A] mb-2">No Schedule Yet</h3>
+              <p className="text-gray-600 mb-6">Complete your profile setup to generate a personalized workout schedule.</p>
+              <Button
+                onClick={() => navigate('/profile')}
+                className="bg-[#D4AF37] hover:bg-[#c19b2e] text-white"
+              >
+                Go to Profile
+              </Button>
+            </div>
+          )
+        ) : (
+          <div className="relative">
           {/* Connection Line */}
           <div className="absolute left-8 top-0 bottom-0 w-1 bg-gray-200" />
           
