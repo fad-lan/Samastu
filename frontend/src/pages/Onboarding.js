@@ -52,6 +52,19 @@ const Onboarding = ({ user }) => {
     setFormData({ ...formData, goal: goalId });
   };
 
+  const handleExperienceSelect = (levelId) => {
+    setFormData({ ...formData, experience_level: levelId });
+  };
+
+  const handleDayToggle = (day) => {
+    const current = formData.available_days;
+    if (current.includes(day)) {
+      setFormData({ ...formData, available_days: current.filter(d => d !== day) });
+    } else {
+      setFormData({ ...formData, available_days: [...current, day] });
+    }
+  };
+
   const handleEquipmentToggle = (equipmentId) => {
     const current = formData.equipment;
     if (current.includes(equipmentId)) {
