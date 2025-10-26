@@ -321,6 +321,19 @@ const Profile = ({ user, onLogout }) => {
             ))}
           </div>
         </div>
+
+        {/* Danger Zone */}
+        <div className="bg-white rounded-3xl p-8 border-2 border-red-200">
+          <h3 className="text-xl font-bold text-red-600 mb-2">Danger Zone</h3>
+          <p className="text-gray-600 mb-4">Once you delete your account, there is no going back. Please be certain.</p>
+          <Button
+            onClick={handleDeleteAccount}
+            data-testid="delete-account-button"
+            className="bg-red-500 hover:bg-red-600 text-white font-semibold"
+          >
+            Delete My Account
+          </Button>
+        </div>
       </div>
     </div>
   );
