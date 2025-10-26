@@ -76,6 +76,7 @@ class User(BaseModel):
     equipment: Optional[List[str]] = []
     experience_level: Optional[str] = None  # beginner, intermediate, advanced
     available_days: Optional[List[str]] = []  # days of week user is free
+    time_per_day: Optional[int] = None  # minutes available per workout day
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class UserUpdate(BaseModel):
