@@ -37,6 +37,16 @@ const WorkoutPage = () => {
     return () => clearInterval(interval);
   }, [isResting, restTimer]);
 
+  // Handle automatic exercise transition after rest
+  useEffect(() => {
+    if (!isResting && restTimer === 0 && completedExercises.length > 0 && currentExercise < workout?.exercises.length - 1) {
+      const lastCompleted = completedExercises[completedExercises.length - 1];
+      if (lastCompleted === currentExercise) {
+        setCurrentExercise(currentExercise + 1);
+      }
+    }
+  }, [isResting, restTimer, completedExercises, currentExercise, workout]);
+
   const fetchWorkout = async () => {
     try {
       const response = await axios.get(`${API}/workouts/plans`);
