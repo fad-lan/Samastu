@@ -1,0 +1,63 @@
+{
+  "timestamp": "2025-10-26T03:38:48.169962",
+  "total_tests": 11,
+  "passed_tests": 11,
+  "success_rate": 100.0,
+  "results": [
+    {
+      "test": "User Registration",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "Get Current User (/auth/me)",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "Pre-Login Registration",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "User Login",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "Get Workout Plans",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "Get Workout Journey",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "Complete Workout",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "Get User Progress",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "Get Achievements",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "Update User Profile",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "Get User Profile",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    }
+  ]
+}
