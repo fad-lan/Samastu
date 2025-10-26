@@ -69,8 +69,8 @@ function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0D0D0D] flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-[#1A1A1A] text-xl">Loading...</div>
       </div>
     );
   }
@@ -80,10 +80,20 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route
+            path="/"
+            element={
+              isAuthenticated ? (
+                <Home user={user} onLogout={handleLogout} />
+              ) : (
+                <Landing />
+              )
+            }
+          />
+          <Route
             path="/login"
             element={
               isAuthenticated ? (
-                <Navigate to="/" />
+                <Navigate to="/home" />
               ) : (
                 <Login onLogin={handleLogin} />
               )
@@ -110,7 +120,7 @@ function App() {
             }
           />
           <Route
-            path="/"
+            path="/home"
             element={
               isAuthenticated ? (
                 <Home user={user} onLogout={handleLogout} />
