@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { Dumbbell } from 'lucide-react';
+import { Dumbbell, ArrowLeft } from 'lucide-react';
 
 const Register = ({ onRegister }) => {
   const navigate = useNavigate();
@@ -39,22 +39,28 @@ const Register = ({ onRegister }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0D0D0D] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-md animate-fadeIn">
+        <button
+          onClick={() => navigate('/')}
+          className="flex items-center gap-2 text-gray-600 hover:text-[#1A1A1A] transition-colors mb-6"
+        >
+          <ArrowLeft className="w-5 h-5" />
+          <span>Back to Home</span>
+        </button>
+
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-[#00FF88] rounded-full mb-4">
-            <Dumbbell className="w-8 h-8 text-[#0D0D0D]" />
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-[#D4AF37] rounded-full mb-4">
+            <Dumbbell className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-4xl font-bold gradient-text mb-2">Samastu</h1>
-          <p className="text-[#B0B0B0] text-lg">Fitness Made Fun</p>
+          <h1 className="text-4xl font-bold text-[#1A1A1A] mb-2">Create Account</h1>
+          <p className="text-gray-600 text-lg">Start your fitness journey today</p>
         </div>
 
-        <div className="bg-[#1a1a1a] rounded-3xl p-8 shadow-xl">
-          <h2 className="text-2xl font-bold text-white mb-6">Create Account</h2>
-          
+        <div className="bg-white rounded-3xl p-8 premium-shadow border border-gray-100">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <Label htmlFor="name" className="text-white mb-2 block">Name</Label>
+              <Label htmlFor="name" className="text-[#1A1A1A] mb-2 block font-medium">Name</Label>
               <Input
                 id="name"
                 name="name"
@@ -63,13 +69,13 @@ const Register = ({ onRegister }) => {
                 onChange={handleChange}
                 required
                 data-testid="register-name-input"
-                className="bg-[#0D0D0D] border-[#333] text-white focus:border-[#00FF88] focus:ring-[#00FF88] rounded-xl h-12"
+                className="bg-gray-50 border-gray-200 text-[#1A1A1A] focus:border-[#D4AF37] focus:ring-[#D4AF37] rounded-xl h-12"
                 placeholder="Your name"
               />
             </div>
 
             <div>
-              <Label htmlFor="email" className="text-white mb-2 block">Email</Label>
+              <Label htmlFor="email" className="text-[#1A1A1A] mb-2 block font-medium">Email</Label>
               <Input
                 id="email"
                 name="email"
@@ -78,13 +84,13 @@ const Register = ({ onRegister }) => {
                 onChange={handleChange}
                 required
                 data-testid="register-email-input"
-                className="bg-[#0D0D0D] border-[#333] text-white focus:border-[#00FF88] focus:ring-[#00FF88] rounded-xl h-12"
+                className="bg-gray-50 border-gray-200 text-[#1A1A1A] focus:border-[#D4AF37] focus:ring-[#D4AF37] rounded-xl h-12"
                 placeholder="your@email.com"
               />
             </div>
 
             <div>
-              <Label htmlFor="password" className="text-white mb-2 block">Password</Label>
+              <Label htmlFor="password" className="text-[#1A1A1A] mb-2 block font-medium">Password</Label>
               <Input
                 id="password"
                 name="password"
@@ -93,7 +99,7 @@ const Register = ({ onRegister }) => {
                 onChange={handleChange}
                 required
                 data-testid="register-password-input"
-                className="bg-[#0D0D0D] border-[#333] text-white focus:border-[#00FF88] focus:ring-[#00FF88] rounded-xl h-12"
+                className="bg-gray-50 border-gray-200 text-[#1A1A1A] focus:border-[#D4AF37] focus:ring-[#D4AF37] rounded-xl h-12"
                 placeholder="••••••••"
               />
             </div>
@@ -102,19 +108,19 @@ const Register = ({ onRegister }) => {
               type="submit"
               disabled={loading}
               data-testid="register-submit-button"
-              className="w-full bg-[#00FF88] hover:bg-[#00dd77] text-[#0D0D0D] font-semibold h-12 rounded-xl text-lg"
+              className="w-full bg-[#D4AF37] hover:bg-[#c19b2e] text-white font-semibold h-12 rounded-xl text-lg"
             >
               {loading ? 'Creating Account...' : 'Sign Up'}
             </Button>
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-[#B0B0B0]">
+            <p className="text-gray-600">
               Already have an account?{' '}
               <button
                 onClick={() => navigate('/login')}
                 data-testid="go-to-login-button"
-                className="text-[#00FF88] font-semibold hover:underline"
+                className="text-[#D4AF37] font-semibold hover:underline"
               >
                 Log In
               </button>
