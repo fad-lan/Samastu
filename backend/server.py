@@ -401,6 +401,17 @@ async def update_profile(user_update: UserUpdate, current_user: User = Depends(g
     
     return User(**updated_user_doc)
 
+@api_router.delete("/user/account")
+async def delete_account(current_user: User = Depends(get_current_user)):
+    """Delete user account and all associated data"""
+    # Delete all user data
+    await db.users.delete_one({"id": current_user.id})
+    await db.workout_sessions.delete_many({"user_id": current_user.id})
+    await db.progress.delete_many({"user_id": current_user.id})
+    await db.scheduled_workouts.delete_many({"user_id": current_user.id})
+    
+    return {"success": True, "message": "Account deleted successfully"}
+
 # ========== WORKOUT ROUTES ==========
 
 @api_router.get("/workouts/plans", response_model=List[WorkoutPlan])
