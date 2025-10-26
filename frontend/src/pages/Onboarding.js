@@ -300,29 +300,49 @@ const Onboarding = ({ user }) => {
 
           {step === 5 && (
             <div className="animate-slideUp">
-              <h2 className="text-3xl font-bold text-[#1A1A1A] mb-2">Available Days</h2>
-              <p className="text-gray-600 mb-6">Which days can you work out?</p>
+              <h2 className="text-3xl font-bold text-[#1A1A1A] mb-2">Available Days & Time</h2>
+              <p className="text-gray-600 mb-6">Select days and set how much time you have each day</p>
               
               <div className="space-y-3">
-                {daysOfWeek.map((day) => (
-                  <button
-                    key={day}
-                    onClick={() => handleDayToggle(day)}
-                    data-testid={`day-${day.toLowerCase()}-button`}
-                    className={`w-full p-4 rounded-2xl border-2 font-medium text-left transition-all flex items-center justify-between ${
-                      formData.available_days.includes(day)
-                        ? 'border-[#D4AF37] bg-[#D4AF37]/10 text-[#D4AF37]'
-                        : 'border-gray-200 text-[#1A1A1A] hover:border-[#D4AF37]/50'
-                    }`}
-                  >
-                    {day}
-                    {formData.available_days.includes(day) && (
-                      <div className="w-6 h-6 rounded-full bg-[#D4AF37] flex items-center justify-center">
-                        <div className="w-3 h-3 bg-white rounded-full"></div>
-                      </div>
-                    )}
-                  </button>
-                ))}
+                {daysOfWeek.map((day) => {
+                  const isSelected = isDaySelected(day);
+                  return (
+                    <div key={day} className="space-y-2">
+                      <button
+                        onClick={() => handleDayToggle(day)}
+                        data-testid={`day-${day.toLowerCase()}-button`}
+                        className={`w-full p-4 rounded-2xl border-2 font-medium text-left transition-all flex items-center justify-between ${
+                          isSelected
+                            ? 'border-[#D4AF37] bg-[#D4AF37]/10 text-[#D4AF37]'
+                            : 'border-gray-200 text-[#1A1A1A] hover:border-[#D4AF37]/50'
+                        }`}
+                      >
+                        {day}
+                        {isSelected && (
+                          <div className="w-6 h-6 rounded-full bg-[#D4AF37] flex items-center justify-center">
+                            <div className="w-3 h-3 bg-white rounded-full"></div>
+                          </div>
+                        )}
+                      </button>
+                      
+                      {isSelected && (
+                        <div className="ml-4 animate-slideUp">
+                          <Label className="text-[#1A1A1A] mb-2 block text-sm">Minutes available on {day}</Label>
+                          <Input
+                            type="number"
+                            value={getDayMinutes(day)}
+                            onChange={(e) => handleTimeChange(day, e.target.value)}
+                            data-testid={`time-${day.toLowerCase()}-input`}
+                            className="bg-gray-50 border-gray-200 text-[#1A1A1A] focus:border-[#D4AF37] focus:ring-[#D4AF37] rounded-xl h-10"
+                            placeholder="30"
+                            min="10"
+                            max="120"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
               {formData.available_days.length > 0 && (
                 <p className="mt-4 text-sm text-gray-600 text-center">
