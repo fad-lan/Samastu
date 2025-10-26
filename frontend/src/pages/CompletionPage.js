@@ -45,19 +45,19 @@ const CompletionPage = () => {
         {/* Stats Cards */}
         <div className="space-y-4 mb-8">
           {/* XP Gained */}
-          <div className="bg-[#1a1a1a] rounded-2xl p-6 flex items-center justify-between animate-slideUp">
+          <div className="bg-white rounded-2xl p-6 flex items-center justify-between animate-slideUp premium-shadow border border-gray-100">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-[#00FF88]/20 rounded-full flex items-center justify-center">
-                <Zap className="w-6 h-6 text-[#00FF88]" />
+              <div className="w-12 h-12 bg-[#D4AF37]/10 rounded-full flex items-center justify-center">
+                <Zap className="w-6 h-6 text-[#D4AF37]" />
               </div>
               <div>
-                <p className="text-[#B0B0B0] text-sm">XP Earned</p>
-                <p className="text-2xl font-bold text-white">+{result.xp_earned}</p>
+                <p className="text-gray-600 text-sm">XP Earned</p>
+                <p className="text-2xl font-bold text-[#1A1A1A]">+{result.xp_earned}</p>
               </div>
             </div>
             <div className="text-right">
-              <p className="text-[#B0B0B0] text-sm">Total XP</p>
-              <p className="text-xl font-bold text-[#00FF88]" data-testid="total-xp-display">{result.new_total_xp}</p>
+              <p className="text-gray-600 text-sm">Total XP</p>
+              <p className="text-xl font-bold text-[#D4AF37]" data-testid="total-xp-display">{result.new_total_xp}</p>
             </div>
           </div>
 
