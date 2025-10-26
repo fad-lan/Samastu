@@ -76,13 +76,13 @@ const CompletionPage = () => {
           </div>
 
           {/* Streak */}
-          <div className="bg-[#1a1a1a] rounded-2xl p-6 flex items-center gap-4 animate-slideUp" style={{ animationDelay: '0.2s' }}>
-            <div className="w-12 h-12 bg-[#00FF88]/20 rounded-full flex items-center justify-center">
-              <Flame className="w-6 h-6 text-[#00FF88]" />
+          <div className="bg-white rounded-2xl p-6 flex items-center gap-4 animate-slideUp premium-shadow border border-gray-100" style={{ animationDelay: '0.2s' }}>
+            <div className="w-12 h-12 bg-[#D4AF37]/10 rounded-full flex items-center justify-center">
+              <Flame className="w-6 h-6 text-[#D4AF37]" />
             </div>
             <div>
-              <p className="text-[#B0B0B0] text-sm">Current Streak</p>
-              <p className="text-2xl font-bold text-white" data-testid="current-streak-display">{result.new_streak} {result.new_streak === 1 ? 'day' : 'days'}</p>
+              <p className="text-gray-600 text-sm">Current Streak</p>
+              <p className="text-2xl font-bold text-[#1A1A1A]" data-testid="current-streak-display">{result.new_streak} {result.new_streak === 1 ? 'day' : 'days'}</p>
             </div>
           </div>
 
