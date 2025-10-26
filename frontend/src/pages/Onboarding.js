@@ -339,7 +339,7 @@ const Onboarding = ({ user }) => {
             data-testid="onboarding-next-button"
             className="w-full mt-8 bg-[#D4AF37] hover:bg-[#c19b2e] text-white font-semibold h-12 rounded-xl text-lg"
           >
-            {step === 4 ? 'Start Your Journey' : 'Continue'}
+            {step === 6 ? 'Generate My Schedule' : 'Continue'}
             <ChevronRight className="ml-2" />
           </Button>
         </div>
