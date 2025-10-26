@@ -241,6 +241,7 @@ const Home = ({ user, onLogout }) => {
             ))}
           </div>
         </div>
+        )}
       </div>
     </div>
   );
