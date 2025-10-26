@@ -87,8 +87,16 @@ const Onboarding = ({ user }) => {
       toast.error('Please select a goal');
       return;
     }
+    if (step === 4 && !formData.experience_level) {
+      toast.error('Please select your experience level');
+      return;
+    }
+    if (step === 5 && formData.available_days.length === 0) {
+      toast.error('Please select at least one day');
+      return;
+    }
     
-    if (step < 4) {
+    if (step < 6) {
       setStep(step + 1);
     } else {
       handleComplete();
