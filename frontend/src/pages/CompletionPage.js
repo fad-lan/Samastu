@@ -34,8 +34,8 @@ const CompletionPage = () => {
       <div className="w-full max-w-lg animate-fadeIn">
         {/* Success Animation */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-24 h-24 bg-[#00FF88] rounded-full mb-6 animate-pulse">
-            <Trophy className="w-12 h-12 text-[#0D0D0D]" />
+          <div className="inline-flex items-center justify-center w-24 h-24 bg-[#D4AF37] rounded-full mb-6 animate-pulse">
+            <Trophy className="w-12 h-12 text-white" />
           </div>
           <h1 className="text-4xl font-bold text-white mb-3">Workout Complete!</h1>
           <p className="text-[#B0B0B0] text-lg mb-2">{workoutName}</p>
