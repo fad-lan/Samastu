@@ -114,6 +114,7 @@ const Onboarding = ({ user }) => {
         ...formData,
         height: parseFloat(formData.height),
         weight: parseFloat(formData.weight),
+        time_per_day: parseInt(formData.time_per_day),
       };
       await axios.put(`${API}/user/profile`, updateData);
       
