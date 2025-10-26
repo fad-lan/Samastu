@@ -421,29 +421,87 @@ async def get_workout_plans(current_user: User = Depends(get_current_user)):
 
 @api_router.get("/workouts/journey")
 async def get_workout_journey(current_user: User = Depends(get_current_user)):
-    # Get all workout plans
-    plans = await db.workout_plans.find({}, {"_id": 0}).to_list(100)
-    
-    # Get user's completed workouts
-    completed_sessions = await db.workout_sessions.find(
+    """Get user's workout journey based on their schedule"""
+    # Get user's scheduled workouts
+    scheduled = await db.scheduled_workouts.find(
         {"user_id": current_user.id},
+        {"_id": 0}
+    ).sort("scheduled_date", 1).to_list(1000)
+    
+    if not scheduled:
+        # Fallback to old behavior if no schedule
+        plans = await db.workout_plans.find({}, {"_id": 0}).to_list(100)
+        completed_sessions = await db.workout_sessions.find(
+            {"user_id": current_user.id},
+            {"_id": 0}
+        ).to_list(1000)
+        
+        completed_plan_ids = [session['workout_plan_id'] for session in completed_sessions]
+        
+        journey = []
+        for idx, plan in enumerate(plans):
+            is_completed = plan['id'] in completed_plan_ids
+            is_next = not is_completed and (idx == 0 or plans[idx-1]['id'] in completed_plan_ids)
+            
+            journey.append({
+                **plan,
+                "is_completed": is_completed,
+                "is_next": is_next,
+                "is_rest_day": False,
+                "scheduled_date": None,
+                "position": idx
+            })
+        
+        return journey
+    
+    # Get workout plan details
+    workout_ids = [s['workout_plan_id'] for s in scheduled if not s['is_rest_day']]
+    workout_plans = await db.workout_plans.find(
+        {"id": {"$in": workout_ids}},
         {"_id": 0}
     ).to_list(1000)
     
-    completed_plan_ids = [session['workout_plan_id'] for session in completed_sessions]
+    plans_dict = {p['id']: p for p in workout_plans}
     
-    # Mark plans as completed or next
+    # Build journey from schedule
+    today = datetime.now(timezone.utc).date().isoformat()
     journey = []
-    for idx, plan in enumerate(plans):
-        is_completed = plan['id'] in completed_plan_ids
-        is_next = not is_completed and (idx == 0 or plans[idx-1]['id'] in completed_plan_ids)
-        
-        journey.append({
-            **plan,
-            "is_completed": is_completed,
-            "is_next": is_next,
-            "position": idx
-        })
+    
+    for idx, item in enumerate(scheduled):
+        if item['is_rest_day']:
+            # Rest day node
+            journey.append({
+                "id": item['id'],
+                "name": "Rest Day",
+                "difficulty": "Recovery",
+                "exercises": [],
+                "target_muscles": "Recovery",
+                "xp_reward": 0,
+                "duration_minutes": 0,
+                "is_completed": item['is_completed'],
+                "is_next": item['scheduled_date'] == today and not item['is_completed'],
+                "is_rest_day": True,
+                "scheduled_date": item['scheduled_date'],
+                "is_locked": item['scheduled_date'] > today,
+                "position": idx
+            })
+        else:
+            # Workout day node
+            plan = plans_dict.get(item['workout_plan_id'], {})
+            is_next = item['scheduled_date'] == today and not item['is_completed']
+            is_locked = item['scheduled_date'] > today
+            
+            journey.append({
+                **plan,
+                "id": item['workout_plan_id'],
+                "schedule_id": item['id'],
+                "is_completed": item['is_completed'],
+                "is_next": is_next,
+                "is_rest_day": False,
+                "scheduled_date": item['scheduled_date'],
+                "is_locked": is_locked,
+                "position": idx
+            })
     
     return journey
 
