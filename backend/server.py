@@ -113,6 +113,17 @@ class WorkoutComplete(BaseModel):
     workout_plan_id: str
     duration_minutes: int
 
+class ScheduledWorkout(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    workout_plan_id: str
+    scheduled_date: str  # YYYY-MM-DD format
+    day_of_week: str  # Monday, Tuesday, etc.
+    is_rest_day: bool = False
+    is_completed: bool = False
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str
