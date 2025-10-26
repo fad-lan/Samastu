@@ -62,16 +62,16 @@ const CompletionPage = () => {
           </div>
 
           {/* Level */}
-          <div className="bg-[#1a1a1a] rounded-2xl p-6 flex items-center gap-4 animate-slideUp" style={{ animationDelay: '0.1s' }}>
-            <div className="w-12 h-12 bg-[#00FF88]/20 rounded-full flex items-center justify-center">
-              <Trophy className="w-6 h-6 text-[#00FF88]" />
+          <div className="bg-white rounded-2xl p-6 flex items-center gap-4 animate-slideUp premium-shadow border border-gray-100" style={{ animationDelay: '0.1s' }}>
+            <div className="w-12 h-12 bg-[#D4AF37]/10 rounded-full flex items-center justify-center">
+              <Trophy className="w-6 h-6 text-[#D4AF37]" />
             </div>
             <div className="flex-1">
-              <p className="text-[#B0B0B0] text-sm">Current Level</p>
-              <p className="text-2xl font-bold text-white" data-testid="current-level-display">Level {result.new_level}</p>
+              <p className="text-gray-600 text-sm">Current Level</p>
+              <p className="text-2xl font-bold text-[#1A1A1A]" data-testid="current-level-display">Level {result.new_level}</p>
             </div>
             {result.new_level > 1 && (
-              <div className="text-[#00FF88] font-semibold">Level Up! 🎉</div>
+              <div className="text-[#D4AF37] font-semibold">Level Up! 🎉</div>
             )}
           </div>
 
