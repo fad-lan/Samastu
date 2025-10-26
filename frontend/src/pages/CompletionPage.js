@@ -125,7 +125,7 @@ const CompletionPage = () => {
 
         {/* Motivational Quote */}
         <div className="mt-8 text-center">
-          <p className="text-[#B0B0B0] italic">“Don't break your streak now!”</p>
+          <p className="text-gray-600 italic">“Don't break your streak now!”</p>
         </div>
       </div>
     </div>
