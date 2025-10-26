@@ -68,6 +68,28 @@ const Profile = ({ user, onLogout }) => {
     navigate('/login');
   };
 
+  const handleDeleteAccount = async () => {
+    if (!window.confirm('⚠️ Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently deleted.')) {
+      return;
+    }
+    
+    const confirmText = window.prompt('Type "DELETE" to confirm account deletion:');
+    if (confirmText !== 'DELETE') {
+      toast.error('Account deletion cancelled');
+      return;
+    }
+    
+    try {
+      await axios.delete(`${API}/user/account`);
+      toast.success('Account deleted successfully');
+      onLogout();
+      navigate('/');
+    } catch (error) {
+      console.error('Delete error:', error);
+      toast.error('Failed to delete account');
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
