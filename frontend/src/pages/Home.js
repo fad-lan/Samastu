@@ -57,7 +57,17 @@ const Home = ({ user, onLogout }) => {
   };
 
   const handleWorkoutClick = (workout) => {
-    if (workout.is_next || workout.is_completed) {
+    if (workout.is_rest_day) {
+      toast.info('This is a rest day. Take it easy! 😊');
+      return;
+    }
+    
+    if (workout.is_locked) {
+      toast.error('This workout is scheduled for a future date. Come back on ' + new Date(workout.scheduled_date).toLocaleDateString());
+      return;
+    }
+    
+    if (workout.is_next || workout.is_completed || workout.scheduled_date) {
       navigate(`/workout/${workout.id}`);
     } else {
       toast.error('Complete previous workouts first!');
