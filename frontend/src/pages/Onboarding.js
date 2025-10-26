@@ -58,11 +58,38 @@ const Onboarding = ({ user }) => {
 
   const handleDayToggle = (day) => {
     const current = formData.available_days;
-    if (current.includes(day)) {
-      setFormData({ ...formData, available_days: current.filter(d => d !== day) });
+    const existingIndex = current.findIndex(d => d.day === day);
+    
+    if (existingIndex !== -1) {
+      // Remove the day
+      setFormData({ 
+        ...formData, 
+        available_days: current.filter((_, idx) => idx !== existingIndex) 
+      });
     } else {
-      setFormData({ ...formData, available_days: [...current, day] });
+      // Add the day with default 30 minutes
+      setFormData({ 
+        ...formData, 
+        available_days: [...current, { day, minutes: 30 }] 
+      });
     }
+  };
+
+  const handleTimeChange = (day, minutes) => {
+    const current = formData.available_days;
+    const updatedDays = current.map(d => 
+      d.day === day ? { ...d, minutes: parseInt(minutes) || 0 } : d
+    );
+    setFormData({ ...formData, available_days: updatedDays });
+  };
+
+  const isDaySelected = (day) => {
+    return formData.available_days.some(d => d.day === day);
+  };
+
+  const getDayMinutes = (day) => {
+    const dayData = formData.available_days.find(d => d.day === day);
+    return dayData ? dayData.minutes : 30;
   };
 
   const handleEquipmentToggle = (equipmentId) => {
