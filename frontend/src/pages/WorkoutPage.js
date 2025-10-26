@@ -75,11 +75,6 @@ const WorkoutPage = () => {
       // Start rest timer
       setRestTimer(exercise.rest_seconds);
       setIsResting(true);
-      
-      // Move to next exercise after rest
-      setTimeout(() => {
-        setCurrentExercise(currentExercise + 1);
-      }, exercise.rest_seconds * 1000);
     } else {
       // All exercises completed
       handleCompleteWorkout();
