@@ -61,20 +61,20 @@ const Landing = () => {
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Dumbbell className="w-8 h-8 text-[#D4AF37]" />
-            <span className="text-2xl font-bold text-[#1A1A1A]">Samastu</span>
+            <span className="text-2xl font-bold text-[#060736]">Samastu</span>
           </div>
           <div className="flex items-center gap-4">
             <Button
               onClick={() => navigate('/login')}
               data-testid="nav-login-button"
-              className="bg-white text-[#1A1A1A] hover:bg-gray-50 border-2 border-gray-200"
+              className="bg-white text-[#060736] hover:bg-gray-50 border-2 border-gray-200"
             >
               Log In
             </Button>
             <Button
               onClick={() => navigate('/register')}
               data-testid="nav-signup-button"
-              className="bg-[#D4AF37] hover:bg-[#c19b2e] text-white font-semibold"
+              className="bg-[#060736] hover:bg-[#c19b2e] text-white font-semibold"
             >
               Get Started
             </Button>
@@ -83,11 +83,11 @@ const Landing = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6">
+      <section className="pt-32 pb-20 px-6 bg-gray-100">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="animate-fadeIn">
-              <h1 className="text-5xl lg:text-7xl font-bold text-[#1A1A1A] mb-6 leading-tight">
+              <h1 className="text-5xl lg:text-7xl font-bold text-[#060736] mb-6 leading-tight">
                 Make Workouts
                 <span className="block gradient-text">Fun Again.</span>
               </h1>
@@ -98,14 +98,14 @@ const Landing = () => {
                 <Button
                   onClick={() => navigate('/register')}
                   data-testid="hero-get-started-button"
-                  className="bg-[#D4AF37] hover:bg-[#c19b2e] text-white font-semibold h-14 px-8 text-lg rounded-xl"
+                  className="bg-[#060736] hover:bg-[#c19b2e] text-white font-semibold h-14 px-8 text-lg rounded-xl"
                 >
                   Get Started Free
                 </Button>
                 <Button
                   onClick={() => navigate('/register')}
                   data-testid="hero-view-demo-button"
-                  className="bg-white hover:bg-gray-50 text-[#1A1A1A] border-2 border-gray-200 h-14 px-8 text-lg rounded-xl"
+                  className="bg-white hover:bg-gray-50 text-[#060736] border-2 border-gray-200 h-14 px-8 text-lg rounded-xl"
                 >
                   View Demo
                 </Button>
@@ -121,24 +121,27 @@ const Landing = () => {
                     </div>
                     <div>
                       <p className="text-sm text-gray-500">Today's Workout</p>
-                      <p className="font-bold text-[#1A1A1A]">Full Body Starter</p>
+                      <p className="font-bold text-[#060736]">Full Body Starter</p>
                     </div>
                   </div>
                   <div className="space-y-3">
                     <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
-                      <span className="text-sm text-[#1A1A1A]">Push-ups</span>
+                      <span className="text-sm text-[#060736]">Push-ups</span>
                       <span className="text-xs text-gray-500">3 × 10</span>
                     </div>
                     <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
-                      <span className="text-sm text-[#1A1A1A]">Squats</span>
+                      <span className="text-sm text-[#060736]">Squats</span>
                       <span className="text-xs text-gray-500">3 × 15</span>
                     </div>
                     <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
-                      <span className="text-sm text-[#1A1A1A]">Plank</span>
+                      <span className="text-sm text-[#060736]">Plank</span>
                       <span className="text-xs text-gray-500">2 × 30s</span>
                     </div>
                   </div>
-                  <Button className="w-full mt-6 bg-[#D4AF37] hover:bg-[#c19b2e] text-white font-semibold">
+                  <Button               
+                  onClick={() => navigate('/login')}
+                  data-testid="nav-login-button" 
+                  className="w-full mt-6 bg-[#060736] hover:bg-[#c19b2e] text-white font-semibold">
                     Start Workout
                   </Button>
                 </div>
@@ -149,10 +152,10 @@ const Landing = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 px-6 bg-gray-50">
+      <section className="py-20 px-6 bg-gray-100">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-bold text-[#1A1A1A] mb-4">Everything You Need</h2>
+            <h2 className="text-4xl lg:text-5xl font-bold text-[#060736] mb-4">Everything You Need</h2>
             <p className="text-xl text-gray-600">Powerful features designed to keep you motivated</p>
           </div>
           
@@ -168,7 +171,7 @@ const Landing = () => {
                   <div className="w-14 h-14 bg-[#D4AF37]/10 rounded-xl flex items-center justify-center mb-6">
                     <Icon className="w-7 h-7 text-[#D4AF37]" />
                   </div>
-                  <h3 className="text-xl font-bold text-[#1A1A1A] mb-3">{feature.title}</h3>
+                  <h3 className="text-xl font-bold text-[#060736] mb-3">{feature.title}</h3>
                   <p className="text-gray-600 leading-relaxed">{feature.description}</p>
                 </div>
               );
@@ -178,9 +181,9 @@ const Landing = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 px-6">
+      <section className="py-20 px-6 bg-gray-100">
         <div className="max-w-7xl mx-auto">
-          <div className="bg-gradient-to-br from-[#D4AF37] to-[#c19b2e] rounded-3xl p-12 premium-shadow">
+          <div className="bg-gradient-to-br from-[#060736] to-[#c19b2e] rounded-3xl p-12 premium-shadow">
             <h2 className="text-4xl font-bold text-white text-center mb-12">Trusted by Thousands</h2>
             <div className="grid md:grid-cols-4 gap-8">
               {stats.map((stat, idx) => {
@@ -199,10 +202,10 @@ const Landing = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20 px-6 bg-gray-50">
+      <section className="py-20 px-6 bg-gray-100">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-bold text-[#1A1A1A] mb-4">What People Say</h2>
+            <h2 className="text-4xl lg:text-5xl font-bold text-[#060736] mb-4">What People Say</h2>
             <p className="text-xl text-gray-600">Join our growing community of fitness enthusiasts</p>
           </div>
           
@@ -218,7 +221,7 @@ const Landing = () => {
                     {testimonial.avatar}
                   </div>
                   <div>
-                    <p className="font-bold text-[#1A1A1A]">{testimonial.name}</p>
+                    <p className="font-bold text-[#060736]">{testimonial.name}</p>
                     <div className="flex gap-1">
                       {[...Array(5)].map((_, i) => (
                         <Star key={i} className="w-4 h-4 fill-[#D4AF37] text-[#D4AF37]" />
@@ -236,7 +239,7 @@ const Landing = () => {
       {/* CTA Section */}
       <section className="py-20 px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl lg:text-5xl font-bold text-[#1A1A1A] mb-6">
+          <h2 className="text-4xl lg:text-5xl font-bold text-[#060736] mb-6">
             Start Your Fitness Journey Today
           </h2>
           <p className="text-xl text-gray-600 mb-8">
@@ -254,7 +257,7 @@ const Landing = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#1A1A1A] text-white py-12 px-6">
+      <footer className="bg-[#060736] text-white py-12 px-6">
         <div className="max-w-7xl mx-auto text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
             <Dumbbell className="w-8 h-8 text-[#D4AF37]" />

@@ -74,6 +74,8 @@ class User(BaseModel):
     weight: Optional[float] = None
     goal: Optional[str] = None
     equipment: Optional[List[str]] = []
+    experience_level: Optional[str] = None  # beginner, intermediate, advanced
+    available_days: Optional[List[str]] = []  # days of week user is free
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class UserUpdate(BaseModel):

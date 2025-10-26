@@ -8,15 +8,15 @@
 
 body {
   font-family: 'Poppins', sans-serif;
-  background: #FFFFFF;
-  color: #1A1A1A;
+  background: #f7f7f7;
+  color: #0432ff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 .App {
   min-height: 100vh;
-  background: #FFFFFF;
+  background: #f7f7f7;
 }
 
 /* Scrollbar styling */
