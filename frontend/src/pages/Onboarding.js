@@ -96,8 +96,12 @@ const Onboarding = ({ user }) => {
       toast.error('Please select at least one day');
       return;
     }
+    if (step === 6 && !formData.time_per_day) {
+      toast.error('Please enter available time per day');
+      return;
+    }
     
-    if (step < 6) {
+    if (step < 7) {
       setStep(step + 1);
     } else {
       handleComplete();
