@@ -111,7 +111,11 @@ const Onboarding = ({ user }) => {
         weight: parseFloat(formData.weight),
       };
       await axios.put(`${API}/user/profile`, updateData);
-      toast.success('Profile setup complete!');
+      
+      // Generate workout schedule
+      await axios.post(`${API}/schedule/generate`);
+      
+      toast.success('Profile setup complete! Your personalized schedule is ready.');
       navigate('/home');
     } catch (error) {
       console.error('Update error:', error);
