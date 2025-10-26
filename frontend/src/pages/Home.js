@@ -42,8 +42,8 @@ const Home = ({ user, onLogout }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0D0D0D] flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-[#1A1A1A] text-xl">Loading...</div>
       </div>
     );
   }
@@ -51,21 +51,21 @@ const Home = ({ user, onLogout }) => {
   const xpProgress = progress ? (progress.total_xp % 500) / 500 * 100 : 0;
 
   return (
-    <div className="min-h-screen bg-[#0D0D0D] pb-20">
+    <div className="min-h-screen bg-white pb-20">
       {/* Header */}
-      <div className="bg-[#1a1a1a] p-6 sticky top-0 z-10 shadow-lg">
+      <div className="bg-white border-b border-gray-100 p-6 sticky top-0 z-10 premium-shadow">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-white">Samastu</h1>
-            <p className="text-[#B0B0B0] text-sm">Hey {user?.name}! 💪</p>
+            <h1 className="text-2xl font-bold text-[#1A1A1A]">Samastu</h1>
+            <p className="text-gray-600 text-sm">Hey {user?.name}! 💪</p>
           </div>
           <div className="flex items-center gap-4">
             <button
               onClick={() => navigate('/profile')}
               data-testid="profile-nav-button"
-              className="p-2 rounded-full bg-[#00FF88] hover:bg-[#00dd77] transition-colors"
+              className="p-2 rounded-full bg-[#D4AF37] hover:bg-[#c19b2e] transition-colors"
             >
-              <User className="w-5 h-5 text-[#0D0D0D]" />
+              <User className="w-5 h-5 text-white" />
             </button>
           </div>
         </div>
@@ -74,40 +74,40 @@ const Home = ({ user, onLogout }) => {
       {/* Stats Bar */}
       <div className="max-w-4xl mx-auto px-6 py-6">
         <div className="grid grid-cols-3 gap-4">
-          <div className="bg-[#1a1a1a] rounded-2xl p-4 text-center">
+          <div className="bg-white rounded-2xl p-4 text-center premium-shadow border border-gray-100">
             <div className="flex items-center justify-center gap-2 mb-1">
-              <Trophy className="w-5 h-5 text-[#00FF88]" />
-              <span className="text-[#B0B0B0] text-sm">Level</span>
+              <Trophy className="w-5 h-5 text-[#D4AF37]" />
+              <span className="text-gray-600 text-sm">Level</span>
             </div>
-            <p className="text-2xl font-bold text-white" data-testid="user-level">{progress?.level || 1}</p>
+            <p className="text-2xl font-bold text-[#1A1A1A]" data-testid="user-level">{progress?.level || 1}</p>
           </div>
           
-          <div className="bg-[#1a1a1a] rounded-2xl p-4 text-center">
+          <div className="bg-white rounded-2xl p-4 text-center premium-shadow border border-gray-100">
             <div className="flex items-center justify-center gap-2 mb-1">
-              <Zap className="w-5 h-5 text-[#00FF88]" />
-              <span className="text-[#B0B0B0] text-sm">XP</span>
+              <Zap className="w-5 h-5 text-[#D4AF37]" />
+              <span className="text-gray-600 text-sm">XP</span>
             </div>
-            <p className="text-2xl font-bold text-white" data-testid="user-xp">{progress?.total_xp || 0}</p>
+            <p className="text-2xl font-bold text-[#1A1A1A]" data-testid="user-xp">{progress?.total_xp || 0}</p>
           </div>
           
-          <div className="bg-[#1a1a1a] rounded-2xl p-4 text-center">
+          <div className="bg-white rounded-2xl p-4 text-center premium-shadow border border-gray-100">
             <div className="flex items-center justify-center gap-2 mb-1">
-              <Flame className="w-5 h-5 text-[#00FF88]" />
-              <span className="text-[#B0B0B0] text-sm">Streak</span>
+              <Flame className="w-5 h-5 text-[#D4AF37]" />
+              <span className="text-gray-600 text-sm">Streak</span>
             </div>
-            <p className="text-2xl font-bold text-white" data-testid="user-streak">{progress?.streak || 0}</p>
+            <p className="text-2xl font-bold text-[#1A1A1A]" data-testid="user-streak">{progress?.streak || 0}</p>
           </div>
         </div>
 
         {/* XP Progress Bar */}
-        <div className="mt-6 bg-[#1a1a1a] rounded-2xl p-4">
+        <div className="mt-6 bg-white rounded-2xl p-4 premium-shadow border border-gray-100">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-[#B0B0B0] text-sm">Next Level</span>
-            <span className="text-white text-sm font-semibold">{Math.floor(xpProgress)}%</span>
+            <span className="text-gray-600 text-sm">Next Level</span>
+            <span className="text-[#1A1A1A] text-sm font-semibold">{Math.floor(xpProgress)}%</span>
           </div>
-          <div className="w-full h-3 bg-[#0D0D0D] rounded-full overflow-hidden">
+          <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
             <div
-              className="h-full bg-[#00FF88] rounded-full transition-all duration-500"
+              className="h-full bg-gradient-to-r from-[#D4AF37] to-[#c19b2e] rounded-full transition-all duration-500"
               style={{ width: `${xpProgress}%` }}
             />
           </div>
@@ -116,11 +116,11 @@ const Home = ({ user, onLogout }) => {
 
       {/* Journey Path */}
       <div className="max-w-4xl mx-auto px-6">
-        <h2 className="text-2xl font-bold text-white mb-6">Your Workout Journey</h2>
+        <h2 className="text-2xl font-bold text-[#1A1A1A] mb-6">Your Workout Journey</h2>
         
         <div className="relative">
           {/* Connection Line */}
-          <div className="absolute left-8 top-0 bottom-0 w-1 bg-[#333]" />
+          <div className="absolute left-8 top-0 bottom-0 w-1 bg-gray-200" />
           
           <div className="space-y-6">
             {journey.map((workout, index) => (
@@ -129,16 +129,18 @@ const Home = ({ user, onLogout }) => {
                 <div
                   className={`relative z-10 flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center transition-all ${
                     workout.is_completed
-                      ? 'bg-[#00FF88] glow-effect'
+                      ? 'bg-[#D4AF37] glow-effect'
                       : workout.is_next
-                      ? 'bg-[#00FF88] animate-pulse border-4 border-[#00FF88]/30'
-                      : 'bg-[#333] border-4 border-[#1a1a1a]'
+                      ? 'bg-[#D4AF37] animate-pulse border-4 border-[#D4AF37]/30'
+                      : 'bg-gray-200 border-4 border-white'
                   }`}
                 >
                   {workout.is_completed ? (
-                    <div className="w-8 h-8 text-[#0D0D0D] flex items-center justify-center font-bold text-2xl">✓</div>
+                    <div className="w-8 h-8 text-white flex items-center justify-center font-bold text-2xl">✓</div>
                   ) : (
-                    <div className="w-8 h-8 text-white flex items-center justify-center font-bold">{index + 1}</div>
+                    <div className={`w-8 h-8 flex items-center justify-center font-bold ${
+                      workout.is_next ? 'text-white' : 'text-gray-400'
+                    }`}>{index + 1}</div>
                   )}
                 </div>
 
@@ -146,30 +148,30 @@ const Home = ({ user, onLogout }) => {
                 <div
                   onClick={() => handleWorkoutClick(workout)}
                   data-testid={`workout-card-${workout.id}`}
-                  className={`ml-6 flex-1 bg-[#1a1a1a] rounded-2xl p-5 transition-all cursor-pointer ${
+                  className={`ml-6 flex-1 bg-white rounded-2xl p-5 transition-all cursor-pointer premium-shadow border ${
                     workout.is_next || workout.is_completed
-                      ? 'hover:bg-[#222] card-hover'
-                      : 'opacity-50 cursor-not-allowed'
+                      ? 'hover:bg-gray-50 card-hover border-gray-100'
+                      : 'opacity-50 cursor-not-allowed border-gray-100'
                   } ${
-                    workout.is_next ? 'neon-border' : ''
+                    workout.is_next ? 'gold-border' : ''
                   }`}
                 >
                   <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-xl font-bold text-white">{workout.name}</h3>
-                    <span className="text-xs bg-[#00FF88]/20 text-[#00FF88] px-3 py-1 rounded-full font-semibold">
+                    <h3 className="text-xl font-bold text-[#1A1A1A]">{workout.name}</h3>
+                    <span className="text-xs bg-[#D4AF37]/10 text-[#D4AF37] px-3 py-1 rounded-full font-semibold">
                       {workout.difficulty}
                     </span>
                   </div>
                   
-                  <p className="text-[#B0B0B0] text-sm mb-3">{workout.target_muscles}</p>
+                  <p className="text-gray-600 text-sm mb-3">{workout.target_muscles}</p>
                   
                   <div className="flex items-center gap-4 text-sm">
                     <div className="flex items-center gap-1">
-                      <Zap className="w-4 h-4 text-[#00FF88]" />
-                      <span className="text-[#B0B0B0]">+{workout.xp_reward} XP</span>
+                      <Zap className="w-4 h-4 text-[#D4AF37]" />
+                      <span className="text-gray-600">+{workout.xp_reward} XP</span>
                     </div>
-                    <div className="text-[#B0B0B0]">• {workout.duration_minutes} min</div>
-                    <div className="text-[#B0B0B0]">• {workout.exercises.length} exercises</div>
+                    <div className="text-gray-600">• {workout.duration_minutes} min</div>
+                    <div className="text-gray-600">• {workout.exercises.length} exercises</div>
                   </div>
                 </div>
               </div>
