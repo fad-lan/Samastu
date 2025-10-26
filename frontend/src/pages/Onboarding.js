@@ -313,6 +313,28 @@ const Onboarding = ({ user }) => {
 
           {step === 6 && (
             <div className="animate-slideUp">
+              <h2 className="text-3xl font-bold text-[#1A1A1A] mb-2">Time Available</h2>
+              <p className="text-gray-600 mb-6">How much time do you have per workout?</p>
+              
+              <Label htmlFor="time_per_day" className="text-[#1A1A1A] mb-2 block font-medium">Minutes per day</Label>
+              <Input
+                id="time_per_day"
+                name="time_per_day"
+                type="number"
+                value={formData.time_per_day}
+                onChange={handleInputChange}
+                data-testid="time-per-day-input"
+                className="bg-gray-50 border-gray-200 text-[#1A1A1A] focus:border-[#D4AF37] focus:ring-[#D4AF37] rounded-xl h-12"
+                placeholder="30"
+                min="10"
+                max="120"
+              />
+              <p className="text-sm text-gray-500 mt-2">We'll recommend workouts that fit your schedule (10-120 minutes)</p>
+            </div>
+          )}
+
+          {step === 7 && (
+            <div className="animate-slideUp">
               <h2 className="text-3xl font-bold text-[#1A1A1A] mb-2">Equipment</h2>
               <p className="text-gray-600 mb-6">What do you have access to?</p>
               
