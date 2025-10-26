@@ -81,7 +81,7 @@ const Onboarding = ({ user }) => {
       };
       await axios.put(`${API}/user/profile`, updateData);
       toast.success('Profile setup complete!');
-      navigate('/');
+      navigate('/home');
     } catch (error) {
       console.error('Update error:', error);
       toast.error('Failed to update profile');
@@ -108,10 +108,10 @@ const Onboarding = ({ user }) => {
         <div className="bg-white rounded-3xl p-8 premium-shadow border border-gray-100">
           {step === 1 && (
             <div className="animate-slideUp">
-              <h2 className="text-3xl font-bold text-white mb-2">Welcome, {user?.name}!</h2>
-              <p className="text-[#B0B0B0] mb-6">Let's personalize your fitness journey</p>
+              <h2 className="text-3xl font-bold text-[#1A1A1A] mb-2">Welcome, {user?.name}!</h2>
+              <p className="text-gray-600 mb-6">Let's personalize your fitness journey</p>
               
-              <Label className="text-white mb-3 block text-lg">Select Gender</Label>
+              <Label className="text-[#1A1A1A] mb-3 block text-lg font-medium">Select Gender</Label>
               <div className="grid grid-cols-3 gap-3">
                 {['Male', 'Female', 'Other'].map((g) => (
                   <button
@@ -120,8 +120,8 @@ const Onboarding = ({ user }) => {
                     data-testid={`gender-${g.toLowerCase()}-button`}
                     className={`p-4 rounded-2xl border-2 font-medium transition-all ${
                       formData.gender === g
-                        ? 'border-[#00FF88] bg-[#00FF88]/10 text-[#00FF88]'
-                        : 'border-[#333] text-[#B0B0B0] hover:border-[#00FF88]/50'
+                        ? 'border-[#D4AF37] bg-[#D4AF37]/10 text-[#D4AF37]'
+                        : 'border-gray-200 text-gray-600 hover:border-[#D4AF37]/50'
                     }`}
                   >
                     {g}
@@ -133,12 +133,12 @@ const Onboarding = ({ user }) => {
 
           {step === 2 && (
             <div className="animate-slideUp">
-              <h2 className="text-3xl font-bold text-white mb-2">Your Stats</h2>
-              <p className="text-[#B0B0B0] mb-6">Help us track your progress</p>
+              <h2 className="text-3xl font-bold text-[#1A1A1A] mb-2">Your Stats</h2>
+              <p className="text-gray-600 mb-6">Help us track your progress</p>
               
               <div className="space-y-5">
                 <div>
-                  <Label htmlFor="height" className="text-white mb-2 block">Height (cm)</Label>
+                  <Label htmlFor="height" className="text-[#1A1A1A] mb-2 block font-medium">Height (cm)</Label>
                   <Input
                     id="height"
                     name="height"
@@ -146,13 +146,13 @@ const Onboarding = ({ user }) => {
                     value={formData.height}
                     onChange={handleInputChange}
                     data-testid="height-input"
-                    className="bg-[#0D0D0D] border-[#333] text-white focus:border-[#00FF88] focus:ring-[#00FF88] rounded-xl h-12"
+                    className="bg-gray-50 border-gray-200 text-[#1A1A1A] focus:border-[#D4AF37] focus:ring-[#D4AF37] rounded-xl h-12"
                     placeholder="170"
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="weight" className="text-white mb-2 block">Weight (kg)</Label>
+                  <Label htmlFor="weight" className="text-[#1A1A1A] mb-2 block font-medium">Weight (kg)</Label>
                   <Input
                     id="weight"
                     name="weight"
@@ -160,7 +160,7 @@ const Onboarding = ({ user }) => {
                     value={formData.weight}
                     onChange={handleInputChange}
                     data-testid="weight-input"
-                    className="bg-[#0D0D0D] border-[#333] text-white focus:border-[#00FF88] focus:ring-[#00FF88] rounded-xl h-12"
+                    className="bg-gray-50 border-gray-200 text-[#1A1A1A] focus:border-[#D4AF37] focus:ring-[#D4AF37] rounded-xl h-12"
                     placeholder="70"
                   />
                 </div>
@@ -170,8 +170,8 @@ const Onboarding = ({ user }) => {
 
           {step === 3 && (
             <div className="animate-slideUp">
-              <h2 className="text-3xl font-bold text-white mb-2">Your Goal</h2>
-              <p className="text-[#B0B0B0] mb-6">What do you want to achieve?</p>
+              <h2 className="text-3xl font-bold text-[#1A1A1A] mb-2">Your Goal</h2>
+              <p className="text-gray-600 mb-6">What do you want to achieve?</p>
               
               <div className="space-y-3">
                 {goals.map((goal) => (
@@ -181,8 +181,8 @@ const Onboarding = ({ user }) => {
                     data-testid={`goal-${goal.id}-button`}
                     className={`w-full p-5 rounded-2xl border-2 font-medium text-left transition-all flex items-center justify-between ${
                       formData.goal === goal.id
-                        ? 'border-[#00FF88] bg-[#00FF88]/10 text-[#00FF88]'
-                        : 'border-[#333] text-white hover:border-[#00FF88]/50'
+                        ? 'border-[#D4AF37] bg-[#D4AF37]/10 text-[#D4AF37]'
+                        : 'border-gray-200 text-[#1A1A1A] hover:border-[#D4AF37]/50'
                     }`}
                   >
                     <span className="flex items-center gap-3">
@@ -190,8 +190,8 @@ const Onboarding = ({ user }) => {
                       <span className="text-lg">{goal.label}</span>
                     </span>
                     {formData.goal === goal.id && (
-                      <div className="w-6 h-6 rounded-full bg-[#00FF88] flex items-center justify-center">
-                        <div className="w-3 h-3 bg-[#0D0D0D] rounded-full"></div>
+                      <div className="w-6 h-6 rounded-full bg-[#D4AF37] flex items-center justify-center">
+                        <div className="w-3 h-3 bg-white rounded-full"></div>
                       </div>
                     )}
                   </button>
@@ -202,8 +202,8 @@ const Onboarding = ({ user }) => {
 
           {step === 4 && (
             <div className="animate-slideUp">
-              <h2 className="text-3xl font-bold text-white mb-2">Equipment</h2>
-              <p className="text-[#B0B0B0] mb-6">What do you have access to?</p>
+              <h2 className="text-3xl font-bold text-[#1A1A1A] mb-2">Equipment</h2>
+              <p className="text-gray-600 mb-6">What do you have access to?</p>
               
               <div className="space-y-3">
                 {equipmentOptions.map((equipment) => (
@@ -213,14 +213,14 @@ const Onboarding = ({ user }) => {
                     data-testid={`equipment-${equipment.id}-button`}
                     className={`w-full p-4 rounded-2xl border-2 font-medium text-left transition-all flex items-center justify-between ${
                       formData.equipment.includes(equipment.id)
-                        ? 'border-[#00FF88] bg-[#00FF88]/10 text-[#00FF88]'
-                        : 'border-[#333] text-white hover:border-[#00FF88]/50'
+                        ? 'border-[#D4AF37] bg-[#D4AF37]/10 text-[#D4AF37]'
+                        : 'border-gray-200 text-[#1A1A1A] hover:border-[#D4AF37]/50'
                     }`}
                   >
                     {equipment.label}
                     {formData.equipment.includes(equipment.id) && (
-                      <div className="w-6 h-6 rounded-full bg-[#00FF88] flex items-center justify-center">
-                        <div className="w-3 h-3 bg-[#0D0D0D] rounded-full"></div>
+                      <div className="w-6 h-6 rounded-full bg-[#D4AF37] flex items-center justify-center">
+                        <div className="w-3 h-3 bg-white rounded-full"></div>
                       </div>
                     )}
                   </button>
@@ -232,7 +232,7 @@ const Onboarding = ({ user }) => {
           <Button
             onClick={handleNext}
             data-testid="onboarding-next-button"
-            className="w-full mt-8 bg-[#00FF88] hover:bg-[#00dd77] text-[#0D0D0D] font-semibold h-12 rounded-xl text-lg"
+            className="w-full mt-8 bg-[#D4AF37] hover:bg-[#c19b2e] text-white font-semibold h-12 rounded-xl text-lg"
           >
             {step === 4 ? 'Start Your Journey' : 'Continue'}
             <ChevronRight className="ml-2" />
