@@ -17,6 +17,8 @@ const Onboarding = ({ user }) => {
     weight: '',
     goal: '',
     equipment: [],
+    experience_level: '',
+    available_days: [],
   });
 
   const goals = [
@@ -25,6 +27,14 @@ const Onboarding = ({ user }) => {
     { id: 'bulk', label: 'Bulk & Build', icon: '🏋️' },
     { id: 'active', label: 'Just Stay Active', icon: '🏃' },
   ];
+
+  const experienceLevels = [
+    { id: 'beginner', label: 'Beginner', description: 'New to working out' },
+    { id: 'intermediate', label: 'Intermediate', description: '6+ months experience' },
+    { id: 'advanced', label: 'Advanced', description: '2+ years experience' },
+  ];
+
+  const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   const equipmentOptions = [
     { id: 'none', label: 'No Equipment' },
