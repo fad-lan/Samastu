@@ -196,20 +196,32 @@ const Home = ({ user, onLogout }) => {
           <div className="absolute left-8 top-0 bottom-0 w-1 bg-gray-200" />
           
           <div className="space-y-6">
-            {journey.map((workout, index) => (
-              <div key={workout.id} className="relative flex items-start animate-fadeIn" style={{ animationDelay: `${index * 0.1}s` }}>
+            {journey.map((workout, index) => {
+              const isRestDay = workout.is_rest_day;
+              const isLocked = workout.is_locked;
+              
+              return (
+              <div key={workout.id || index} className="relative flex items-start animate-fadeIn" style={{ animationDelay: `${index * 0.1}s` }}>
                 {/* Node Circle */}
                 <div
                   className={`relative z-10 flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center transition-all ${
-                    workout.is_completed
+                    isRestDay
+                      ? 'bg-gray-200 border-4 border-white'
+                      : workout.is_completed
                       ? 'bg-[#D4AF37] glow-effect'
                       : workout.is_next
                       ? 'bg-[#D4AF37] animate-pulse border-4 border-[#D4AF37]/30'
+                      : isLocked
+                      ? 'bg-gray-300 border-4 border-white'
                       : 'bg-gray-200 border-4 border-white'
                   }`}
                 >
-                  {workout.is_completed ? (
+                  {isRestDay ? (
+                    <div className="text-2xl">☕</div>
+                  ) : workout.is_completed ? (
                     <div className="w-8 h-8 text-white flex items-center justify-center font-bold text-2xl">✓</div>
+                  ) : isLocked ? (
+                    <div className="text-2xl">🔒</div>
                   ) : (
                     <div className={`w-8 h-8 flex items-center justify-center font-bold ${
                       workout.is_next ? 'text-white' : 'text-gray-400'
@@ -221,34 +233,53 @@ const Home = ({ user, onLogout }) => {
                 <div
                   onClick={() => handleWorkoutClick(workout)}
                   data-testid={`workout-card-${workout.id}`}
-                  className={`ml-6 flex-1 bg-white rounded-2xl p-5 transition-all cursor-pointer premium-shadow border ${
-                    workout.is_next || workout.is_completed
-                      ? 'hover:bg-gray-50 card-hover border-gray-100'
+                  className={`ml-6 flex-1 bg-white rounded-2xl p-5 transition-all premium-shadow border ${
+                    isRestDay
+                      ? 'cursor-default border-gray-100 bg-gray-50'
+                      : isLocked
+                      ? 'opacity-60 cursor-not-allowed border-gray-100'
+                      : workout.is_next || workout.is_completed
+                      ? 'hover:bg-gray-50 card-hover border-gray-100 cursor-pointer'
                       : 'opacity-50 cursor-not-allowed border-gray-100'
                   } ${
-                    workout.is_next ? 'gold-border' : ''
+                    workout.is_next && !isRestDay && !isLocked ? 'gold-border' : ''
                   }`}
                 >
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="text-xl font-bold text-[#1A1A1A]">{workout.name}</h3>
-                    <span className="text-xs bg-[#D4AF37]/10 text-[#D4AF37] px-3 py-1 rounded-full font-semibold">
+                    <span className={`text-xs px-3 py-1 rounded-full font-semibold ${
+                      isRestDay ? 'bg-gray-200 text-gray-600' : 'bg-[#D4AF37]/10 text-[#D4AF37]'
+                    }`}>
                       {workout.difficulty}
                     </span>
                   </div>
                   
+                  {workout.scheduled_date && (
+                    <p className="text-xs text-gray-500 mb-2">
+                      Scheduled: {new Date(workout.scheduled_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    </p>
+                  )}
+                  
                   <p className="text-gray-600 text-sm mb-3">{workout.target_muscles}</p>
                   
-                  <div className="flex items-center gap-4 text-sm">
-                    <div className="flex items-center gap-1">
-                      <Zap className="w-4 h-4 text-[#D4AF37]" />
-                      <span className="text-gray-600">+{workout.xp_reward} XP</span>
+                  {!isRestDay && (
+                    <div className="flex items-center gap-4 text-sm">
+                      <div className="flex items-center gap-1">
+                        <Zap className="w-4 h-4 text-[#D4AF37]" />
+                        <span className="text-gray-600">+{workout.xp_reward} XP</span>
+                      </div>
+                      <div className="text-gray-600">• {workout.duration_minutes} min</div>
+                      <div className="text-gray-600">• {workout.exercises?.length || 0} exercises</div>
                     </div>
-                    <div className="text-gray-600">• {workout.duration_minutes} min</div>
-                    <div className="text-gray-600">• {workout.exercises.length} exercises</div>
-                  </div>
+                  )}
+                  
+                  {isLocked && (
+                    <div className="mt-2 text-xs font-semibold text-gray-500">🔒 Unlocks on scheduled date</div>
+                  )}
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
         )}
