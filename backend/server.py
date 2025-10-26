@@ -567,6 +567,230 @@ async def get_achievements(current_user: User = Depends(get_current_user)):
         "total_workouts": total_workouts
     }
 
+# ========== SCHEDULE ROUTES ==========
+
+@api_router.post("/schedule/generate")
+async def generate_schedule(current_user: User = Depends(get_current_user)):
+    """Generate a personalized workout schedule based on user's available days"""
+    if not current_user.available_days or len(current_user.available_days) == 0:
+        raise HTTPException(status_code=400, detail="No available days set. Please update your profile.")
+    
+    # Delete existing schedule
+    await db.scheduled_workouts.delete_many({"user_id": current_user.id})
+    
+    # Get workout plans filtered by experience level
+    all_plans = await db.workout_plans.find({}, {"_id": 0}).to_list(100)
+    
+    # Filter plans by difficulty
+    experience_map = {
+        "beginner": "Beginner",
+        "intermediate": "Intermediate",
+        "advanced": "Advanced"
+    }
+    
+    target_difficulty = experience_map.get(current_user.experience_level, "Beginner")
+    suitable_plans = [p for p in all_plans if p['difficulty'] == target_difficulty or p['difficulty'] == 'Beginner']
+    
+    if not suitable_plans:
+        suitable_plans = all_plans  # Fallback to all plans
+    
+    # Generate schedule for next 4 weeks
+    from datetime import date, timedelta
+    today = date.today()
+    schedule = []
+    
+    days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    
+    # Calculate how many workout days per week
+    available_count = len(current_user.available_days)
+    
+    # Determine rest day frequency (every 2-3 workout days)
+    rest_frequency = 3 if available_count >= 4 else 2
+    
+    workout_index = 0
+    workout_count = 0
+    
+    for week in range(4):
+        for day_offset in range(7):
+            schedule_date = today + timedelta(days=week * 7 + day_offset)
+            day_name = days_of_week[schedule_date.weekday()]
+            
+            # Check if user is available on this day
+            if day_name in current_user.available_days:
+                # Check if it should be a rest day
+                is_rest = (workout_count > 0 and workout_count % rest_frequency == 0)
+                
+                if is_rest:
+                    # Schedule rest day
+                    scheduled = ScheduledWorkout(
+                        user_id=current_user.id,
+                        workout_plan_id="rest",
+                        scheduled_date=schedule_date.isoformat(),
+                        day_of_week=day_name,
+                        is_rest_day=True,
+                        is_completed=False
+                    )
+                else:
+                    # Schedule workout
+                    workout_plan = suitable_plans[workout_index % len(suitable_plans)]
+                    scheduled = ScheduledWorkout(
+                        user_id=current_user.id,
+                        workout_plan_id=workout_plan['id'],
+                        scheduled_date=schedule_date.isoformat(),
+                        day_of_week=day_name,
+                        is_rest_day=False,
+                        is_completed=False
+                    )
+                    workout_index += 1
+                
+                schedule.append(scheduled.model_dump())
+                schedule[-1]['created_at'] = schedule[-1]['created_at'].isoformat()
+                workout_count += 1
+    
+    if schedule:
+        await db.scheduled_workouts.insert_many(schedule)
+    
+    return {"success": True, "scheduled_count": len(schedule), "message": "Workout schedule generated successfully"}
+
+@api_router.get("/schedule/calendar")
+async def get_calendar(current_user: User = Depends(get_current_user)):
+    """Get user's workout calendar"""
+    scheduled = await db.scheduled_workouts.find(
+        {"user_id": current_user.id},
+        {"_id": 0}
+    ).sort("scheduled_date", 1).to_list(1000)
+    
+    # Get workout plan details
+    workout_ids = [s['workout_plan_id'] for s in scheduled if not s['is_rest_day']]
+    workout_plans = await db.workout_plans.find(
+        {"id": {"$in": workout_ids}},
+        {"_id": 0}
+    ).to_list(1000)
+    
+    plans_dict = {p['id']: p for p in workout_plans}
+    
+    # Enrich scheduled workouts with plan details
+    for item in scheduled:
+        if not item['is_rest_day']:
+            item['workout_details'] = plans_dict.get(item['workout_plan_id'])
+        else:
+            item['workout_details'] = {
+                'name': 'Rest Day',
+                'difficulty': 'Recovery',
+                'duration_minutes': 0,
+                'xp_reward': 0
+            }
+    
+    return scheduled
+
+@api_router.delete("/schedule/reset")
+async def reset_schedule(current_user: User = Depends(get_current_user)):
+    """Delete current workout schedule"""
+    result = await db.scheduled_workouts.delete_many({"user_id": current_user.id})
+    return {"success": True, "deleted_count": result.deleted_count, "message": "Schedule deleted successfully"}
+
+@api_router.post("/schedule/complete/{schedule_id}")
+async def complete_scheduled_workout(schedule_id: str, duration_minutes: int, current_user: User = Depends(get_current_user)):
+    """Mark a scheduled workout as completed"""
+    scheduled = await db.scheduled_workouts.find_one({"id": schedule_id, "user_id": current_user.id})
+    
+    if not scheduled:
+        raise HTTPException(status_code=404, detail="Scheduled workout not found")
+    
+    if scheduled['is_rest_day']:
+        raise HTTPException(status_code=400, detail="Cannot complete a rest day")
+    
+    # Mark as completed
+    await db.scheduled_workouts.update_one(
+        {"id": schedule_id},
+        {"$set": {"is_completed": True}}
+    )
+    
+    # Record workout session (same as before)
+    plan = await db.workout_plans.find_one({"id": scheduled['workout_plan_id']})
+    if not plan:
+        raise HTTPException(status_code=404, detail="Workout plan not found")
+    
+    session = WorkoutSession(
+        user_id=current_user.id,
+        workout_plan_id=scheduled['workout_plan_id'],
+        xp_earned=plan['xp_reward'],
+        duration_minutes=duration_minutes,
+        status="completed"
+    )
+    session_doc = session.model_dump()
+    session_doc['date'] = session_doc['date'].isoformat()
+    await db.workout_sessions.insert_one(session_doc)
+    
+    # Update progress (same as before)
+    progress_doc = await db.progress.find_one({"user_id": current_user.id})
+    if not progress_doc:
+        progress_doc = Progress(user_id=current_user.id).model_dump()
+    
+    new_total_xp = progress_doc.get('total_xp', 0) + plan['xp_reward']
+    new_level = (new_total_xp // 500) + 1
+    
+    today = datetime.now(timezone.utc).date()
+    last_workout_date = progress_doc.get('last_workout_date')
+    
+    if isinstance(last_workout_date, str):
+        last_workout_date = datetime.fromisoformat(last_workout_date).date()
+    elif isinstance(last_workout_date, datetime):
+        last_workout_date = last_workout_date.date()
+    
+    current_streak = progress_doc.get('streak', 0)
+    
+    if last_workout_date:
+        days_diff = (today - last_workout_date).days
+        if days_diff == 0:
+            new_streak = current_streak
+        elif days_diff == 1:
+            new_streak = current_streak + 1
+        else:
+            new_streak = 1
+    else:
+        new_streak = 1
+    
+    achievements = progress_doc.get('achievements', [])
+    total_workouts = await db.workout_sessions.count_documents({"user_id": current_user.id})
+    
+    if total_workouts >= 5 and "first_5" not in achievements:
+        achievements.append("first_5")
+    if total_workouts >= 10 and "first_10" not in achievements:
+        achievements.append("first_10")
+    if total_workouts >= 50 and "warrior_50" not in achievements:
+        achievements.append("warrior_50")
+    if new_streak >= 7 and "streak_7" not in achievements:
+        achievements.append("streak_7")
+    if new_streak >= 30 and "streak_30" not in achievements:
+        achievements.append("streak_30")
+    
+    update_data = {
+        "total_xp": new_total_xp,
+        "level": new_level,
+        "streak": new_streak,
+        "last_workout_date": today.isoformat(),
+        "achievements": achievements
+    }
+    
+    await db.progress.update_one(
+        {"user_id": current_user.id},
+        {"$set": update_data},
+        upsert=True
+    )
+    
+    old_achievements = progress_doc.get('achievements', [])
+    new_achievements = [a for a in achievements if a not in old_achievements]
+    
+    return {
+        "success": True,
+        "xp_earned": plan['xp_reward'],
+        "new_total_xp": new_total_xp,
+        "new_level": new_level,
+        "new_streak": new_streak,
+        "new_achievements": new_achievements
+    }
+
 # ========== STARTUP ==========
 
 @app.on_event("startup")
