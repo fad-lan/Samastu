@@ -19,6 +19,7 @@ const Onboarding = ({ user }) => {
     equipment: [],
     experience_level: '',
     available_days: [],
+    time_per_day: '',
   });
 
   const goals = [
