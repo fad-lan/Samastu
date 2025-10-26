@@ -649,7 +649,7 @@ async def generate_schedule(current_user: User = Depends(get_current_user)):
     # Delete existing schedule
     await db.scheduled_workouts.delete_many({"user_id": current_user.id})
     
-    # Get workout plans filtered by experience level
+    # Get workout plans filtered by experience level and time
     all_plans = await db.workout_plans.find({}, {"_id": 0}).to_list(100)
     
     # Filter plans by difficulty
@@ -661,6 +661,10 @@ async def generate_schedule(current_user: User = Depends(get_current_user)):
     
     target_difficulty = experience_map.get(current_user.experience_level, "Beginner")
     suitable_plans = [p for p in all_plans if p['difficulty'] == target_difficulty or p['difficulty'] == 'Beginner']
+    
+    # Filter by time if specified
+    if current_user.time_per_day:
+        suitable_plans = [p for p in suitable_plans if p['duration_minutes'] <= current_user.time_per_day]
     
     if not suitable_plans:
         suitable_plans = all_plans  # Fallback to all plans
