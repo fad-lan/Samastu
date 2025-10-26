@@ -89,7 +89,7 @@ const Onboarding = ({ user }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0D0D0D] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-lg animate-fadeIn">
         <div className="mb-8">
           <div className="flex justify-between items-center mb-4">
@@ -97,15 +97,15 @@ const Onboarding = ({ user }) => {
               <div
                 key={s}
                 className={`h-2 flex-1 mx-1 rounded-full transition-all ${
-                  s <= step ? 'bg-[#00FF88]' : 'bg-[#333]'
+                  s <= step ? 'bg-[#D4AF37]' : 'bg-gray-200'
                 }`}
               />
             ))}
           </div>
-          <p className="text-[#B0B0B0] text-center">Step {step} of 4</p>
+          <p className="text-gray-600 text-center">Step {step} of 4</p>
         </div>
 
-        <div className="bg-[#1a1a1a] rounded-3xl p-8 shadow-xl">
+        <div className="bg-white rounded-3xl p-8 premium-shadow border border-gray-100">
           {step === 1 && (
             <div className="animate-slideUp">
               <h2 className="text-3xl font-bold text-white mb-2">Welcome, {user?.name}!</h2>
