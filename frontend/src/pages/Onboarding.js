@@ -237,6 +237,76 @@ const Onboarding = ({ user }) => {
 
           {step === 4 && (
             <div className="animate-slideUp">
+              <h2 className="text-3xl font-bold text-[#1A1A1A] mb-2">Experience Level</h2>
+              <p className="text-gray-600 mb-6">What's your workout experience?</p>
+              
+              <div className="space-y-3">
+                {experienceLevels.map((level) => (
+                  <button
+                    key={level.id}
+                    onClick={() => handleExperienceSelect(level.id)}
+                    data-testid={`experience-${level.id}-button`}
+                    className={`w-full p-5 rounded-2xl border-2 font-medium text-left transition-all ${
+                      formData.experience_level === level.id
+                        ? 'border-[#D4AF37] bg-[#D4AF37]/10 text-[#D4AF37]'
+                        : 'border-gray-200 text-[#1A1A1A] hover:border-[#D4AF37]/50'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-lg font-semibold">{level.label}</p>
+                        <p className={`text-sm ${formData.experience_level === level.id ? 'text-[#D4AF37]' : 'text-gray-500'}`}>
+                          {level.description}
+                        </p>
+                      </div>
+                      {formData.experience_level === level.id && (
+                        <div className="w-6 h-6 rounded-full bg-[#D4AF37] flex items-center justify-center">
+                          <div className="w-3 h-3 bg-white rounded-full"></div>
+                        </div>
+                      )}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {step === 5 && (
+            <div className="animate-slideUp">
+              <h2 className="text-3xl font-bold text-[#1A1A1A] mb-2">Available Days</h2>
+              <p className="text-gray-600 mb-6">Which days can you work out?</p>
+              
+              <div className="space-y-3">
+                {daysOfWeek.map((day) => (
+                  <button
+                    key={day}
+                    onClick={() => handleDayToggle(day)}
+                    data-testid={`day-${day.toLowerCase()}-button`}
+                    className={`w-full p-4 rounded-2xl border-2 font-medium text-left transition-all flex items-center justify-between ${
+                      formData.available_days.includes(day)
+                        ? 'border-[#D4AF37] bg-[#D4AF37]/10 text-[#D4AF37]'
+                        : 'border-gray-200 text-[#1A1A1A] hover:border-[#D4AF37]/50'
+                    }`}
+                  >
+                    {day}
+                    {formData.available_days.includes(day) && (
+                      <div className="w-6 h-6 rounded-full bg-[#D4AF37] flex items-center justify-center">
+                        <div className="w-3 h-3 bg-white rounded-full"></div>
+                      </div>
+                    )}
+                  </button>
+                ))}
+              </div>
+              {formData.available_days.length > 0 && (
+                <p className="mt-4 text-sm text-gray-600 text-center">
+                  Selected {formData.available_days.length} day{formData.available_days.length > 1 ? 's' : ''} per week
+                </p>
+              )}
+            </div>
+          )}
+
+          {step === 6 && (
+            <div className="animate-slideUp">
               <h2 className="text-3xl font-bold text-[#1A1A1A] mb-2">Equipment</h2>
               <p className="text-gray-600 mb-6">What do you have access to?</p>
               
