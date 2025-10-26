@@ -88,14 +88,14 @@ const CompletionPage = () => {
 
           {/* New Achievements */}
           {result.new_achievements && result.new_achievements.length > 0 && (
-            <div className="bg-[#00FF88]/10 border-2 border-[#00FF88] rounded-2xl p-6 animate-slideUp" style={{ animationDelay: '0.3s' }}>
+            <div className="bg-[#D4AF37]/10 border-2 border-[#D4AF37] rounded-2xl p-6 animate-slideUp" style={{ animationDelay: '0.3s' }}>
               <div className="flex items-center gap-3 mb-3">
-                <Award className="w-6 h-6 text-[#00FF88]" />
-                <p className="text-[#00FF88] font-bold text-lg">New Achievement Unlocked!</p>
+                <Award className="w-6 h-6 text-[#D4AF37]" />
+                <p className="text-[#D4AF37] font-bold text-lg">New Achievement Unlocked!</p>
               </div>
               <div className="space-y-2">
                 {result.new_achievements.map((achievement, idx) => (
-                  <div key={idx} className="text-white">
+                  <div key={idx} className="text-[#1A1A1A]">
                     • {achievement.replace('_', ' ').toUpperCase()}
                   </div>
                 ))}
