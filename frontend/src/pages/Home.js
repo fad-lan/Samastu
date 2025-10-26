@@ -4,13 +4,16 @@ import axios from 'axios';
 import { API } from '@/App';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { User, Zap, Flame, Trophy } from 'lucide-react';
+import { User, Zap, Flame, Trophy, Calendar, RefreshCw } from 'lucide-react';
+import WorkoutCalendar from '@/components/WorkoutCalendar';
 
 const Home = ({ user, onLogout }) => {
   const navigate = useNavigate();
   const [journey, setJourney] = useState([]);
   const [progress, setProgress] = useState(null);
+  const [schedule, setSchedule] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [view, setView] = useState('calendar'); // 'calendar' or 'journey'
 
   useEffect(() => {
     fetchData();
@@ -18,17 +21,38 @@ const Home = ({ user, onLogout }) => {
 
   const fetchData = async () => {
     try {
-      const [journeyRes, progressRes] = await Promise.all([
+      const [journeyRes, progressRes, scheduleRes] = await Promise.all([
         axios.get(`${API}/workouts/journey`),
         axios.get(`${API}/progress`),
+        axios.get(`${API}/schedule/calendar`),
       ]);
       setJourney(journeyRes.data);
       setProgress(progressRes.data);
+      setSchedule(scheduleRes.data);
     } catch (error) {
       console.error('Fetch error:', error);
       toast.error('Failed to load data');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResetSchedule = async () => {
+    if (!window.confirm('Are you sure you want to delete your current workout plan? This cannot be undone.')) {
+      return;
+    }
+    
+    try {
+      await axios.delete(`${API}/schedule/reset`);
+      await axios.post(`${API}/schedule/generate`);
+      toast.success('Schedule reset! Generating new plan...');
+      
+      // Refresh data
+      const scheduleRes = await axios.get(`${API}/schedule/calendar`);
+      setSchedule(scheduleRes.data);
+    } catch (error) {
+      console.error('Reset error:', error);
+      toast.error('Failed to reset schedule');
     }
   };
 
