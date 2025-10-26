@@ -107,9 +107,9 @@ const CompletionPage = () => {
         {/* Action Buttons */}
         <div className="space-y-3">
           <Button
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/home')}
             data-testid="back-to-journey-button"
-            className="w-full bg-[#00FF88] hover:bg-[#00dd77] text-[#0D0D0D] font-bold h-12 rounded-xl text-lg"
+            className="w-full bg-[#D4AF37] hover:bg-[#c19b2e] text-white font-bold h-12 rounded-xl text-lg"
           >
             Back to Journey
           </Button>
@@ -117,7 +117,7 @@ const CompletionPage = () => {
           <Button
             onClick={() => navigate('/profile')}
             data-testid="view-progress-button"
-            className="w-full bg-[#1a1a1a] hover:bg-[#252525] text-white font-semibold h-12 rounded-xl border-2 border-[#333]"
+            className="w-full bg-white hover:bg-gray-50 text-[#1A1A1A] font-semibold h-12 rounded-xl border-2 border-gray-200"
           >
             View Full Progress
           </Button>
