@@ -30,7 +30,7 @@ const CompletionPage = () => {
   const randomMessage = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
 
   return (
-    <div className="min-h-screen bg-[#0D0D0D] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-lg animate-fadeIn">
         {/* Success Animation */}
         <div className="text-center mb-8">
