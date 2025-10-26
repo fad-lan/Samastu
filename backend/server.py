@@ -85,6 +85,8 @@ class UserUpdate(BaseModel):
     weight: Optional[float] = None
     goal: Optional[str] = None
     equipment: Optional[List[str]] = None
+    experience_level: Optional[str] = None
+    available_days: Optional[List[str]] = None
 
 class WorkoutSession(BaseModel):
     model_config = ConfigDict(extra="ignore")
