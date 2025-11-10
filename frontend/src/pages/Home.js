@@ -123,38 +123,54 @@ const Home = ({ user, onLogout, theme, onToggleTheme }) => {
       {/* Stats Bar */}
       <div className="max-w-4xl mx-auto px-6 py-6">
         <div className="grid grid-cols-3 gap-4">
-          <div className="bg-white rounded-2xl p-4 text-center premium-shadow border border-gray-100">
+          <div className="rounded-2xl p-4 text-center premium-shadow border" style={{ 
+            backgroundColor: 'var(--card-bg)', 
+            borderColor: 'var(--border-color)',
+            boxShadow: 'var(--shadow-md)'
+          }}>
             <div className="flex items-center justify-center gap-2 mb-1">
               <Trophy className="w-5 h-5 text-[#D4AF37]" />
-              <span className="text-gray-600 text-sm">Level</span>
+              <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>Level</span>
             </div>
-            <p className="text-2xl font-bold text-[#1A1A1A]" data-testid="user-level">{progress?.level || 1}</p>
+            <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }} data-testid="user-level">{progress?.level || 1}</p>
           </div>
           
-          <div className="bg-white rounded-2xl p-4 text-center premium-shadow border border-gray-100">
+          <div className="rounded-2xl p-4 text-center premium-shadow border" style={{ 
+            backgroundColor: 'var(--card-bg)', 
+            borderColor: 'var(--border-color)',
+            boxShadow: 'var(--shadow-md)'
+          }}>
             <div className="flex items-center justify-center gap-2 mb-1">
               <Zap className="w-5 h-5 text-[#D4AF37]" />
-              <span className="text-gray-600 text-sm">XP</span>
+              <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>XP</span>
             </div>
-            <p className="text-2xl font-bold text-[#1A1A1A]" data-testid="user-xp">{progress?.total_xp || 0}</p>
+            <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }} data-testid="user-xp">{progress?.total_xp || 0}</p>
           </div>
           
-          <div className="bg-white rounded-2xl p-4 text-center premium-shadow border border-gray-100">
+          <div className="rounded-2xl p-4 text-center premium-shadow border" style={{ 
+            backgroundColor: 'var(--card-bg)', 
+            borderColor: 'var(--border-color)',
+            boxShadow: 'var(--shadow-md)'
+          }}>
             <div className="flex items-center justify-center gap-2 mb-1">
               <Flame className="w-5 h-5 text-[#D4AF37]" />
-              <span className="text-gray-600 text-sm">Streak</span>
+              <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>Streak</span>
             </div>
-            <p className="text-2xl font-bold text-[#1A1A1A]" data-testid="user-streak">{progress?.streak || 0}</p>
+            <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }} data-testid="user-streak">{progress?.streak || 0}</p>
           </div>
         </div>
 
         {/* XP Progress Bar */}
-        <div className="mt-6 bg-white rounded-2xl p-4 premium-shadow border border-gray-100">
+        <div className="mt-6 rounded-2xl p-4 premium-shadow border" style={{ 
+          backgroundColor: 'var(--card-bg)', 
+          borderColor: 'var(--border-color)',
+          boxShadow: 'var(--shadow-md)'
+        }}>
           <div className="flex justify-between items-center mb-2">
-            <span className="text-gray-600 text-sm">Next Level</span>
-            <span className="text-[#1A1A1A] text-sm font-semibold">{Math.floor(xpProgress)}%</span>
+            <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>Next Level</span>
+            <span className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{Math.floor(xpProgress)}%</span>
           </div>
-          <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
+          <div className="w-full h-3 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--bg-secondary)' }}>
             <div
               className="h-full bg-gradient-to-r from-[#D4AF37] to-[#c19b2e] rounded-full transition-all duration-500"
               style={{ width: `${xpProgress}%` }}
