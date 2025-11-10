@@ -68,7 +68,7 @@ const Login = ({ onLogin, theme, onToggleTheme }) => {
         }}>
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <Label htmlFor="email" className="text-[#1A1A1A] mb-2 block font-medium">Email</Label>
+              <Label htmlFor="email" className="mb-2 block font-medium" style={{ color: 'var(--text-primary)' }}>Email</Label>
               <Input
                 id="email"
                 name="email"
@@ -77,13 +77,18 @@ const Login = ({ onLogin, theme, onToggleTheme }) => {
                 onChange={handleChange}
                 required
                 data-testid="login-email-input"
-                className="bg-gray-50 border-gray-200 text-[#1A1A1A] focus:border-[#D4AF37] focus:ring-[#D4AF37] rounded-xl h-12"
+                className="rounded-xl h-12"
+                style={{ 
+                  backgroundColor: 'var(--bg-secondary)',
+                  borderColor: 'var(--border-color)',
+                  color: 'var(--text-primary)'
+                }}
                 placeholder="your@email.com"
               />
             </div>
 
             <div>
-              <Label htmlFor="password" className="text-[#1A1A1A] mb-2 block font-medium">Password</Label>
+              <Label htmlFor="password" className="mb-2 block font-medium" style={{ color: 'var(--text-primary)' }}>Password</Label>
               <Input
                 id="password"
                 name="password"
@@ -92,7 +97,12 @@ const Login = ({ onLogin, theme, onToggleTheme }) => {
                 onChange={handleChange}
                 required
                 data-testid="login-password-input"
-                className="bg-gray-50 border-gray-200 text-[#1A1A1A] focus:border-[#D4AF37] focus:ring-[#D4AF37] rounded-xl h-12"
+                className="rounded-xl h-12"
+                style={{ 
+                  backgroundColor: 'var(--bg-secondary)',
+                  borderColor: 'var(--border-color)',
+                  color: 'var(--text-primary)'
+                }}
                 placeholder="••••••••"
               />
             </div>
