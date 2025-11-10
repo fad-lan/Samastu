@@ -7,8 +7,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { ArrowLeft, User, Trophy, Zap, Flame, Award, Edit2, LogOut } from 'lucide-react';
+import ThemeToggle from '@/components/ThemeToggle';
 
-const Profile = ({ user, onLogout }) => {
+const Profile = ({ user, onLogout, theme, onToggleTheme }) => {
   const navigate = useNavigate();
   const [progress, setProgress] = useState(null);
   const [achievements, setAchievements] = useState([]);
