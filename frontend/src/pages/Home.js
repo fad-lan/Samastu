@@ -99,17 +99,7 @@ const Home = ({ user, onLogout, theme, onToggleTheme }) => {
             <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Hey {user?.name}! 💪</p>
           </div>
           <div className="flex items-center gap-3">
-            <button
-              onClick={onToggleTheme}
-              data-testid="theme-toggle-button"
-              className="p-2 rounded-full transition-colors"
-              style={{ 
-                backgroundColor: 'var(--bg-secondary)',
-                color: 'var(--text-primary)'
-              }}
-            >
-              {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
-            </button>
+            <ThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
             <button
               onClick={() => navigate('/profile')}
               data-testid="profile-nav-button"
