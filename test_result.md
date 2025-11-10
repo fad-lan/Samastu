@@ -148,17 +148,18 @@ frontend:
 metadata:
   created_by: "main_agent"
   version: "1.0"
-  test_sequence: 2
+  test_sequence: 3
   run_ui: false
 
 test_plan:
-  current_focus: []
+  current_focus:
+    - "Auto AI Workout Generation in Schedule Creation"
+    - "Reset Schedule with AI Regeneration"
+    - "Remove AI Generate Button and Update Onboarding"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
 agent_communication:
   - agent: "main"
-    message: "Fixed the MongoDB ObjectId serialization issue in /api/workouts/generate-ai endpoint. The problem was that workout_plans list was being mutated when inserted to MongoDB (MongoDB adds _id field). Solution: Created a deep copy for database insertion (plans_for_db) while keeping the original workout_plans clean for the API response. Please test the endpoint with a valid user token."
-  - agent: "testing"
-    message: "✅ AI WORKOUT GENERATION FIX VERIFIED: Comprehensive testing completed successfully. The MongoDB ObjectId serialization issue has been completely resolved. The endpoint now: 1) Returns clean JSON without MongoDB _id fields, 2) Properly stores data in database with user metadata, 3) Generates 6-8 personalized workout plans using Gemini AI, 4) Handles user profile data correctly (experience_level, goal, equipment, available_days), 5) Response time is appropriate for AI processing (5-10 seconds). All test requirements met. The fix is working perfectly and ready for production use."
+    message: "Integrated AI workout generation into core schedule flow. Changes: 1) /schedule/generate now auto-generates AI plans if none exist, 2) /schedule/reset deletes both schedule and AI plans for regeneration, 3) Removed AI Generate button from Home.js, 4) Updated onboarding to show loading during AI generation, 5) Reset Plan button now indicates it will regenerate AI plans. Test full flow: onboarding → auto AI generation → schedule display → reset button → new AI plans."
