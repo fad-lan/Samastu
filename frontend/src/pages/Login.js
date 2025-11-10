@@ -118,7 +118,7 @@ const Login = ({ onLogin, theme, onToggleTheme }) => {
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-gray-600">
+            <p style={{ color: 'var(--text-secondary)' }}>
               Don't have an account?{' '}
               <button
                 onClick={() => navigate('/register')}
