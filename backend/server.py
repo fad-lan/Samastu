@@ -725,32 +725,30 @@ Return ONLY the JSON array, no other text."""
         # Parse JSON
         workout_plans = json.loads(response_text)
         
-        # Add IDs and store in database
+        # Add IDs to plans
         for plan in workout_plans:
             plan['id'] = str(uuid.uuid4())
+        
+        # Create a copy for database insertion (will have _id added by MongoDB)
+        plans_for_db = []
+        timestamp = datetime.now(timezone.utc).isoformat()
+        for plan in workout_plans:
+            db_plan = json.loads(json.dumps(plan))  # Deep copy
+            db_plan['user_id'] = current_user.id
+            db_plan['created_at'] = timestamp
+            plans_for_db.append(db_plan)
         
         # Delete old AI-generated plans for this user
         await db.ai_workout_plans.delete_many({"user_id": current_user.id})
         
-        # Store new plans
-        for plan in workout_plans:
-            plan['user_id'] = current_user.id
-            plan['created_at'] = datetime.now(timezone.utc).isoformat()
+        # Store new plans in database
+        if plans_for_db:
+            await db.ai_workout_plans.insert_many(plans_for_db)
         
-        if workout_plans:
-            await db.ai_workout_plans.insert_many(workout_plans)
-        
-        # Return clean data without MongoDB objects
-        clean_plans = []
-        for plan in workout_plans:
-            clean_plan = dict(plan)
-            clean_plan.pop('user_id', None)
-            clean_plan.pop('created_at', None)
-            clean_plans.append(clean_plan)
-        
+        # Return the original clean workout_plans (without user_id, created_at, or MongoDB _id)
         return {
             "success": True,
-            "plans": clean_plans,
+            "plans": workout_plans,
             "message": f"Generated {len(workout_plans)} personalized workouts using AI"
         }
         
