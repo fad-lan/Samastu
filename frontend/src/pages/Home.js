@@ -182,14 +182,19 @@ const Home = ({ user, onLogout, theme, onToggleTheme }) => {
       {/* Journey Path */}
       <div className="max-w-4xl mx-auto px-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-[#1A1A1A]">
+          <h2 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>
             {view === 'calendar' ? 'Your Workout Schedule' : 'Your Workout Journey'}
           </h2>
           <div className="flex gap-2">
             <Button
               onClick={handleResetSchedule}
               data-testid="reset-schedule-button"
-              className="bg-white hover:bg-gray-50 text-[#1A1A1A] border-2 border-gray-200"
+              className="border-2"
+              style={{ 
+                backgroundColor: 'var(--card-bg)',
+                color: 'var(--text-primary)',
+                borderColor: 'var(--border-color)'
+              }}
             >
               <RefreshCw className="w-4 h-4 mr-2" />
               Reset Plan
