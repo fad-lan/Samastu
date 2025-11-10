@@ -57,6 +57,20 @@ const Home = ({ user, onLogout, theme, onToggleTheme }) => {
     }
   };
 
+  const handleGenerateAIWorkouts = async () => {
+    try {
+      toast.info('Generating personalized workouts with AI...');
+      const response = await axios.post(`${API}/workouts/generate-ai`);
+      toast.success(response.data.message);
+      
+      // Refresh data to show new AI workouts
+      fetchData();
+    } catch (error) {
+      console.error('AI generation error:', error);
+      toast.error(error.response?.data?.detail || 'Failed to generate AI workouts');
+    }
+  };
+
   const handleWorkoutClick = (workout) => {
     if (workout.is_rest_day) {
       toast.info('This is a rest day. Take it easy! 😊');
