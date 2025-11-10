@@ -7,8 +7,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { ChevronRight } from 'lucide-react';
+import ThemeToggle from '@/components/ThemeToggle';
 
-const Onboarding = ({ user }) => {
+const Onboarding = ({ user, theme, onToggleTheme }) => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
