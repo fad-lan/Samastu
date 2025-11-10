@@ -162,11 +162,11 @@ const Landing = ({ theme, onToggleTheme }) => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 px-6 bg-gray-100">
+      <section className="py-20 px-6" style={{ backgroundColor: 'var(--bg-secondary)' }}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-bold text-[#060736] mb-4">Everything You Need</h2>
-            <p className="text-xl style={{ color: 'var(--text-secondary)' }}">Powerful features designed to keep you motivated</p>
+            <h2 className="text-4xl lg:text-5xl font-bold mb-4" style={{ color: 'var(--text-primary)' }}>Everything You Need</h2>
+            <p className="text-xl" style={{ color: 'var(--text-secondary)' }}>Powerful features designed to keep you motivated</p>
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -175,14 +175,15 @@ const Landing = ({ theme, onToggleTheme }) => {
               return (
                 <div
                   key={idx}
-                  className="rounded-2xl p-8 card-hover premium-shadow animate-fadeIn"
-                  style={{ animationDelay: `${idx * 0.1}s` }}
+                  className="rounded-2xl p-8 card-hover premium-shadow"
+                  style={{ backgroundColor: 'var(--card-bg)', boxShadow: 'var(--shadow-md)' }}
+                  data-style={{ animationDelay: `${idx * 0.1}s` }}
                 >
                   <div className="w-14 h-14 bg-[#D4AF37]/10 rounded-xl flex items-center justify-center mb-6">
                     <Icon className="w-7 h-7 text-[#D4AF37]" />
                   </div>
-                  <h3 className="text-xl font-bold text-[#060736] mb-3">{feature.title}</h3>
-                  <p className="style={{ color: 'var(--text-secondary)' }} leading-relaxed">{feature.description}</p>
+                  <h3 className="text-xl font-bold mb-3" style={{ color: 'var(--text-primary)' }}>{feature.title}</h3>
+                  <p className="leading-relaxed" style={{ color: 'var(--text-secondary)' }}>{feature.description}</p>
                 </div>
               );
             })}
