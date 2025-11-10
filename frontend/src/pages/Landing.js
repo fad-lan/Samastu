@@ -115,7 +115,7 @@ const Landing = ({ theme, onToggleTheme }) => {
                 <Button
                   onClick={() => navigate('/register')}
                   data-testid="hero-view-demo-button"
-                  className="bg-white hover:bg-gray-50 text-[#060736] border-2 border-gray-200 h-14 px-8 text-lg rounded-xl"
+                  className=" hover:style={{ backgroundColor: 'var(--bg-secondary)' }} text-[#060736] border-2 border-gray-200 h-14 px-8 text-lg rounded-xl"
                 >
                   View Demo
                 </Button>
@@ -124,7 +124,7 @@ const Landing = ({ theme, onToggleTheme }) => {
             
             <div className="relative animate-slideUp">
               <div className="bg-gradient-to-br from-[#D4AF37]/10 to-[#c19b2e]/5 rounded-3xl p-8 premium-shadow">
-                <div className="bg-white rounded-2xl p-6 premium-shadow">
+                <div className="rounded-2xl p-6 premium-shadow">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-12 h-12 bg-[#D4AF37] rounded-full flex items-center justify-center">
                       <Dumbbell className="w-6 h-6 text-white" />
@@ -135,15 +135,15 @@ const Landing = ({ theme, onToggleTheme }) => {
                     </div>
                   </div>
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                    <div className="flex items-center justify-between p-3 style={{ backgroundColor: 'var(--bg-secondary)' }} rounded-xl">
                       <span className="text-sm text-[#060736]">Push-ups</span>
                       <span className="text-xs text-gray-500">3 × 10</span>
                     </div>
-                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                    <div className="flex items-center justify-between p-3 style={{ backgroundColor: 'var(--bg-secondary)' }} rounded-xl">
                       <span className="text-sm text-[#060736]">Squats</span>
                       <span className="text-xs text-gray-500">3 × 15</span>
                     </div>
-                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                    <div className="flex items-center justify-between p-3 style={{ backgroundColor: 'var(--bg-secondary)' }} rounded-xl">
                       <span className="text-sm text-[#060736]">Plank</span>
                       <span className="text-xs text-gray-500">2 × 30s</span>
                     </div>
@@ -166,7 +166,7 @@ const Landing = ({ theme, onToggleTheme }) => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl lg:text-5xl font-bold text-[#060736] mb-4">Everything You Need</h2>
-            <p className="text-xl text-gray-600">Powerful features designed to keep you motivated</p>
+            <p className="text-xl style={{ color: 'var(--text-secondary)' }}">Powerful features designed to keep you motivated</p>
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -175,14 +175,14 @@ const Landing = ({ theme, onToggleTheme }) => {
               return (
                 <div
                   key={idx}
-                  className="bg-white rounded-2xl p-8 card-hover premium-shadow animate-fadeIn"
+                  className="rounded-2xl p-8 card-hover premium-shadow animate-fadeIn"
                   style={{ animationDelay: `${idx * 0.1}s` }}
                 >
                   <div className="w-14 h-14 bg-[#D4AF37]/10 rounded-xl flex items-center justify-center mb-6">
                     <Icon className="w-7 h-7 text-[#D4AF37]" />
                   </div>
                   <h3 className="text-xl font-bold text-[#060736] mb-3">{feature.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                  <p className="style={{ color: 'var(--text-secondary)' }} leading-relaxed">{feature.description}</p>
                 </div>
               );
             })}
@@ -216,14 +216,14 @@ const Landing = ({ theme, onToggleTheme }) => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl lg:text-5xl font-bold text-[#060736] mb-4">What People Say</h2>
-            <p className="text-xl text-gray-600">Join our growing community of fitness enthusiasts</p>
+            <p className="text-xl style={{ color: 'var(--text-secondary)' }}">Join our growing community of fitness enthusiasts</p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, idx) => (
               <div
                 key={idx}
-                className="bg-white rounded-2xl p-8 premium-shadow animate-slideUp"
+                className="rounded-2xl p-8 premium-shadow animate-slideUp"
                 style={{ animationDelay: `${idx * 0.1}s` }}
               >
                 <div className="flex items-center gap-4 mb-6">
@@ -239,7 +239,7 @@ const Landing = ({ theme, onToggleTheme }) => {
                     </div>
                   </div>
                 </div>
-                <p className="text-gray-600 italic leading-relaxed">"{testimonial.quote}"</p>
+                <p className="style={{ color: 'var(--text-secondary)' }} italic leading-relaxed">"{testimonial.quote}"</p>
               </div>
             ))}
           </div>
@@ -252,7 +252,7 @@ const Landing = ({ theme, onToggleTheme }) => {
           <h2 className="text-4xl lg:text-5xl font-bold text-[#060736] mb-6">
             Start Your Fitness Journey Today
           </h2>
-          <p className="text-xl text-gray-600 mb-8">
+          <p className="text-xl style={{ color: 'var(--text-secondary)' }} mb-8">
             Join thousands of users making workouts fun and consistent with Samastu.
           </p>
           <Button

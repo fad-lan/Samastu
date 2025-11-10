@@ -87,7 +87,7 @@ const Home = ({ user, onLogout, theme, onToggleTheme }) => {
   return (
     <div className="min-h-screen pb-20" style={{ backgroundColor: 'var(--bg-primary)' }}>
       {/* Header */}
-      <div className="bg-white border-b border-gray-100 p-6 sticky top-0 z-10 premium-shadow" style={{ 
+      <div className=" border-b style={{ borderColor: 'var(--border-color)' }} p-6 sticky top-0 z-10 premium-shadow" style={{ 
         backgroundColor: 'var(--card-bg)', 
         borderColor: 'var(--border-color)',
         boxShadow: 'var(--shadow-md)'
@@ -214,10 +214,10 @@ const Home = ({ user, onLogout, theme, onToggleTheme }) => {
           schedule.length > 0 ? (
             <WorkoutCalendar schedule={schedule} />
           ) : (
-            <div className="bg-white rounded-2xl p-12 text-center premium-shadow border border-gray-100">
+            <div className="rounded-2xl p-12 text-center premium-shadow border style={{ borderColor: 'var(--border-color)' }}">
               <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-[#1A1A1A] mb-2">No Schedule Yet</h3>
-              <p className="text-gray-600 mb-6">Complete your profile setup to generate a personalized workout schedule.</p>
+              <h3 className="text-xl font-bold style={{ color: 'var(--text-primary)' }} mb-2">No Schedule Yet</h3>
+              <p className="style={{ color: 'var(--text-secondary)' }} mb-6">Complete your profile setup to generate a personalized workout schedule.</p>
               <Button
                 onClick={() => navigate('/profile')}
                 className="bg-[#D4AF37] hover:bg-[#c19b2e] text-white"
@@ -269,22 +269,22 @@ const Home = ({ user, onLogout, theme, onToggleTheme }) => {
                 <div
                   onClick={() => handleWorkoutClick(workout)}
                   data-testid={`workout-card-${workout.id}`}
-                  className={`ml-6 flex-1 bg-white rounded-2xl p-5 transition-all premium-shadow border ${
+                  className={`ml-6 flex-1 rounded-2xl p-5 transition-all premium-shadow border ${
                     isRestDay
-                      ? 'cursor-default border-gray-100 bg-gray-50'
+                      ? 'cursor-default style={{ borderColor: 'var(--border-color)' }} style={{ backgroundColor: 'var(--bg-secondary)' }}'
                       : isLocked
-                      ? 'opacity-60 cursor-not-allowed border-gray-100'
+                      ? 'opacity-60 cursor-not-allowed style={{ borderColor: 'var(--border-color)' }}'
                       : workout.is_next || workout.is_completed
-                      ? 'hover:bg-gray-50 card-hover border-gray-100 cursor-pointer'
-                      : 'opacity-50 cursor-not-allowed border-gray-100'
+                      ? 'hover:style={{ backgroundColor: 'var(--bg-secondary)' }} card-hover style={{ borderColor: 'var(--border-color)' }} cursor-pointer'
+                      : 'opacity-50 cursor-not-allowed style={{ borderColor: 'var(--border-color)' }}'
                   } ${
                     workout.is_next && !isRestDay && !isLocked ? 'gold-border' : ''
                   }`}
                 >
                   <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-xl font-bold text-[#1A1A1A]">{workout.name}</h3>
+                    <h3 className="text-xl font-bold style={{ color: 'var(--text-primary)' }}">{workout.name}</h3>
                     <span className={`text-xs px-3 py-1 rounded-full font-semibold ${
-                      isRestDay ? 'bg-gray-200 text-gray-600' : 'bg-[#D4AF37]/10 text-[#D4AF37]'
+                      isRestDay ? 'bg-gray-200 style={{ color: 'var(--text-secondary)' }}' : 'bg-[#D4AF37]/10 text-[#D4AF37]'
                     }`}>
                       {workout.difficulty}
                     </span>
@@ -296,16 +296,16 @@ const Home = ({ user, onLogout, theme, onToggleTheme }) => {
                     </p>
                   )}
                   
-                  <p className="text-gray-600 text-sm mb-3">{workout.target_muscles}</p>
+                  <p className="style={{ color: 'var(--text-secondary)' }} text-sm mb-3">{workout.target_muscles}</p>
                   
                   {!isRestDay && (
                     <div className="flex items-center gap-4 text-sm">
                       <div className="flex items-center gap-1">
                         <Zap className="w-4 h-4 text-[#D4AF37]" />
-                        <span className="text-gray-600">+{workout.xp_reward} XP</span>
+                        <span className="style={{ color: 'var(--text-secondary)' }}">+{workout.xp_reward} XP</span>
                       </div>
-                      <div className="text-gray-600">• {workout.duration_minutes} min</div>
-                      <div className="text-gray-600">• {workout.exercises?.length || 0} exercises</div>
+                      <div className="style={{ color: 'var(--text-secondary)' }}">• {workout.duration_minutes} min</div>
+                      <div className="style={{ color: 'var(--text-secondary)' }}">• {workout.exercises?.length || 0} exercises</div>
                     </div>
                   )}
                   
