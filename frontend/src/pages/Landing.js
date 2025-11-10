@@ -56,26 +56,35 @@ const Landing = ({ theme, onToggleTheme }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)' }}>
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-gray-100">
+      <nav className="fixed top-0 w-full backdrop-blur-md z-50 border-b" style={{ 
+        backgroundColor: 'var(--card-bg)',
+        borderColor: 'var(--border-color)'
+      }}>
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Dumbbell className="w-8 h-8 text-[#D4AF37]" />
-            <span className="text-2xl font-bold text-[#060736]">Samastu</span>
+            <span className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>Samastu</span>
           </div>
           <div className="flex items-center gap-4">
+            <ThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
             <Button
               onClick={() => navigate('/login')}
               data-testid="nav-login-button"
-              className="bg-white text-[#060736] hover:bg-gray-50 border-2 border-gray-200"
+              className="border-2"
+              style={{ 
+                backgroundColor: 'var(--card-bg)',
+                color: 'var(--text-primary)',
+                borderColor: 'var(--border-color)'
+              }}
             >
               Log In
             </Button>
             <Button
               onClick={() => navigate('/register')}
               data-testid="nav-signup-button"
-              className="bg-[#060736] hover:bg-[#c19b2e] text-white font-semibold"
+              className="bg-[#D4AF37] hover:bg-[#c19b2e] text-white font-semibold"
             >
               Get Started
             </Button>
