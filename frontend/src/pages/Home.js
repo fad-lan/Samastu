@@ -192,6 +192,14 @@ const Home = ({ user, onLogout, theme, onToggleTheme }) => {
           </h2>
           <div className="flex gap-2">
             <Button
+              onClick={handleGenerateAIWorkouts}
+              data-testid="generate-ai-button"
+              className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold"
+            >
+              <Zap className="w-4 h-4 mr-2" />
+              AI Generate
+            </Button>
+            <Button
               onClick={handleResetSchedule}
               data-testid="reset-schedule-button"
               className="border-2"
