@@ -100,7 +100,7 @@ function App() {
               isAuthenticated ? (
                 <Home user={user} onLogout={handleLogout} theme={theme} onToggleTheme={toggleTheme} />
               ) : (
-                <Landing />
+                <Landing theme={theme} onToggleTheme={toggleTheme} />
               )
             }
           />
@@ -110,7 +110,7 @@ function App() {
               isAuthenticated ? (
                 <Navigate to="/home" />
               ) : (
-                <Login onLogin={handleLogin} />
+                <Login onLogin={handleLogin} theme={theme} onToggleTheme={toggleTheme} />
               )
             }
           />
@@ -120,7 +120,7 @@ function App() {
               isAuthenticated ? (
                 <Navigate to="/onboarding" />
               ) : (
-                <Register onRegister={handleLogin} />
+                <Register onRegister={handleLogin} theme={theme} onToggleTheme={toggleTheme} />
               )
             }
           />
@@ -128,7 +128,7 @@ function App() {
             path="/onboarding"
             element={
               isAuthenticated ? (
-                <Onboarding user={user} />
+                <Onboarding user={user} theme={theme} onToggleTheme={toggleTheme} />
               ) : (
                 <Navigate to="/login" />
               )
@@ -148,7 +148,7 @@ function App() {
             path="/workout/:id"
             element={
               isAuthenticated ? (
-                <WorkoutPage user={user} />
+                <WorkoutPage user={user} theme={theme} onToggleTheme={toggleTheme} />
               ) : (
                 <Navigate to="/login" />
               )
@@ -158,7 +158,7 @@ function App() {
             path="/workout/complete"
             element={
               isAuthenticated ? (
-                <CompletionPage user={user} />
+                <CompletionPage user={user} theme={theme} onToggleTheme={toggleTheme} />
               ) : (
                 <Navigate to="/login" />
               )
@@ -168,7 +168,7 @@ function App() {
             path="/profile"
             element={
               isAuthenticated ? (
-                <Profile user={user} onLogout={handleLogout} />
+                <Profile user={user} onLogout={handleLogout} theme={theme} onToggleTheme={toggleTheme} />
               ) : (
                 <Navigate to="/login" />
               )
