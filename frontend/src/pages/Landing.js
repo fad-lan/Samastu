@@ -97,11 +97,11 @@ const Landing = ({ theme, onToggleTheme }) => {
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="animate-fadeIn">
-              <h1 className="text-5xl lg:text-7xl font-bold text-[#060736] mb-6 leading-tight">
+              <h1 className="text-5xl lg:text-7xl font-bold mb-6 leading-tight" style={{ color: 'var(--text-primary)' }}>
                 Make Workouts
                 <span className="block gradient-text">Fun Again.</span>
               </h1>
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+              <p className="text-xl mb-8 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
                 Samastu helps you build muscle, stay consistent, and enjoy the journey with gamified motivation.
               </p>
               <div className="flex flex-wrap gap-4">
