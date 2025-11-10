@@ -169,10 +169,14 @@ const Onboarding = ({ user, theme, onToggleTheme }) => {
               />
             ))}
           </div>
-          <p className="text-gray-600 text-center">Step {step} of 6</p>
+          <p className="text-center" style={{ color: 'var(--text-secondary)' }}>Step {step} of 6</p>
         </div>
 
-        <div className="bg-white rounded-3xl p-8 premium-shadow border border-gray-100">
+        <div className="rounded-3xl p-8 premium-shadow border" style={{ 
+          backgroundColor: 'var(--card-bg)',
+          borderColor: 'var(--border-color)',
+          boxShadow: 'var(--shadow-md)'
+        }}>
           {step === 1 && (
             <div className="animate-slideUp">
               <h2 className="text-3xl font-bold text-[#1A1A1A] mb-2">Welcome, {user?.name}!</h2>
