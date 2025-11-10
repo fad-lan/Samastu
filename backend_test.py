@@ -439,6 +439,13 @@ class SamastuAPITester:
         self.test_update_profile()
         self.test_get_profile()
         
+        # Test AI workout generation (main focus)
+        print("\n" + "🎯" * 25)
+        print("🎯 MAIN FOCUS: AI WORKOUT GENERATION TESTS")
+        print("🎯" * 25)
+        self.test_ai_workout_generation()
+        self.test_get_ai_plans()
+        
         # Print summary
         print("\n" + "=" * 50)
         print(f"📊 Test Summary: {self.tests_passed}/{self.tests_run} tests passed")
