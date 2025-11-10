@@ -152,8 +152,12 @@ const Onboarding = ({ user, theme, onToggleTheme }) => {
   };
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ backgroundColor: 'var(--bg-primary)' }}>
       <div className="w-full max-w-lg animate-fadeIn">
+        <div className="flex justify-end mb-4">
+          <ThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
+        </div>
+        
         <div className="mb-8">
           <div className="flex justify-between items-center mb-4">
             {[1, 2, 3, 4, 5, 6].map((s) => (
