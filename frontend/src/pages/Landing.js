@@ -124,28 +124,28 @@ const Landing = ({ theme, onToggleTheme }) => {
             
             <div className="relative animate-slideUp">
               <div className="bg-gradient-to-br from-[#D4AF37]/10 to-[#c19b2e]/5 rounded-3xl p-8 premium-shadow">
-                <div className="rounded-2xl p-6 premium-shadow">
+                <div className="rounded-2xl p-6 premium-shadow" style={{ backgroundColor: 'var(--card-bg)' }}>
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-12 h-12 bg-[#D4AF37] rounded-full flex items-center justify-center">
                       <Dumbbell className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Today's Workout</p>
-                      <p className="font-bold text-[#060736]">Full Body Starter</p>
+                      <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Today's Workout</p>
+                      <p className="font-bold" style={{ color: 'var(--text-primary)' }}>Full Body Starter</p>
                     </div>
                   </div>
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between p-3 style={{ backgroundColor: 'var(--bg-secondary)' }} rounded-xl">
-                      <span className="text-sm text-[#060736]">Push-ups</span>
-                      <span className="text-xs text-gray-500">3 × 10</span>
+                    <div className="flex items-center justify-between p-3 rounded-xl" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+                      <span className="text-sm" style={{ color: 'var(--text-primary)' }}>Push-ups</span>
+                      <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>3 × 10</span>
                     </div>
-                    <div className="flex items-center justify-between p-3 style={{ backgroundColor: 'var(--bg-secondary)' }} rounded-xl">
-                      <span className="text-sm text-[#060736]">Squats</span>
-                      <span className="text-xs text-gray-500">3 × 15</span>
+                    <div className="flex items-center justify-between p-3 rounded-xl" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+                      <span className="text-sm" style={{ color: 'var(--text-primary)' }}>Squats</span>
+                      <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>3 × 15</span>
                     </div>
-                    <div className="flex items-center justify-between p-3 style={{ backgroundColor: 'var(--bg-secondary)' }} rounded-xl">
-                      <span className="text-sm text-[#060736]">Plank</span>
-                      <span className="text-xs text-gray-500">2 × 30s</span>
+                    <div className="flex items-center justify-between p-3 rounded-xl" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+                      <span className="text-sm" style={{ color: 'var(--text-primary)' }}>Plank</span>
+                      <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>2 × 30s</span>
                     </div>
                   </div>
                   <Button               
