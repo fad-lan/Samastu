@@ -138,7 +138,7 @@ function App() {
             path="/home"
             element={
               isAuthenticated ? (
-                <Home user={user} onLogout={handleLogout} />
+                <Home user={user} onLogout={handleLogout} theme={theme} onToggleTheme={toggleTheme} />
               ) : (
                 <Navigate to="/login" />
               )
