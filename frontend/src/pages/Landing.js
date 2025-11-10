@@ -2,8 +2,9 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Dumbbell, Zap, Target, Trophy, TrendingUp, Users, Star, CheckCircle } from 'lucide-react';
+import ThemeToggle from '@/components/ThemeToggle';
 
-const Landing = () => {
+const Landing = ({ theme, onToggleTheme }) => {
   const navigate = useNavigate();
 
   const features = [
