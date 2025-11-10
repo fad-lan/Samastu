@@ -638,6 +638,129 @@ async def get_achievements(current_user: User = Depends(get_current_user)):
         "total_workouts": total_workouts
     }
 
+# ========== AI WORKOUT GENERATION ==========
+
+@api_router.post("/workouts/generate-ai")
+async def generate_ai_workout(current_user: User = Depends(get_current_user)):
+    """Generate personalized workout plans using Gemini AI"""
+    
+    # Build user profile context
+    user_context = f"""
+User Profile:
+- Experience Level: {current_user.experience_level or 'beginner'}
+- Goal: {current_user.goal or 'general fitness'}
+- Equipment Available: {', '.join(current_user.equipment) if current_user.equipment else 'none'}
+- Available Days: {len(current_user.available_days) if current_user.available_days else 0} days per week
+"""
+    
+    if current_user.available_days:
+        user_context += "\nTime per day:\n"
+        for day_info in current_user.available_days:
+            user_context += f"- {day_info['day']}: {day_info['minutes']} minutes\n"
+    
+    # Create prompt for Gemini
+    prompt = f"""{user_context}
+
+Based on this user profile, generate a personalized 4-week workout plan. Create workouts that:
+1. Match the user's experience level
+2. Align with their fitness goals
+3. Use only available equipment
+4. Fit within their time constraints
+5. Include rest days appropriately (every 2-3 workout days)
+
+Return ONLY a valid JSON array with this exact structure:
+[
+  {{
+    "name": "Workout Name",
+    "difficulty": "Beginner|Intermediate|Advanced",
+    "target_muscles": "Muscle groups",
+    "duration_minutes": 20,
+    "xp_reward": 50,
+    "exercises": [
+      {{
+        "name": "Exercise Name",
+        "reps": "10 reps",
+        "sets": 3,
+        "rest_seconds": 45,
+        "icon": "activity"
+      }}
+    ]
+  }}
+]
+
+Generate 6-8 varied workouts. Each workout should:
+- Have 4-6 exercises
+- Be realistically completable in the time available
+- Include proper warm-up/cool-down exercises
+- Use icons from: activity, zap, trending-up, minus, circle, repeat, arrow-up, triangle, diamond, chevron-down, hand, move, chevrons-up, arrow-up-circle, wind, layers, rotate-cw, chevron-up, minimize-2, user, disc
+
+Return ONLY the JSON array, no other text."""
+
+    try:
+        # Initialize Gemini chat
+        gemini_key = os.environ.get('GEMINI_API_KEY')
+        if not gemini_key:
+            raise HTTPException(status_code=500, detail="Gemini API key not configured")
+        
+        chat = LlmChat(
+            api_key=gemini_key,
+            session_id=f"workout_gen_{current_user.id}",
+            system_message="You are a professional fitness trainer and workout planner. Generate realistic, safe, and effective workout plans in valid JSON format."
+        ).with_model("gemini", "gemini-2.0-flash")
+        
+        user_message = UserMessage(text=prompt)
+        response = await chat.send_message(user_message)
+        
+        # Parse the response
+        response_text = response.strip()
+        
+        # Remove markdown code blocks if present
+        if response_text.startswith('```'):
+            response_text = response_text.split('```')[1]
+            if response_text.startswith('json'):
+                response_text = response_text[4:]
+            response_text = response_text.strip()
+        
+        # Parse JSON
+        workout_plans = json.loads(response_text)
+        
+        # Add IDs and store in database
+        for plan in workout_plans:
+            plan['id'] = str(uuid.uuid4())
+        
+        # Delete old AI-generated plans for this user
+        await db.ai_workout_plans.delete_many({"user_id": current_user.id})
+        
+        # Store new plans
+        for plan in workout_plans:
+            plan['user_id'] = current_user.id
+            plan['created_at'] = datetime.now(timezone.utc).isoformat()
+        
+        await db.ai_workout_plans.insert_many(workout_plans)
+        
+        return {
+            "success": True,
+            "plans": workout_plans,
+            "message": f"Generated {len(workout_plans)} personalized workouts using AI"
+        }
+        
+    except json.JSONDecodeError as e:
+        logger.error(f"Failed to parse Gemini response: {e}")
+        logger.error(f"Response was: {response}")
+        raise HTTPException(status_code=500, detail="Failed to parse AI response. Please try again.")
+    except Exception as e:
+        logger.error(f"AI workout generation error: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate AI workouts: {str(e)}")
+
+@api_router.get("/workouts/ai-plans")
+async def get_ai_plans(current_user: User = Depends(get_current_user)):
+    """Get user's AI-generated workout plans"""
+    plans = await db.ai_workout_plans.find(
+        {"user_id": current_user.id},
+        {"_id": 0}
+    ).to_list(100)
+    return plans
+
 # ========== SCHEDULE ROUTES ==========
 
 @api_router.post("/schedule/generate")
