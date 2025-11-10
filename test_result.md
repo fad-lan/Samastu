@@ -107,11 +107,11 @@ user_problem_statement: "Make ALL workout plan generation use Gemini AI automati
 backend:
   - task: "Auto AI Workout Generation in Schedule Creation"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "testing"
@@ -119,18 +119,24 @@ backend:
       - working: "NA"
         agent: "main"
         comment: "Modified /schedule/generate endpoint to automatically generate AI workout plans if none exist. When user completes onboarding or resets schedule, AI plans are auto-generated using Gemini. Plans are stored once and reused. Endpoint now checks for existing ai_workout_plans, generates if missing, then creates schedule from AI plans."
+      - working: true
+        agent: "testing"
+        comment: "COMPREHENSIVE TESTING COMPLETED: Part 1 (New User Onboarding) - ✅ Created test user with complete profile (experience_level, goal, equipment, available_days). ✅ Called POST /schedule/generate and verified success with scheduled_count=16. ✅ Verified AI plans were auto-generated in ai_workout_plans collection (7 plans). ✅ Verified scheduled workouts created in scheduled_workouts collection. ✅ Verified scheduled workouts reference AI-generated plan IDs. Backend logs confirm: 'No AI plans found for user, generating now...' and 'Successfully generated 7 AI workout plans'. AI generation takes 5-10 seconds as expected."
 
   - task: "Reset Schedule with AI Regeneration"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Updated /schedule/reset endpoint to delete both scheduled_workouts AND ai_workout_plans. Next schedule generation will create fresh AI plans. Returns count of deleted items."
+      - working: true
+        agent: "testing"
+        comment: "COMPREHENSIVE TESTING COMPLETED: Part 2 (Schedule Reuse) - ✅ Called POST /schedule/generate again for same user and verified AI plans were reused (same IDs and timestamps). ✅ New schedule created but AI plans NOT regenerated as expected. Part 3 (Reset and Regenerate) - ✅ Called DELETE /schedule/reset and verified response indicates both schedule (16 items) and AI plans (7 items) were deleted. ✅ Called POST /schedule/generate again and verified NEW AI plans generated with different IDs than before. ✅ Verified new schedule created with new AI plan IDs. All 31 backend tests passed including comprehensive integrated AI schedule flow testing."
 
 frontend:
   - task: "Remove AI Generate Button and Update Onboarding"
