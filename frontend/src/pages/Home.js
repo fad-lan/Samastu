@@ -278,21 +278,24 @@ const Home = ({ user, onLogout, theme, onToggleTheme }) => {
                   }}
                 >
                   <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-xl font-bold style={{ color: 'var(--text-primary)' }}">{workout.name}</h3>
+                    <h3 className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>{workout.name}</h3>
                     <span className={`text-xs px-3 py-1 rounded-full font-semibold ${
-                      isRestDay ? 'bg-gray-200 style={{ color: 'var(--text-secondary)' }}' : 'bg-[#D4AF37]/10 text-[#D4AF37]'
-                    }`}>
+                      isRestDay ? 'bg-gray-200' : 'bg-[#D4AF37]/10 text-[#D4AF37]'
+                    }`} style={{ 
+                      backgroundColor: isRestDay ? 'var(--bg-tertiary)' : undefined,
+                      color: isRestDay ? 'var(--text-secondary)' : '#D4AF37'
+                    }}>
                       {workout.difficulty}
                     </span>
                   </div>
                   
                   {workout.scheduled_date && (
-                    <p className="text-xs text-gray-500 mb-2">
+                    <p className="text-xs mb-2" style={{ color: 'var(--text-tertiary)' }}>
                       Scheduled: {new Date(workout.scheduled_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                     </p>
                   )}
                   
-                  <p className="style={{ color: 'var(--text-secondary)' }} text-sm mb-3">{workout.target_muscles}</p>
+                  <p className="text-sm mb-3" style={{ color: 'var(--text-secondary)' }}>{workout.target_muscles}</p>
                   
                   {!isRestDay && (
                     <div className="flex items-center gap-4 text-sm">
