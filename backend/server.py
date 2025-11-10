@@ -773,28 +773,130 @@ async def get_ai_plans(current_user: User = Depends(get_current_user)):
 
 @api_router.post("/schedule/generate")
 async def generate_schedule(current_user: User = Depends(get_current_user)):
-    """Generate a personalized workout schedule based on user's available days"""
+    """Generate a personalized workout schedule based on user's available days using AI-generated plans"""
     if not current_user.available_days or len(current_user.available_days) == 0:
         raise HTTPException(status_code=400, detail="No available days set. Please update your profile.")
     
     # Delete existing schedule
     await db.scheduled_workouts.delete_many({"user_id": current_user.id})
     
-    # Get workout plans filtered by experience level
-    all_plans = await db.workout_plans.find({}, {"_id": 0}).to_list(100)
+    # Check if user has AI-generated plans, if not generate them
+    ai_plans = await db.ai_workout_plans.find({"user_id": current_user.id}, {"_id": 0}).to_list(100)
     
-    # Filter plans by difficulty
-    experience_map = {
-        "beginner": "Beginner",
-        "intermediate": "Intermediate",
-        "advanced": "Advanced"
-    }
+    if not ai_plans:
+        # Auto-generate AI workout plans
+        logger.info(f"No AI plans found for user {current_user.id}, generating now...")
+        
+        # Build user profile context
+        user_context = f"""
+User Profile:
+- Experience Level: {current_user.experience_level or 'beginner'}
+- Goal: {current_user.goal or 'general fitness'}
+- Equipment Available: {', '.join(current_user.equipment) if current_user.equipment else 'none'}
+- Available Days: {len(current_user.available_days) if current_user.available_days else 0} days per week
+"""
+        
+        if current_user.available_days:
+            user_context += "\nTime per day:\n"
+            for day_info in current_user.available_days:
+                user_context += f"- {day_info['day']}: {day_info['minutes']} minutes\n"
+        
+        # Create prompt for Gemini
+        prompt = f"""{user_context}
+
+Based on this user profile, generate a personalized 4-week workout plan. Create workouts that:
+1. Match the user's experience level
+2. Align with their fitness goals
+3. Use only available equipment
+4. Fit within their time constraints
+5. Include rest days appropriately (every 2-3 workout days)
+
+Return ONLY a valid JSON array with this exact structure:
+[
+  {{
+    "name": "Workout Name",
+    "difficulty": "Beginner|Intermediate|Advanced",
+    "target_muscles": "Muscle groups",
+    "duration_minutes": 20,
+    "xp_reward": 50,
+    "exercises": [
+      {{
+        "name": "Exercise Name",
+        "reps": "10 reps",
+        "sets": 3,
+        "rest_seconds": 45,
+        "icon": "activity"
+      }}
+    ]
+  }}
+]
+
+Generate 6-8 varied workouts. Each workout should:
+- Have 4-6 exercises
+- Be realistically completable in the time available
+- Include proper warm-up/cool-down exercises
+- Use icons from: activity, zap, trending-up, minus, circle, repeat, arrow-up, triangle, diamond, chevron-down, hand, move, chevrons-up, arrow-up-circle, wind, layers, rotate-cw, chevron-up, minimize-2, user, disc
+
+Return ONLY the JSON array, no other text."""
+
+        try:
+            # Initialize Gemini chat
+            gemini_key = os.environ.get('GEMINI_API_KEY')
+            if not gemini_key:
+                raise HTTPException(status_code=500, detail="Gemini API key not configured")
+            
+            chat = LlmChat(
+                api_key=gemini_key,
+                session_id=f"workout_gen_{current_user.id}",
+                system_message="You are a professional fitness trainer and workout planner. Generate realistic, safe, and effective workout plans in valid JSON format."
+            ).with_model("gemini", "gemini-2.0-flash")
+            
+            user_message = UserMessage(text=prompt)
+            response_obj = await chat.send_message(user_message)
+            
+            # Get the text response
+            response_text = response_obj.text if hasattr(response_obj, 'text') else str(response_obj)
+            response_text = response_text.strip()
+            
+            # Remove markdown code blocks if present
+            if response_text.startswith('```'):
+                response_text = response_text.split('```')[1]
+                if response_text.startswith('json'):
+                    response_text = response_text[4:]
+                response_text = response_text.strip()
+            
+            # Parse JSON
+            workout_plans = json.loads(response_text)
+            
+            # Add IDs to plans
+            for plan in workout_plans:
+                plan['id'] = str(uuid.uuid4())
+            
+            # Create a copy for database insertion
+            plans_for_db = []
+            timestamp = datetime.now(timezone.utc).isoformat()
+            for plan in workout_plans:
+                db_plan = json.loads(json.dumps(plan))  # Deep copy
+                db_plan['user_id'] = current_user.id
+                db_plan['created_at'] = timestamp
+                plans_for_db.append(db_plan)
+            
+            # Store new plans in database
+            if plans_for_db:
+                await db.ai_workout_plans.insert_many(plans_for_db)
+            
+            ai_plans = workout_plans
+            logger.info(f"Successfully generated {len(ai_plans)} AI workout plans for user {current_user.id}")
+            
+        except json.JSONDecodeError as e:
+            logger.error(f"Failed to parse Gemini response: {e}")
+            raise HTTPException(status_code=500, detail="Failed to parse AI response. Please try again.")
+        except Exception as e:
+            logger.error(f"AI workout generation error: {e}")
+            raise HTTPException(status_code=500, detail=f"Failed to generate AI workouts: {str(e)}")
     
-    target_difficulty = experience_map.get(current_user.experience_level, "Beginner")
-    suitable_plans = [p for p in all_plans if p['difficulty'] == target_difficulty or p['difficulty'] == 'Beginner']
-    
-    if not suitable_plans:
-        suitable_plans = all_plans  # Fallback to all plans
+    # Use AI-generated plans for scheduling
+    suitable_plans = ai_plans
     
     # Create a map of day to minutes
     day_minutes_map = {item['day']: item['minutes'] for item in current_user.available_days}
