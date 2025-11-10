@@ -101,3 +101,51 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: "Fix Gemini AI workout generation endpoint to properly handle JSON response and prevent MongoDB ObjectId serialization errors. The endpoint should request a structured JSON format from Gemini and parse/store it correctly."
+
+backend:
+  - task: "AI Workout Generation with Gemini"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "Endpoint failing with 500 error - ObjectId serialization issue"
+      - working: "NA"
+        agent: "main"
+        comment: "Fixed serialization by creating deep copy of workout plans before MongoDB insertion. Original clean data is returned without MongoDB ObjectId. Changes made in /api/workouts/generate-ai endpoint (lines 725-755)"
+
+frontend:
+  - task: "AI Workout Generation UI Button"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/Home.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Frontend button already implemented, waiting for backend fix"
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 1
+  run_ui: false
+
+test_plan:
+  current_focus:
+    - "AI Workout Generation with Gemini"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "main"
+    message: "Fixed the MongoDB ObjectId serialization issue in /api/workouts/generate-ai endpoint. The problem was that workout_plans list was being mutated when inserted to MongoDB (MongoDB adds _id field). Solution: Created a deep copy for database insertion (plans_for_db) while keeping the original workout_plans clean for the API response. Please test the endpoint with a valid user token."
