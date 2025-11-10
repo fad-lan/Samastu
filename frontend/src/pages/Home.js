@@ -39,14 +39,15 @@ const Home = ({ user, onLogout, theme, onToggleTheme }) => {
   };
 
   const handleResetSchedule = async () => {
-    if (!window.confirm('Are you sure you want to delete your current workout plan? This cannot be undone.')) {
+    if (!window.confirm('Are you sure you want to reset your workout plan? Your current plan and AI-generated workouts will be deleted, and new AI workouts will be generated.')) {
       return;
     }
     
     try {
+      toast.info('Resetting schedule and generating new AI workouts...');
       await axios.delete(`${API}/schedule/reset`);
       await axios.post(`${API}/schedule/generate`);
-      toast.success('Schedule reset! Generating new plan...');
+      toast.success('New AI-powered workout plan generated successfully!');
       
       // Refresh data
       const scheduleRes = await axios.get(`${API}/schedule/calendar`);
@@ -54,20 +55,6 @@ const Home = ({ user, onLogout, theme, onToggleTheme }) => {
     } catch (error) {
       console.error('Reset error:', error);
       toast.error('Failed to reset schedule');
-    }
-  };
-
-  const handleGenerateAIWorkouts = async () => {
-    try {
-      toast.info('Generating personalized workouts with AI...');
-      const response = await axios.post(`${API}/workouts/generate-ai`);
-      toast.success(response.data.message);
-      
-      // Refresh data to show new AI workouts
-      fetchData();
-    } catch (error) {
-      console.error('AI generation error:', error);
-      toast.error(error.response?.data?.detail || 'Failed to generate AI workouts');
     }
   };
 
