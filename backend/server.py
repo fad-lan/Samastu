@@ -1002,9 +1002,19 @@ async def get_calendar(current_user: User = Depends(get_current_user)):
 
 @api_router.delete("/schedule/reset")
 async def reset_schedule(current_user: User = Depends(get_current_user)):
-    """Delete current workout schedule"""
-    result = await db.scheduled_workouts.delete_many({"user_id": current_user.id})
-    return {"success": True, "deleted_count": result.deleted_count, "message": "Schedule deleted successfully"}
+    """Delete current workout schedule and AI-generated plans (will regenerate on next schedule creation)"""
+    # Delete scheduled workouts
+    schedule_result = await db.scheduled_workouts.delete_many({"user_id": current_user.id})
+    
+    # Delete AI-generated plans
+    ai_plans_result = await db.ai_workout_plans.delete_many({"user_id": current_user.id})
+    
+    return {
+        "success": True, 
+        "deleted_schedule_count": schedule_result.deleted_count,
+        "deleted_ai_plans_count": ai_plans_result.deleted_count,
+        "message": "Schedule and AI plans deleted successfully. New AI plans will be generated when you create a new schedule."
+    }
 
 @api_router.post("/schedule/complete/{schedule_id}")
 async def complete_scheduled_workout(schedule_id: str, duration_minutes: int, current_user: User = Depends(get_current_user)):
