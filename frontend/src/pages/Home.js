@@ -87,13 +87,28 @@ const Home = ({ user, onLogout, theme, onToggleTheme }) => {
   return (
     <div className="min-h-screen bg-white pb-20">
       {/* Header */}
-      <div className="bg-white border-b border-gray-100 p-6 sticky top-0 z-10 premium-shadow">
+      <div className="bg-white border-b border-gray-100 p-6 sticky top-0 z-10 premium-shadow" style={{ 
+        backgroundColor: 'var(--card-bg)', 
+        borderColor: 'var(--border-color)',
+        boxShadow: 'var(--shadow-md)'
+      }}>
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-[#1A1A1A]">Samastu</h1>
-            <p className="text-gray-600 text-sm">Hey {user?.name}! 💪</p>
+            <h1 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>Samastu</h1>
+            <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Hey {user?.name}! 💪</p>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={onToggleTheme}
+              data-testid="theme-toggle-button"
+              className="p-2 rounded-full transition-colors"
+              style={{ 
+                backgroundColor: 'var(--bg-secondary)',
+                color: 'var(--text-primary)'
+              }}
+            >
+              {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+            </button>
             <button
               onClick={() => navigate('/profile')}
               data-testid="profile-nav-button"
