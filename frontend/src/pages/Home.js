@@ -301,15 +301,15 @@ const Home = ({ user, onLogout, theme, onToggleTheme }) => {
                     <div className="flex items-center gap-4 text-sm">
                       <div className="flex items-center gap-1">
                         <Zap className="w-4 h-4 text-[#D4AF37]" />
-                        <span className="style={{ color: 'var(--text-secondary)' }}">+{workout.xp_reward} XP</span>
+                        <span style={{ color: 'var(--text-secondary)' }}>+{workout.xp_reward} XP</span>
                       </div>
-                      <div className="style={{ color: 'var(--text-secondary)' }}">• {workout.duration_minutes} min</div>
-                      <div className="style={{ color: 'var(--text-secondary)' }}">• {workout.exercises?.length || 0} exercises</div>
+                      <div style={{ color: 'var(--text-secondary)' }}>• {workout.duration_minutes} min</div>
+                      <div style={{ color: 'var(--text-secondary)' }}>• {workout.exercises?.length || 0} exercises</div>
                     </div>
                   )}
                   
                   {isLocked && (
-                    <div className="mt-2 text-xs font-semibold text-gray-500">🔒 Unlocks on scheduled date</div>
+                    <div className="mt-2 text-xs font-semibold" style={{ color: 'var(--text-tertiary)' }}>🔒 Unlocks on scheduled date</div>
                   )}
                 </div>
               </div>
