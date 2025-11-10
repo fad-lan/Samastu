@@ -108,14 +108,19 @@ const Landing = ({ theme, onToggleTheme }) => {
                 <Button
                   onClick={() => navigate('/register')}
                   data-testid="hero-get-started-button"
-                  className="bg-[#060736] hover:bg-[#c19b2e] text-white font-semibold h-14 px-8 text-lg rounded-xl"
+                  className="bg-[#D4AF37] hover:bg-[#c19b2e] text-white font-semibold h-14 px-8 text-lg rounded-xl"
                 >
                   Get Started Free
                 </Button>
                 <Button
                   onClick={() => navigate('/register')}
                   data-testid="hero-view-demo-button"
-                  className=" hover:style={{ backgroundColor: 'var(--bg-secondary)' }} text-[#060736] border-2 border-gray-200 h-14 px-8 text-lg rounded-xl"
+                  className="h-14 px-8 text-lg rounded-xl border-2"
+                  style={{ 
+                    backgroundColor: 'var(--card-bg)',
+                    color: 'var(--text-primary)',
+                    borderColor: 'var(--border-color)'
+                  }}
                 >
                   View Demo
                 </Button>
