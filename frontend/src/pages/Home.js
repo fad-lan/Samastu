@@ -76,8 +76,8 @@ const Home = ({ user, onLogout, theme, onToggleTheme }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-[#1A1A1A] text-xl">Loading...</div>
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--bg-primary)' }}>
+        <div style={{ color: 'var(--text-primary)' }} className="text-xl">Loading...</div>
       </div>
     );
   }
@@ -85,7 +85,7 @@ const Home = ({ user, onLogout, theme, onToggleTheme }) => {
   const xpProgress = progress ? (progress.total_xp % 500) / 500 * 100 : 0;
 
   return (
-    <div className="min-h-screen bg-white pb-20">
+    <div className="min-h-screen pb-20" style={{ backgroundColor: 'var(--bg-primary)' }}>
       {/* Header */}
       <div className="bg-white border-b border-gray-100 p-6 sticky top-0 z-10 premium-shadow" style={{ 
         backgroundColor: 'var(--card-bg)', 
