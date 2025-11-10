@@ -4,10 +4,10 @@ import axios from 'axios';
 import { API } from '@/App';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { User, Zap, Flame, Trophy, Calendar, RefreshCw } from 'lucide-react';
+import { User, Zap, Flame, Trophy, Calendar, RefreshCw, Sun, Moon } from 'lucide-react';
 import WorkoutCalendar from '@/components/WorkoutCalendar';
 
-const Home = ({ user, onLogout }) => {
+const Home = ({ user, onLogout, theme, onToggleTheme }) => {
   const navigate = useNavigate();
   const [journey, setJourney] = useState([]);
   const [progress, setProgress] = useState(null);
