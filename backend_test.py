@@ -790,6 +790,12 @@ class SamastuAPITester:
         self.test_ai_workout_generation()
         self.test_get_ai_plans()
         
+        # Test integrated AI schedule flow (NEW MAIN FOCUS)
+        print("\n" + "🚀" * 30)
+        print("🚀 NEW MAIN FOCUS: INTEGRATED AI SCHEDULE FLOW")
+        print("🚀" * 30)
+        self.test_integrated_ai_schedule_flow()
+        
         # Print summary
         print("\n" + "=" * 50)
         print(f"📊 Test Summary: {self.tests_passed}/{self.tests_run} tests passed")
