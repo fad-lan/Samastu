@@ -39,25 +39,33 @@ const Login = ({ onLogin, theme, onToggleTheme }) => {
   };
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ backgroundColor: 'var(--bg-primary)' }}>
       <div className="w-full max-w-md animate-fadeIn">
-        <button
-          onClick={() => navigate('/')}
-          className="flex items-center gap-2 text-gray-600 hover:text-[#1A1A1A] transition-colors mb-6"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          <span>Back to Home</span>
-        </button>
+        <div className="flex items-center justify-between mb-6">
+          <button
+            onClick={() => navigate('/')}
+            className="flex items-center gap-2 transition-colors"
+            style={{ color: 'var(--text-secondary)' }}
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span>Back to Home</span>
+          </button>
+          <ThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
+        </div>
 
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-[#D4AF37] rounded-full mb-4">
             <Dumbbell className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-4xl font-bold text-[#1A1A1A] mb-2">Welcome Back</h1>
-          <p className="text-gray-600 text-lg">Continue your fitness journey</p>
+          <h1 className="text-4xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>Welcome Back</h1>
+          <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>Continue your fitness journey</p>
         </div>
 
-        <div className="bg-white rounded-3xl p-8 premium-shadow border border-gray-100">
+        <div className="rounded-3xl p-8 premium-shadow border" style={{ 
+          backgroundColor: 'var(--card-bg)',
+          borderColor: 'var(--border-color)',
+          boxShadow: 'var(--shadow-md)'
+        }}>
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <Label htmlFor="email" className="text-[#1A1A1A] mb-2 block font-medium">Email</Label>
