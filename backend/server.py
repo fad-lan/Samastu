@@ -709,10 +709,11 @@ Return ONLY the JSON array, no other text."""
         ).with_model("gemini", "gemini-2.0-flash")
         
         user_message = UserMessage(text=prompt)
-        response = await chat.send_message(user_message)
+        response_obj = await chat.send_message(user_message)
         
-        # Parse the response
-        response_text = response.strip()
+        # Get the text response
+        response_text = response_obj.text if hasattr(response_obj, 'text') else str(response_obj)
+        response_text = response_text.strip()
         
         # Remove markdown code blocks if present
         if response_text.startswith('```'):
@@ -736,17 +737,26 @@ Return ONLY the JSON array, no other text."""
             plan['user_id'] = current_user.id
             plan['created_at'] = datetime.now(timezone.utc).isoformat()
         
-        await db.ai_workout_plans.insert_many(workout_plans)
+        if workout_plans:
+            await db.ai_workout_plans.insert_many(workout_plans)
+        
+        # Return clean data without MongoDB objects
+        clean_plans = []
+        for plan in workout_plans:
+            clean_plan = dict(plan)
+            clean_plan.pop('user_id', None)
+            clean_plan.pop('created_at', None)
+            clean_plans.append(clean_plan)
         
         return {
             "success": True,
-            "plans": workout_plans,
+            "plans": clean_plans,
             "message": f"Generated {len(workout_plans)} personalized workouts using AI"
         }
         
     except json.JSONDecodeError as e:
         logger.error(f"Failed to parse Gemini response: {e}")
-        logger.error(f"Response was: {response}")
+        logger.error(f"Response was: {response_text if 'response_text' in locals() else 'N/A'}")
         raise HTTPException(status_code=500, detail="Failed to parse AI response. Please try again.")
     except Exception as e:
         logger.error(f"AI workout generation error: {e}")
