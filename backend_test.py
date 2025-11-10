@@ -409,6 +409,350 @@ class SamastuAPITester:
             return True
         return False
 
+    def test_integrated_ai_schedule_flow(self):
+        """Test the complete integrated AI workout generation flow in schedule creation"""
+        print(f"\n🎯 TESTING INTEGRATED AI SCHEDULE FLOW")
+        print("=" * 60)
+        
+        # Part 1: New User Onboarding Flow
+        print(f"\n📋 PART 1: NEW USER ONBOARDING FLOW")
+        print("-" * 40)
+        
+        # Create a new test user with complete profile
+        timestamp = datetime.now().strftime('%H%M%S')
+        user_data = {
+            "email": f"ai_schedule_test_{timestamp}@example.com",
+            "password": "TestPass123!",
+            "name": f"AI Schedule Test User {timestamp}"
+        }
+        
+        # Register new user
+        response = self.run_test(
+            "1.1 Create New Test User",
+            "POST",
+            "auth/register",
+            200,
+            data=user_data
+        )
+        
+        if not response or 'access_token' not in response:
+            print("❌ Failed to create test user, stopping AI schedule flow test")
+            return False
+        
+        # Store token for this test user
+        test_token = response['access_token']
+        test_user_id = response['user']['id']
+        
+        # Update profile with complete onboarding data
+        profile_data = {
+            "experience_level": "intermediate",
+            "goal": "muscle_building",
+            "equipment": ["dumbbells", "resistance_bands", "bodyweight"],
+            "available_days": [
+                {"day": "Monday", "minutes": 45},
+                {"day": "Wednesday", "minutes": 30},
+                {"day": "Friday", "minutes": 45},
+                {"day": "Saturday", "minutes": 60}
+            ]
+        }
+        
+        # Temporarily switch to test user token
+        original_token = self.token
+        self.token = test_token
+        
+        response = self.run_test(
+            "1.2 Update Profile with Complete Data",
+            "PUT",
+            "user/profile",
+            200,
+            data=profile_data
+        )
+        
+        if not response:
+            self.token = original_token
+            return False
+        
+        # Call POST /schedule/generate (should auto-generate AI plans)
+        print(f"\n🤖 Calling /schedule/generate (may take 5-10 seconds for AI generation)...")
+        
+        url = f"{self.base_url}/api/schedule/generate"
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Bearer {test_token}'
+        }
+        
+        try:
+            response = requests.post(url, headers=headers, timeout=60)  # Long timeout for AI
+            
+            success = response.status_code == 200
+            details = f"Status: {response.status_code}"
+            
+            if success:
+                data = response.json()
+                if data.get('success') and 'scheduled_count' in data:
+                    scheduled_count = data['scheduled_count']
+                    print(f"   ✅ Schedule generated with {scheduled_count} items")
+                    details += f", Scheduled {scheduled_count} items"
+                else:
+                    success = False
+                    details += f", Invalid response: {data}"
+            else:
+                try:
+                    error_data = response.json()
+                    details += f", Error: {error_data}"
+                except:
+                    details += f", Response: {response.text[:200]}"
+            
+            self.log_test("1.3 Generate Schedule with Auto AI Plans", success, details)
+            
+            if not success:
+                self.token = original_token
+                return False
+                
+        except Exception as e:
+            self.log_test("1.3 Generate Schedule with Auto AI Plans", False, f"Exception: {str(e)}")
+            self.token = original_token
+            return False
+        
+        # Verify AI plans were auto-generated
+        ai_plans_response = self.run_test(
+            "1.4 Verify AI Plans Auto-Generated",
+            "GET",
+            "workouts/ai-plans",
+            200
+        )
+        
+        if not ai_plans_response or not isinstance(ai_plans_response, list) or len(ai_plans_response) == 0:
+            self.log_test("1.4 AI Plans Verification", False, "No AI plans found after schedule generation")
+            self.token = original_token
+            return False
+        
+        ai_plan_ids = [plan['id'] for plan in ai_plans_response]
+        print(f"   ✅ Found {len(ai_plans_response)} AI-generated plans")
+        
+        # Verify scheduled workouts were created
+        schedule_response = self.run_test(
+            "1.5 Verify Scheduled Workouts Created",
+            "GET",
+            "schedule/calendar",
+            200
+        )
+        
+        if not schedule_response or not isinstance(schedule_response, list) or len(schedule_response) == 0:
+            self.log_test("1.5 Schedule Verification", False, "No scheduled workouts found")
+            self.token = original_token
+            return False
+        
+        # Verify scheduled workouts reference AI-generated plan IDs
+        workout_plan_ids = [item['workout_plan_id'] for item in schedule_response if not item.get('is_rest_day', False)]
+        ai_plans_referenced = any(plan_id in ai_plan_ids for plan_id in workout_plan_ids)
+        
+        if not ai_plans_referenced:
+            self.log_test("1.6 AI Plans Referenced in Schedule", False, "Scheduled workouts don't reference AI-generated plans")
+            self.token = original_token
+            return False
+        
+        print(f"   ✅ Scheduled workouts reference AI-generated plans")
+        self.log_test("1.6 AI Plans Referenced in Schedule", True, f"AI plans properly referenced in {len(schedule_response)} scheduled items")
+        
+        # Part 2: Schedule Reuse (AI plans NOT regenerated)
+        print(f"\n🔄 PART 2: SCHEDULE REUSE TEST")
+        print("-" * 40)
+        
+        # Store original AI plan creation timestamps
+        original_timestamps = {plan['id']: plan.get('created_at') for plan in ai_plans_response}
+        
+        # Call POST /schedule/generate again
+        try:
+            response = requests.post(url, headers=headers, timeout=30)
+            
+            success = response.status_code == 200
+            if success:
+                data = response.json()
+                if data.get('success'):
+                    print(f"   ✅ Second schedule generation successful")
+                else:
+                    success = False
+            
+            self.log_test("2.1 Generate Schedule Again", success, f"Status: {response.status_code}")
+            
+            if not success:
+                self.token = original_token
+                return False
+                
+        except Exception as e:
+            self.log_test("2.1 Generate Schedule Again", False, f"Exception: {str(e)}")
+            self.token = original_token
+            return False
+        
+        # Verify AI plans were reused (same IDs and timestamps)
+        new_ai_plans_response = self.run_test(
+            "2.2 Verify AI Plans Reused",
+            "GET",
+            "workouts/ai-plans",
+            200
+        )
+        
+        if not new_ai_plans_response:
+            self.token = original_token
+            return False
+        
+        new_timestamps = {plan['id']: plan.get('created_at') for plan in new_ai_plans_response}
+        
+        # Check if plans were reused (same IDs and timestamps)
+        plans_reused = (set(original_timestamps.keys()) == set(new_timestamps.keys()) and 
+                       all(original_timestamps[plan_id] == new_timestamps[plan_id] 
+                           for plan_id in original_timestamps.keys()))
+        
+        if plans_reused:
+            print(f"   ✅ AI plans were reused (same IDs and timestamps)")
+            self.log_test("2.3 AI Plans Reuse Verification", True, "AI plans properly reused")
+        else:
+            self.log_test("2.3 AI Plans Reuse Verification", False, "AI plans were regenerated instead of reused")
+        
+        # Part 3: Reset and Regenerate
+        print(f"\n🔄 PART 3: RESET AND REGENERATE TEST")
+        print("-" * 40)
+        
+        # Call DELETE /schedule/reset
+        reset_url = f"{self.base_url}/api/schedule/reset"
+        try:
+            response = requests.delete(reset_url, headers=headers, timeout=30)
+            
+            success = response.status_code == 200
+            details = f"Status: {response.status_code}"
+            
+            if success:
+                data = response.json()
+                if data.get('success'):
+                    deleted_schedule = data.get('deleted_schedule_count', 0)
+                    deleted_ai_plans = data.get('deleted_ai_plans_count', 0)
+                    print(f"   ✅ Reset successful: {deleted_schedule} schedule items, {deleted_ai_plans} AI plans deleted")
+                    details += f", Deleted {deleted_schedule} schedule + {deleted_ai_plans} AI plans"
+                else:
+                    success = False
+                    details += f", Reset failed: {data}"
+            else:
+                try:
+                    error_data = response.json()
+                    details += f", Error: {error_data}"
+                except:
+                    details += f", Response: {response.text[:200]}"
+            
+            self.log_test("3.1 Reset Schedule and AI Plans", success, details)
+            
+            if not success:
+                self.token = original_token
+                return False
+                
+        except Exception as e:
+            self.log_test("3.1 Reset Schedule and AI Plans", False, f"Exception: {str(e)}")
+            self.token = original_token
+            return False
+        
+        # Verify both schedule and AI plans were deleted
+        empty_schedule = self.run_test(
+            "3.2 Verify Schedule Deleted",
+            "GET",
+            "schedule/calendar",
+            200
+        )
+        
+        empty_ai_plans = self.run_test(
+            "3.3 Verify AI Plans Deleted",
+            "GET",
+            "workouts/ai-plans",
+            200
+        )
+        
+        schedule_deleted = not empty_schedule or len(empty_schedule) == 0
+        ai_plans_deleted = not empty_ai_plans or len(empty_ai_plans) == 0
+        
+        if not schedule_deleted:
+            self.log_test("3.2 Schedule Deletion Verification", False, f"Schedule still has {len(empty_schedule)} items")
+        else:
+            print(f"   ✅ Schedule properly deleted")
+            
+        if not ai_plans_deleted:
+            self.log_test("3.3 AI Plans Deletion Verification", False, f"AI plans still has {len(empty_ai_plans)} items")
+        else:
+            print(f"   ✅ AI plans properly deleted")
+        
+        # Call POST /schedule/generate again to verify NEW AI plans are generated
+        print(f"\n🤖 Regenerating after reset (may take 5-10 seconds)...")
+        
+        try:
+            response = requests.post(url, headers=headers, timeout=60)
+            
+            success = response.status_code == 200
+            if success:
+                data = response.json()
+                if data.get('success'):
+                    print(f"   ✅ Post-reset schedule generation successful")
+                else:
+                    success = False
+            
+            self.log_test("3.4 Generate Schedule After Reset", success, f"Status: {response.status_code}")
+            
+            if not success:
+                self.token = original_token
+                return False
+                
+        except Exception as e:
+            self.log_test("3.4 Generate Schedule After Reset", False, f"Exception: {str(e)}")
+            self.token = original_token
+            return False
+        
+        # Verify NEW AI plans are generated (different plan IDs)
+        final_ai_plans = self.run_test(
+            "3.5 Verify NEW AI Plans Generated",
+            "GET",
+            "workouts/ai-plans",
+            200
+        )
+        
+        if not final_ai_plans or len(final_ai_plans) == 0:
+            self.log_test("3.5 New AI Plans Verification", False, "No AI plans found after reset and regeneration")
+            self.token = original_token
+            return False
+        
+        final_plan_ids = set(plan['id'] for plan in final_ai_plans)
+        original_plan_ids = set(original_timestamps.keys())
+        
+        new_plans_generated = not final_plan_ids.intersection(original_plan_ids)
+        
+        if new_plans_generated:
+            print(f"   ✅ NEW AI plans generated (different IDs than before)")
+            self.log_test("3.6 New AI Plans ID Verification", True, f"Generated {len(final_ai_plans)} new AI plans with different IDs")
+        else:
+            self.log_test("3.6 New AI Plans ID Verification", False, "AI plans have same IDs as before reset")
+        
+        # Verify new schedule uses new AI plan IDs
+        final_schedule = self.run_test(
+            "3.7 Verify New Schedule with New AI Plans",
+            "GET",
+            "schedule/calendar",
+            200
+        )
+        
+        if final_schedule and len(final_schedule) > 0:
+            final_workout_plan_ids = [item['workout_plan_id'] for item in final_schedule if not item.get('is_rest_day', False)]
+            new_ai_plans_used = any(plan_id in final_plan_ids for plan_id in final_workout_plan_ids)
+            
+            if new_ai_plans_used:
+                print(f"   ✅ New schedule uses new AI plan IDs")
+                self.log_test("3.8 New Schedule Uses New AI Plans", True, "Schedule properly references new AI plans")
+            else:
+                self.log_test("3.8 New Schedule Uses New AI Plans", False, "Schedule doesn't reference new AI plans")
+        
+        # Restore original token
+        self.token = original_token
+        
+        print(f"\n🎯 INTEGRATED AI SCHEDULE FLOW TEST COMPLETED")
+        print("=" * 60)
+        
+        return True
+
     def run_all_tests(self):
         """Run all API tests"""
         print("🚀 Starting Samastu API Tests")
