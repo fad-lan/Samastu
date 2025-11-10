@@ -260,17 +260,22 @@ const Home = ({ user, onLogout, theme, onToggleTheme }) => {
                 <div
                   onClick={() => handleWorkoutClick(workout)}
                   data-testid={`workout-card-${workout.id}`}
-                  className={`ml-6 flex-1 rounded-2xl p-5 transition-all premium-shadow border ${
+                  className={`ml-6 flex-1 bg-white rounded-2xl p-5 transition-all cursor-pointer premium-shadow border ${
                     isRestDay
-                      ? 'cursor-default style={{ borderColor: 'var(--border-color)' }} style={{ backgroundColor: 'var(--bg-secondary)' }}'
+                      ? 'cursor-default border-gray-100 bg-gray-50'
                       : isLocked
-                      ? 'opacity-60 cursor-not-allowed style={{ borderColor: 'var(--border-color)' }}'
+                      ? 'opacity-60 cursor-not-allowed border-gray-100'
                       : workout.is_next || workout.is_completed
-                      ? 'hover:style={{ backgroundColor: 'var(--bg-secondary)' }} card-hover style={{ borderColor: 'var(--border-color)' }} cursor-pointer'
-                      : 'opacity-50 cursor-not-allowed style={{ borderColor: 'var(--border-color)' }}'
+                      ? 'hover:bg-gray-50 card-hover border-gray-100 cursor-pointer'
+                      : 'opacity-50 cursor-not-allowed border-gray-100'
                   } ${
                     workout.is_next && !isRestDay && !isLocked ? 'gold-border' : ''
                   }`}
+                  style={{ 
+                    backgroundColor: isRestDay ? 'var(--bg-secondary)' : 'var(--card-bg)',
+                    borderColor: 'var(--border-color)',
+                    boxShadow: 'var(--shadow-md)'
+                  }}
                 >
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="text-xl font-bold style={{ color: 'var(--text-primary)' }}">{workout.name}</h3>
