@@ -269,6 +269,146 @@ class SamastuAPITester:
             return True
         return False
 
+    def test_ai_workout_generation(self):
+        """Test AI workout generation endpoint"""
+        print(f"\n🤖 Testing AI Workout Generation...")
+        print("   This may take 5-10 seconds due to Gemini AI processing...")
+        
+        # First ensure user has complete profile data
+        profile_data = {
+            "experience_level": "intermediate",
+            "goal": "muscle_building",
+            "equipment": ["dumbbells", "resistance_bands"],
+            "available_days": [
+                {"day": "Monday", "minutes": 45},
+                {"day": "Wednesday", "minutes": 30},
+                {"day": "Friday", "minutes": 45}
+            ]
+        }
+        
+        # Update profile first
+        self.run_test(
+            "Update Profile for AI Test",
+            "PUT",
+            "user/profile",
+            200,
+            data=profile_data
+        )
+        
+        # Test AI workout generation
+        url = f"{self.base_url}/api/workouts/generate-ai"
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Bearer {self.token}'
+        }
+        
+        try:
+            response = requests.post(url, headers=headers, timeout=30)  # Longer timeout for AI
+            
+            success = response.status_code == 200
+            details = f"Status: {response.status_code}"
+            
+            if success:
+                try:
+                    data = response.json()
+                    
+                    # Verify response structure
+                    if not isinstance(data, dict):
+                        success = False
+                        details += ", Response is not a dict"
+                    elif 'success' not in data or not data['success']:
+                        success = False
+                        details += f", Success field missing or false: {data.get('success')}"
+                    elif 'plans' not in data:
+                        success = False
+                        details += ", Plans field missing"
+                    elif not isinstance(data['plans'], list):
+                        success = False
+                        details += ", Plans is not a list"
+                    elif len(data['plans']) == 0:
+                        success = False
+                        details += ", No plans generated"
+                    else:
+                        # Verify plan structure
+                        plan = data['plans'][0]
+                        required_fields = ['id', 'name', 'difficulty', 'target_muscles', 'duration_minutes', 'xp_reward', 'exercises']
+                        missing_fields = [field for field in required_fields if field not in plan]
+                        
+                        if missing_fields:
+                            success = False
+                            details += f", Missing plan fields: {missing_fields}"
+                        elif not isinstance(plan['exercises'], list) or len(plan['exercises']) == 0:
+                            success = False
+                            details += ", No exercises in plan"
+                        else:
+                            # Verify exercise structure
+                            exercise = plan['exercises'][0]
+                            required_ex_fields = ['name', 'reps', 'sets', 'rest_seconds', 'icon']
+                            missing_ex_fields = [field for field in required_ex_fields if field not in exercise]
+                            
+                            if missing_ex_fields:
+                                success = False
+                                details += f", Missing exercise fields: {missing_ex_fields}"
+                            else:
+                                # Check for MongoDB ObjectId (should not be present)
+                                if '_id' in plan or any('_id' in ex for ex in plan['exercises']):
+                                    success = False
+                                    details += ", MongoDB _id found in response (serialization issue)"
+                                else:
+                                    details += f", Generated {len(data['plans'])} plans with {len(plan['exercises'])} exercises each"
+                                    print(f"   ✅ Generated {len(data['plans'])} AI workout plans")
+                                    print(f"   ✅ First plan: {plan['name']} ({plan['difficulty']})")
+                                    print(f"   ✅ Target muscles: {plan['target_muscles']}")
+                                    print(f"   ✅ Duration: {plan['duration_minutes']} minutes")
+                                    print(f"   ✅ Exercises: {len(plan['exercises'])}")
+                                    print(f"   ✅ No MongoDB ObjectId in response")
+                
+                except json.JSONDecodeError as e:
+                    success = False
+                    details += f", JSON decode error: {str(e)}"
+                except Exception as e:
+                    success = False
+                    details += f", Response parsing error: {str(e)}"
+            else:
+                try:
+                    error_data = response.json()
+                    details += f", Error: {error_data}"
+                except:
+                    details += f", Response: {response.text[:200]}"
+            
+            self.log_test("AI Workout Generation", success, details)
+            return success
+            
+        except requests.exceptions.Timeout:
+            self.log_test("AI Workout Generation", False, "Request timeout (>30s)")
+            return False
+        except Exception as e:
+            self.log_test("AI Workout Generation", False, f"Exception: {str(e)}")
+            return False
+
+    def test_get_ai_plans(self):
+        """Test getting AI-generated workout plans"""
+        response = self.run_test(
+            "Get AI Workout Plans",
+            "GET",
+            "workouts/ai-plans",
+            200
+        )
+        
+        if response and isinstance(response, list):
+            print(f"   Found {len(response)} AI-generated plans in database")
+            if len(response) > 0:
+                plan = response[0]
+                print(f"   First plan: {plan.get('name', 'Unknown')}")
+                # Verify no MongoDB _id in stored plans
+                if '_id' in plan:
+                    self.log_test("AI Plans Storage Check", False, "MongoDB _id found in stored plans")
+                    return False
+                else:
+                    print(f"   ✅ No MongoDB _id in stored plans")
+            return True
+        return False
+
     def run_all_tests(self):
         """Run all API tests"""
         print("🚀 Starting Samastu API Tests")
