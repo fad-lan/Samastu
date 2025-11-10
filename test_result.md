@@ -102,39 +102,48 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Fix Gemini AI workout generation endpoint to properly handle JSON response and prevent MongoDB ObjectId serialization errors. The endpoint should request a structured JSON format from Gemini and parse/store it correctly."
+user_problem_statement: "Make ALL workout plan generation use Gemini AI automatically. AI plans should be generated once during onboarding and used forever unless user resets their plan. Remove standalone AI Generate button and integrate AI generation into the core schedule creation flow."
 
 backend:
-  - task: "AI Workout Generation with Gemini"
+  - task: "Auto AI Workout Generation in Schedule Creation"
     implemented: true
-    working: true
+    working: "NA"
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
-      - working: false
-        agent: "user"
-        comment: "Endpoint failing with 500 error - ObjectId serialization issue"
-      - working: "NA"
-        agent: "main"
-        comment: "Fixed serialization by creating deep copy of workout plans before MongoDB insertion. Original clean data is returned without MongoDB ObjectId. Changes made in /api/workouts/generate-ai endpoint (lines 725-755)"
       - working: true
         agent: "testing"
-        comment: "✅ COMPREHENSIVE TESTING COMPLETED: AI workout generation endpoint working perfectly. Generated 6 personalized workout plans using Gemini AI. Verified: 1) 200 status code, 2) Correct response structure with success=true and plans array, 3) Each plan has required fields (id, name, difficulty, target_muscles, duration_minutes, xp_reward, exercises), 4) Each exercise has required fields (name, reps, sets, rest_seconds, icon), 5) NO MongoDB ObjectId in API response (serialization fix successful), 6) Data properly stored in ai_workout_plans collection with user_id and created_at fields. Response time ~5-10 seconds as expected for AI processing. Fix is working correctly."
+        comment: "Previous AI generation endpoint tested and working"
+      - working: "NA"
+        agent: "main"
+        comment: "Modified /schedule/generate endpoint to automatically generate AI workout plans if none exist. When user completes onboarding or resets schedule, AI plans are auto-generated using Gemini. Plans are stored once and reused. Endpoint now checks for existing ai_workout_plans, generates if missing, then creates schedule from AI plans."
 
-frontend:
-  - task: "AI Workout Generation UI Button"
+  - task: "Reset Schedule with AI Regeneration"
     implemented: true
     working: "NA"
-    file: "/app/frontend/src/pages/Home.js"
+    file: "/app/backend/server.py"
     stuck_count: 0
-    priority: "medium"
-    needs_retesting: false
+    priority: "high"
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
-        comment: "Frontend button already implemented, waiting for backend fix"
+        comment: "Updated /schedule/reset endpoint to delete both scheduled_workouts AND ai_workout_plans. Next schedule generation will create fresh AI plans. Returns count of deleted items."
+
+frontend:
+  - task: "Remove AI Generate Button and Update Onboarding"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/Home.js, /app/frontend/src/pages/Onboarding.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Removed standalone AI Generate button from Home.js. Updated Reset Plan button message to indicate AI regeneration. Updated Onboarding.js to show loading toast during AI plan generation. handleGenerateAIWorkouts function removed."
 
 metadata:
   created_by: "main_agent"
