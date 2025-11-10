@@ -1,7 +1,7 @@
 {
-  "timestamp": "2025-10-26T03:38:48.169962",
-  "total_tests": 11,
-  "passed_tests": 11,
+  "timestamp": "2025-11-10T10:25:44.309710",
+  "total_tests": 14,
+  "passed_tests": 14,
   "success_rate": 100.0,
   "results": [
     {
@@ -56,6 +56,21 @@
     },
     {
       "test": "Get User Profile",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "Update Profile for AI Test",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "AI Workout Generation",
+      "success": true,
+      "details": "Status: 200, Generated 6 plans with 5 exercises each"
+    },
+    {
+      "test": "Get AI Workout Plans",
       "success": true,
       "details": "Status: 200, Expected: 200"
     }
