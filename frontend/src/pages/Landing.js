@@ -84,7 +84,7 @@ const Landing = ({ theme, onToggleTheme }) => {
             <Button
               onClick={() => navigate('/register')}
               data-testid="nav-signup-button"
-              className="bg-[#D4AF37] hover:bg-[#c19b2e] text-white font-semibold"
+              className="bg-[#D4AF37] hover:bg-[#060736] text-white font-semibold"
             >
               Get Started
             </Button>
@@ -108,7 +108,7 @@ const Landing = ({ theme, onToggleTheme }) => {
                 <Button
                   onClick={() => navigate('/register')}
                   data-testid="hero-get-started-button"
-                  className="bg-[#D4AF37] hover:bg-[#c19b2e] text-white font-semibold h-14 px-8 text-lg rounded-xl"
+                  className="bg-[#D4AF37] hover:bg-[#060736] text-white font-semibold h-14 px-8 text-lg rounded-xl"
                 >
                   Get Started Free
                 </Button>
@@ -264,7 +264,7 @@ const Landing = ({ theme, onToggleTheme }) => {
           <Button
             onClick={() => navigate('/register')}
             data-testid="cta-get-started-button"
-            className="bg-[#D4AF37] hover:bg-[#c19b2e] text-white font-bold h-14 px-12 text-lg rounded-xl"
+            className="bg-[#D4AF37] hover:bg-[#060736] text-white font-bold h-14 px-12 text-lg rounded-xl"
           >
             Get Started Free
           </Button>
