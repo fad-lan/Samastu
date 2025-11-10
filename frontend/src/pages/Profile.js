@@ -102,29 +102,37 @@ const Profile = ({ user, onLogout, theme, onToggleTheme }) => {
   const xpProgress = progress ? (progress.total_xp % 500) / 500 * 100 : 0;
 
   return (
-    <div className="min-h-screen bg-white pb-20">
+    <div className="min-h-screen pb-20" style={{ backgroundColor: 'var(--bg-primary)' }}>
       {/* Header */}
-      <div className="bg-white p-6 sticky top-0 z-10 shadow-lg">
+      <div className="border-b p-6 sticky top-0 z-10 premium-shadow" style={{ 
+        backgroundColor: 'var(--card-bg)', 
+        borderColor: 'var(--border-color)',
+        boxShadow: 'var(--shadow-md)'
+      }}>
         <div className="max-w-4xl mx-auto">
           <button
             onClick={() => navigate('/home')}
             data-testid="profile-back-button"
-            className="flex items-center gap-2 text-gray-600 hover:text-[#1A1A1A] transition-colors mb-4"
+            className="flex items-center gap-2 transition-colors mb-4"
+            style={{ color: 'var(--text-secondary)' }}
           >
             <ArrowLeft className="w-5 h-5" />
             <span>Back to Journey</span>
           </button>
           
           <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold text-[#1A1A1A]">Profile</h1>
-            <Button
-              onClick={handleLogoutClick}
-              data-testid="logout-button"
-              className="bg-[#ff4444] hover:bg-[#dd3333] text-[#1A1A1A]"
-            >
-              <LogOut className="w-4 h-4 mr-2" />
-              Logout
-            </Button>
+            <h1 className="text-3xl font-bold" style={{ color: 'var(--text-primary)' }}>Profile</h1>
+            <div className="flex items-center gap-3">
+              <ThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
+              <Button
+                onClick={handleLogoutClick}
+                data-testid="logout-button"
+                className="bg-[#ff4444] hover:bg-[#dd3333] text-white"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Logout
+              </Button>
+            </div>
           </div>
         </div>
       </div>
