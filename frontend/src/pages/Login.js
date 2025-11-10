@@ -7,8 +7,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Dumbbell, ArrowLeft } from 'lucide-react';
+import ThemeToggle from '@/components/ThemeToggle';
 
-const Login = ({ onLogin }) => {
+const Login = ({ onLogin, theme, onToggleTheme }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
