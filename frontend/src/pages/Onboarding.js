@@ -140,14 +140,15 @@ const Onboarding = ({ user, theme, onToggleTheme }) => {
       };
       await axios.put(`${API}/user/profile`, updateData);
       
-      // Generate workout schedule
+      // Generate AI-powered workout schedule (may take 5-10 seconds)
+      toast.info('Creating your personalized AI workout plan... This may take a moment.');
       await axios.post(`${API}/schedule/generate`);
       
-      toast.success('Profile setup complete! Your personalized schedule is ready.');
+      toast.success('✨ Your personalized AI workout plan is ready!');
       navigate('/home');
     } catch (error) {
       console.error('Update error:', error);
-      toast.error('Failed to update profile');
+      toast.error(error.response?.data?.detail || 'Failed to update profile');
     }
   };
 
