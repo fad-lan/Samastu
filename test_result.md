@@ -107,11 +107,11 @@ user_problem_statement: "Make ALL workout plan generation use Gemini AI automati
 backend:
   - task: "Auto AI Workout Generation in Schedule Creation"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "testing"
@@ -128,6 +128,9 @@ backend:
       - working: "NA"
         agent: "main"
         comment: "CRITICAL BUG FIXED: Journey endpoint was looking for workout plans in db.workout_plans collection, but AI plans are stored in db.ai_workout_plans collection. Updated 6 endpoints to prioritize ai_workout_plans: /workouts/journey, /workouts/plans, /workouts/complete, /schedule/calendar, /schedule/complete. All include fallback to workout_plans for backwards compatibility. Backend restarted successfully."
+      - working: true
+        agent: "testing"
+        comment: "WORKOUT JOURNEY DISPLAY FIX VERIFIED: Comprehensive testing of all 6 updated endpoints confirms the fix is working correctly. ✅ Part 1: GET /workouts/journey returns populated workout array with AI-generated plans (16 items: 11 workouts + 5 rest days). All workouts have required fields (name, difficulty, exercises, target_muscles, duration_minutes, xp_reward) and populated exercises arrays. Workout IDs match AI-generated plan IDs (6/6 matches). ✅ Part 2: GET /schedule/calendar returns enriched workout details from ai_workout_plans collection. ✅ Part 3: GET /workouts/plans returns user's AI-generated plans (7 plans, all IDs match). ✅ Part 4: Complete flow test - new user → profile setup → auto AI generation → immediate journey display works perfectly. Journey displays 7 populated workouts immediately after AI generation. Backend logs show successful AI generation: 'Successfully generated 6-7 AI workout plans'. All 22/22 tests passed. The bug 'workouts don't display on home page after AI generation' is FIXED."
 
   - task: "Reset Schedule with AI Regeneration"
     implemented: true
