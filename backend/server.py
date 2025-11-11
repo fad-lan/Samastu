@@ -1012,18 +1012,19 @@ Return ONLY the JSON array, no other text."""
             
             # Check if user is available on this day
             if day_name in available_day_names:
-                # Check if it should be a rest day (only if they have consecutive workout days)
-                # For patterns with short consecutive sequences (like Mon/Tue/Thu/Fri), add rest days within the sequence
-                if max_consecutive_count == 2:
-                    # For 2-day consecutive patterns, add rest day after every 2 workouts
-                    is_rest = should_add_rest_days and (consecutive_workout_count > 0 and consecutive_workout_count % 2 == 0)
-                    logger.info(f"  {schedule_date} ({day_name}): consecutive_count={consecutive_workout_count}, is_rest={is_rest} (2-day pattern)")
-                else:
-                    # For longer consecutive patterns, use the original logic
-                    is_rest = should_add_rest_days and (consecutive_workout_count > 0 and consecutive_workout_count % rest_frequency == 0)
-                    logger.info(f"  {schedule_date} ({day_name}): consecutive_count={consecutive_workout_count}, is_rest={is_rest} (longer pattern)")
+                # For patterns with max_consecutive_count == 2, add rest days after every 2 consecutive workouts
+                # Check if we should add a rest day AFTER scheduling workouts
+                should_rest_now = False
+                if should_add_rest_days and max_consecutive_count == 2:
+                    # For 2-day patterns, add rest day after every 2 workouts (when consecutive_count reaches 2)
+                    should_rest_now = consecutive_workout_count == 2
+                elif should_add_rest_days:
+                    # For longer patterns, use the original logic
+                    should_rest_now = consecutive_workout_count > 0 and consecutive_workout_count % rest_frequency == 0
                 
-                if is_rest:
+                logger.info(f"  {schedule_date} ({day_name}): consecutive_count={consecutive_workout_count}, should_rest_now={should_rest_now}")
+                
+                if should_rest_now:
                     # Schedule rest day on available day
                     scheduled = ScheduledWorkout(
                         user_id=current_user.id,
