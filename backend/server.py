@@ -78,6 +78,8 @@ class User(BaseModel):
     equipment: Optional[List[str]] = []
     experience_level: Optional[str] = None  # beginner, intermediate, advanced
     available_days: Optional[List[dict]] = []  # [{"day": "Monday", "minutes": 30}]
+    plan_duration: Optional[int] = 4  # Duration number (default 4 weeks)
+    plan_duration_unit: Optional[str] = "weeks"  # weeks, months, years
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class UserUpdate(BaseModel):
@@ -89,6 +91,8 @@ class UserUpdate(BaseModel):
     equipment: Optional[List[str]] = None
     experience_level: Optional[str] = None
     available_days: Optional[List[dict]] = None
+    plan_duration: Optional[int] = None
+    plan_duration_unit: Optional[str] = None
 
 class WorkoutSession(BaseModel):
     model_config = ConfigDict(extra="ignore")
