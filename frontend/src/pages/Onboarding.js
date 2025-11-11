@@ -410,12 +410,59 @@ const Onboarding = ({ user, theme, onToggleTheme }) => {
             </div>
           )}
 
+          {step === 7 && (
+            <div className="animate-slideUp">
+              <h2 className="text-3xl font-bold text-[#1A1A1A] mb-2">Plan Duration</h2>
+              <p className="text-gray-600 mb-6">How long should your workout plan be?</p>
+              
+              <div className="space-y-4">
+                <div>
+                  <Label className="text-[#1A1A1A] mb-2 block">Duration</Label>
+                  <Input
+                    type="number"
+                    name="plan_duration"
+                    value={formData.plan_duration}
+                    onChange={handleInputChange}
+                    data-testid="duration-input"
+                    className="bg-gray-50 border-gray-200 text-[#1A1A1A] focus:border-[#D4AF37] focus:ring-[#D4AF37] rounded-xl h-12 text-lg"
+                    placeholder="4"
+                    min="1"
+                  />
+                </div>
+                
+                <div>
+                  <Label className="text-[#1A1A1A] mb-2 block">Unit</Label>
+                  <select
+                    name="plan_duration_unit"
+                    value={formData.plan_duration_unit}
+                    onChange={handleInputChange}
+                    data-testid="duration-unit-select"
+                    className="w-full bg-gray-50 border-2 border-gray-200 text-[#1A1A1A] focus:border-[#D4AF37] focus:ring-[#D4AF37] rounded-xl h-12 text-lg px-4"
+                  >
+                    <option value="weeks">Weeks</option>
+                    <option value="months">Months</option>
+                    <option value="years">Years</option>
+                  </select>
+                </div>
+                
+                <div className="bg-gray-50 rounded-xl p-4 mt-4">
+                  <p className="text-sm text-gray-600">
+                    📋 Your plan will be <span className="font-semibold text-[#D4AF37]">{formData.plan_duration} {formData.plan_duration_unit}</span>
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Maximum: 3 years (156 weeks / 36 months)
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
           <Button
             onClick={handleNext}
             data-testid="onboarding-next-button"
             className="w-full mt-8 bg-[#D4AF37] hover:bg-[#c19b2e] text-white font-semibold h-12 rounded-xl text-lg"
           >
-            {step === 6 ? 'Generate My Schedule' : 'Continue'}
+            {step === 7 ? 'Generate My Schedule' : 'Continue'}
             <ChevronRight className="ml-2" />
           </Button>
         </div>
