@@ -1056,7 +1056,6 @@ Return ONLY the JSON array, no other text."""
                 schedule[-1]['created_at'] = schedule[-1]['created_at'].isoformat()
             else:
                 # Day not available for user - natural rest day, reset consecutive counter
-                logger.info(f"  {schedule_date} ({day_name}): NATURAL GAP, resetting consecutive_count")
                 consecutive_workout_count = 0
     
     if schedule:
