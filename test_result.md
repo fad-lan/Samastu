@@ -105,13 +105,41 @@
 user_problem_statement: "Implement custom plan duration, fix week start to Monday, lock future workouts in calendar view, and implement smart rest day logic that doesn't add rest days when user's availability already has natural gaps."
 
 backend:
-  - task: "Auto AI Workout Generation in Schedule Creation"
+  - task: "Custom Plan Duration with Validation"
     implemented: true
-    working: true
+    working: "NA"
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added plan_duration and plan_duration_unit fields to User model. Modified schedule generation to calculate total_weeks based on duration unit (weeks/months/years) with max 3 year limit. Updated Gemini prompt to include plan duration context."
+
+  - task: "Smart Rest Day Logic"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented intelligent rest day algorithm: checks if user has consecutive workout days (e.g., Mon/Tue/Wed), only adds rest days if 2+ consecutive days exist. If user selects Mon/Wed/Fri (with natural gaps), no additional rest days are added. Tracks consecutive_workout_count separately and resets on natural off-days."
+
+  - task: "Week Start on Monday"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Days_of_week array already starts with Monday. weekday() function correctly returns 0 for Monday. Schedule generation properly aligned with Monday start."
     status_history:
       - working: true
         agent: "testing"
