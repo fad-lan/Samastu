@@ -992,6 +992,16 @@ Return ONLY the JSON array, no other text."""
     should_add_rest_days = has_consecutive and max_consecutive_count >= 2
     rest_frequency = 3 if len(available_day_names) >= 4 else 2
     
+    # Debug logging
+    logger.info(f"Smart rest day analysis for user {current_user.id}:")
+    logger.info(f"  Available days: {available_day_names}")
+    logger.info(f"  Day indices: {day_indices}")
+    logger.info(f"  Sorted indices: {sorted_indices}")
+    logger.info(f"  Has consecutive: {has_consecutive}")
+    logger.info(f"  Max consecutive count: {max_consecutive_count}")
+    logger.info(f"  Should add rest days: {should_add_rest_days}")
+    logger.info(f"  Rest frequency: {rest_frequency}")
+    
     workout_index = 0
     consecutive_workout_count = 0  # Track consecutive workouts only
     
