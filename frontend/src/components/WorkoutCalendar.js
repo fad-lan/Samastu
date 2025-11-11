@@ -5,13 +5,17 @@ import { Calendar, Dumbbell, Coffee, CheckCircle } from 'lucide-react';
 const WorkoutCalendar = ({ schedule }) => {
   const navigate = useNavigate();
 
-  // Group by week
+  // Group by week (starting Monday)
   const groupByWeek = (items) => {
     const weeks = {};
     items.forEach(item => {
       const date = new Date(item.scheduled_date);
       const weekStart = new Date(date);
-      weekStart.setDate(date.getDate() - date.getDay()); // Start of week (Sunday)
+      // Get day of week (0=Sunday, 1=Monday, etc.)
+      const dayOfWeek = date.getDay();
+      // Calculate days to subtract to get to Monday (0=Sunday needs -6, 1=Monday needs 0, 2=Tuesday needs -1, etc.)
+      const daysToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+      weekStart.setDate(date.getDate() - daysToMonday);
       const weekKey = weekStart.toISOString().split('T')[0];
       
       if (!weeks[weekKey]) {
