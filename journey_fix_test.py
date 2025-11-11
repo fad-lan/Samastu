@@ -425,10 +425,10 @@ class JourneyFixTester:
         # Run all test parts
         success = True
         
-        success &= self.test_journey_endpoint_returns_ai_plans(token)
-        success &= self.test_calendar_endpoint_returns_ai_plans(token)
-        success &= self.test_workout_plans_endpoint_returns_ai_plans(token)
-        success &= self.test_complete_flow()
+        success = success and self.test_journey_endpoint_returns_ai_plans(token)
+        success = success and self.test_calendar_endpoint_returns_ai_plans(token)
+        success = success and self.test_workout_plans_endpoint_returns_ai_plans(token)
+        success = success and self.test_complete_flow()
         
         # Print summary
         print(f"\n" + "=" * 60)
