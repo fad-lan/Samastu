@@ -1003,7 +1003,9 @@ Return ONLY the JSON array, no other text."""
             # Check if user is available on this day
             if day_name in available_day_names:
                 # Check if it should be a rest day (only if they have consecutive workout days)
-                is_rest = should_add_rest_days and (consecutive_workout_count > 0 and consecutive_workout_count % rest_frequency == 0)
+                # Add rest day after reaching max_consecutive_count or rest_frequency, whichever is smaller
+                effective_rest_frequency = min(rest_frequency, max_consecutive_count) if max_consecutive_count >= 2 else rest_frequency
+                is_rest = should_add_rest_days and (consecutive_workout_count > 0 and consecutive_workout_count % effective_rest_frequency == 0)
                 
                 if is_rest:
                     # Schedule rest day on available day
