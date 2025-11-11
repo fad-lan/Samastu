@@ -143,11 +143,11 @@ backend:
 
   - task: "Week Start on Monday"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 1
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
@@ -158,6 +158,9 @@ backend:
       - working: "NA"
         agent: "main"
         comment: "FIXED: Added logic to align start_date to nearest past Monday before schedule generation. Calculates days_until_monday and subtracts from today. Schedule now starts from Monday instead of current day. Uses start_date instead of today in schedule loop."
+      - working: true
+        agent: "testing"
+        comment: "WEEK START ON MONDAY RETEST COMPLETED: ✅ First scheduled item correctly starts on Monday (2025-11-10, weekday 0). ✅ Schedule starts from nearest past Monday (2025-11-10) instead of current day (2025-11-11). ✅ All scheduled dates align with Monday-based weeks. ✅ Day of week fields match correctly with weekday calculations. The start_date alignment fix is working correctly - schedule generation now properly begins from the nearest past Monday as intended."
     status_history:
       - working: true
         agent: "testing"
