@@ -959,6 +959,14 @@ Return ONLY the JSON array, no other text."""
     
     from datetime import date, timedelta
     today = date.today()
+    
+    # Align start date to nearest Monday
+    days_until_monday = (today.weekday() - 0) % 7  # 0 = Monday
+    if days_until_monday > 0:
+        start_date = today - timedelta(days=days_until_monday)
+    else:
+        start_date = today  # Already Monday
+    
     schedule = []
     
     days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
@@ -967,18 +975,21 @@ Return ONLY the JSON array, no other text."""
     day_indices = {day: days_of_week.index(day) for day in available_day_names}
     sorted_indices = sorted(day_indices.values())
     
-    # Check for consecutive days
+    # Check for consecutive days - find max consecutive count
     has_consecutive = False
-    consecutive_count = 1
+    max_consecutive_count = 1
+    current_consecutive = 1
+    
     for i in range(1, len(sorted_indices)):
         if sorted_indices[i] == sorted_indices[i-1] + 1:
-            consecutive_count += 1
+            current_consecutive += 1
             has_consecutive = True
+            max_consecutive_count = max(max_consecutive_count, current_consecutive)
         else:
-            consecutive_count = 1
+            current_consecutive = 1
     
     # Only add rest days if user has 2+ consecutive workout days
-    should_add_rest_days = has_consecutive and consecutive_count >= 2
+    should_add_rest_days = has_consecutive and max_consecutive_count >= 2
     rest_frequency = 3 if len(available_day_names) >= 4 else 2
     
     workout_index = 0
