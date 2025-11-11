@@ -1026,7 +1026,7 @@ Return ONLY the JSON array, no other text."""
                     # For longer patterns, use the original logic
                     should_rest_now = consecutive_workout_count > 0 and consecutive_workout_count % rest_frequency == 0
                 
-                logger.info(f"  {schedule_date} ({day_name}): consecutive_count={consecutive_workout_count}, should_rest_now={should_rest_now}")
+                # Rest day logic applied
                 
                 if should_rest_now:
                     # Convert to rest day
