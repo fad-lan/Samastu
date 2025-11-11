@@ -137,15 +137,18 @@ backend:
 
   - task: "Week Start on Monday"
     implemented: true
-    working: "NA"
+    working: false
     file: "/app/backend/server.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Days_of_week array already starts with Monday. weekday() function correctly returns 0 for Monday. Schedule generation properly aligned with Monday start."
+      - working: false
+        agent: "testing"
+        comment: "WEEK START ON MONDAY TESTING COMPLETED: ✅ Monday correctly identified as weekday 0 in calculations. ✅ All day_of_week fields match correctly with weekday calculations. ❌ First week starts on Tuesday (2025-11-11) instead of Monday (expected 2025-11-10). ISSUE: While weekday calculations are correct, the schedule generation doesn't ensure the first scheduled item starts on a Monday. The algorithm should adjust the start date to begin on the nearest Monday."
     status_history:
       - working: true
         agent: "testing"
