@@ -986,14 +986,23 @@ async def get_calendar(current_user: User = Depends(get_current_user)):
         {"_id": 0}
     ).sort("scheduled_date", 1).to_list(1000)
     
-    # Get workout plan details
+    # Get workout plan details from AI-generated plans
     workout_ids = [s['workout_plan_id'] for s in scheduled if not s['is_rest_day']]
-    workout_plans = await db.workout_plans.find(
+    
+    # First try to get from AI-generated plans
+    ai_workout_plans = await db.ai_workout_plans.find(
         {"id": {"$in": workout_ids}},
         {"_id": 0}
     ).to_list(1000)
     
-    plans_dict = {p['id']: p for p in workout_plans}
+    # Fallback to regular workout_plans if needed (for backwards compatibility)
+    if not ai_workout_plans:
+        ai_workout_plans = await db.workout_plans.find(
+            {"id": {"$in": workout_ids}},
+            {"_id": 0}
+        ).to_list(1000)
+    
+    plans_dict = {p['id']: p for p in ai_workout_plans}
     
     # Enrich scheduled workouts with plan details
     for item in scheduled:
