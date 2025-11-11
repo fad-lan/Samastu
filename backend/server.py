@@ -516,8 +516,13 @@ async def get_workout_journey(current_user: User = Depends(get_current_user)):
 
 @api_router.post("/workouts/complete")
 async def complete_workout(workout_data: WorkoutComplete, current_user: User = Depends(get_current_user)):
-    # Get workout plan
-    plan = await db.workout_plans.find_one({"id": workout_data.workout_plan_id})
+    # Get workout plan from AI-generated plans first
+    plan = await db.ai_workout_plans.find_one({"id": workout_data.workout_plan_id})
+    
+    # Fallback to regular workout_plans if needed (for backwards compatibility)
+    if not plan:
+        plan = await db.workout_plans.find_one({"id": workout_data.workout_plan_id})
+    
     if not plan:
         raise HTTPException(status_code=404, detail="Workout plan not found")
     
