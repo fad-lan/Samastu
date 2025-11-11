@@ -117,16 +117,33 @@ const Onboarding = ({ user, theme, onToggleTheme }) => {
       toast.error('Please select a goal');
       return;
     }
-    if (step === 4 && !formData.experience_level) {
+    if (step === 5 && !formData.experience_level) {
       toast.error('Please select your experience level');
       return;
     }
-    if (step === 5 && formData.available_days.length === 0) {
+    if (step === 6 && formData.available_days.length === 0) {
       toast.error('Please select at least one day');
       return;
     }
+    if (step === 7) {
+      // Validate duration
+      const duration = parseInt(formData.plan_duration);
+      if (!duration || duration < 1) {
+        toast.error('Please enter a valid duration');
+        return;
+      }
+      
+      // Validate max limits
+      const unit = formData.plan_duration_unit;
+      if ((unit === 'weeks' && duration > 156) || 
+          (unit === 'months' && duration > 36) || 
+          (unit === 'years' && duration > 3)) {
+        toast.error('Maximum plan duration is 3 years');
+        return;
+      }
+    }
     
-    if (step < 6) {
+    if (step < 7) {
       setStep(step + 1);
     } else {
       handleComplete();
