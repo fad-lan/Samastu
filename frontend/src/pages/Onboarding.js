@@ -20,6 +20,8 @@ const Onboarding = ({ user, theme, onToggleTheme }) => {
     equipment: [],
     experience_level: '',
     available_days: [], // [{day: "Monday", minutes: 30}]
+    plan_duration: 4,
+    plan_duration_unit: 'weeks',
   });
 
   const goals = [
