@@ -28,7 +28,8 @@ def debug_schedule_generation(available_days, total_weeks=2):
     
     # Only add rest days if user has 2+ consecutive workout days
     should_add_rest_days = has_consecutive and max_consecutive_count >= 2
-    rest_frequency = 3 if len(available_day_names) >= 4 else 2
+    # Set rest frequency based on max consecutive count to ensure rest days are added within consecutive pairs
+    rest_frequency = max_consecutive_count if max_consecutive_count >= 2 else 2
     
     print(f"Algorithm results:")
     print(f"  has_consecutive: {has_consecutive}")
