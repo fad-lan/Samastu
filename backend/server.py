@@ -1017,9 +1017,11 @@ Return ONLY the JSON array, no other text."""
                 if max_consecutive_count == 2:
                     # For 2-day consecutive patterns, add rest day after every 2 workouts
                     is_rest = should_add_rest_days and (consecutive_workout_count > 0 and consecutive_workout_count % 2 == 0)
+                    logger.info(f"  {schedule_date} ({day_name}): consecutive_count={consecutive_workout_count}, is_rest={is_rest} (2-day pattern)")
                 else:
                     # For longer consecutive patterns, use the original logic
                     is_rest = should_add_rest_days and (consecutive_workout_count > 0 and consecutive_workout_count % rest_frequency == 0)
+                    logger.info(f"  {schedule_date} ({day_name}): consecutive_count={consecutive_workout_count}, is_rest={is_rest} (longer pattern)")
                 
                 if is_rest:
                     # Schedule rest day on available day
