@@ -1,8 +1,8 @@
 {
-  "timestamp": "2025-11-11T09:21:03.309819",
-  "total_tests": 20,
-  "passed_tests": 18,
-  "success_rate": 90.0,
+  "timestamp": "2025-11-11T10:35:18.080137",
+  "total_tests": 77,
+  "passed_tests": 73,
+  "success_rate": 94.8051948051948,
   "results": [
     {
       "test": "User Registration",
@@ -86,8 +86,78 @@
     },
     {
       "test": "1.3 Generate Schedule with Auto AI Plans",
-      "success": false,
-      "details": "Status: 500, Error: {'detail': 'Failed to generate AI workouts: Failed to generate chat completion: litellm.ServiceUnavailableError: GeminiException - {\\n  \"error\": {\\n    \"code\": 503,\\n    \"message\": \"Visibility check was unavailable. Please retry the request and contact support if the problem persists\",\\n    \"status\": \"UNAVAILABLE\"\\n  }\\n}\\n'}"
+      "success": true,
+      "details": "Status: 200, Scheduled 16 items"
+    },
+    {
+      "test": "1.4 Verify AI Plans Auto-Generated",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "1.5 Verify Scheduled Workouts Created",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "1.6 AI Plans Referenced in Schedule",
+      "success": true,
+      "details": "AI plans properly referenced in 16 scheduled items"
+    },
+    {
+      "test": "2.1 Generate Schedule Again",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "2.2 Verify AI Plans Reused",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "2.3 AI Plans Reuse Verification",
+      "success": true,
+      "details": "AI plans properly reused"
+    },
+    {
+      "test": "3.1 Reset Schedule and AI Plans",
+      "success": true,
+      "details": "Status: 200, Deleted 16 schedule + 7 AI plans"
+    },
+    {
+      "test": "3.2 Verify Schedule Deleted",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "3.3 Verify AI Plans Deleted",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "3.4 Generate Schedule After Reset",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "3.5 Verify NEW AI Plans Generated",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "3.6 New AI Plans ID Verification",
+      "success": true,
+      "details": "Generated 8 new AI plans with different IDs"
+    },
+    {
+      "test": "3.7 Verify New Schedule with New AI Plans",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "3.8 New Schedule Uses New AI Plans",
+      "success": true,
+      "details": "Schedule properly references new AI plans"
     },
     {
       "test": "1.1 Create Test User for Journey Fix",
@@ -101,8 +171,223 @@
     },
     {
       "test": "1.3 Generate AI Plans and Schedule",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "1.4 GET /workouts/journey",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "1.9 Get AI Plans for ID Verification",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "1.11 Journey Structure Complete",
+      "success": true,
+      "details": "Journey properly displays 16 workouts and 0 rest days"
+    },
+    {
+      "test": "2.1 GET /schedule/calendar",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "2.5 Calendar AI Plans Integration",
+      "success": true,
+      "details": "Calendar properly enriched with AI plan details"
+    },
+    {
+      "test": "3.1 GET /workouts/plans",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "3.4 Workout Plans AI Integration",
+      "success": true,
+      "details": "Plans endpoint properly returns AI-generated plans"
+    },
+    {
+      "test": "4.1 Create Brand New Test User",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "4.2 Set Complete Profile for New User",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "4.3 Auto-Generate AI Plans",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "4.4 GET Journey Immediately After AI Generation",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "4.8 Get New User AI Plans",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "4.9 Journey Uses AI Plan IDs",
+      "success": true,
+      "details": "Journey properly uses AI-generated plan IDs"
+    },
+    {
+      "test": "1.1 Create Test User for Duration",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "1.2 Set Profile with 8 Weeks Duration",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "1.3 8 Weeks Schedule Count",
+      "success": true,
+      "details": "Generated 24 items for 8 weeks"
+    },
+    {
+      "test": "1.3 Generate 8 Weeks Schedule",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "2.1 Update Profile to 2 Months Duration",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "2.2 Generate 2 Months Schedule",
       "success": false,
       "details": "Status: 500"
+    },
+    {
+      "test": "3.1 Update Profile to 1 Year Duration",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "3.2 1 Year Schedule Count",
+      "success": true,
+      "details": "Generated 156 items for 1 year"
+    },
+    {
+      "test": "3.2 Generate 1 Year Schedule",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "1.1 Create Test User for Rest Logic",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "1.2 Set Profile with Mon/Wed/Fri",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "1.3 Generate Mon/Wed/Fri Schedule",
+      "success": false,
+      "details": "Status: 500"
+    },
+    {
+      "test": "1.4 Get Mon/Wed/Fri Schedule",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "2.1 Create Test User for Consecutive Days",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "2.2 Set Profile with Mon/Tue/Wed",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "2.3 Generate Mon/Tue/Wed Schedule",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "2.4 Get Mon/Tue/Wed Schedule",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "2.5 Rest Days Added for Consecutive",
+      "success": true,
+      "details": "Added 1 rest days for consecutive workouts"
+    },
+    {
+      "test": "3.1 Create Test User for Two Pairs",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "3.2 Set Profile with Mon/Tue/Thu/Fri",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "3.3 Generate Two Pairs Schedule",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "3.4 Get Two Pairs Schedule",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "3.5 Strategic Rest Day Placement",
+      "success": false,
+      "details": "No rest days added for two consecutive pairs"
+    },
+    {
+      "test": "1.1 Create Test User for Monday Start",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "1.2 Set Profile with All Days",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "1.3 Generate Full Week Schedule",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "1.4 Get Schedule for Monday Verification",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "1.5 Monday as Day 0",
+      "success": true,
+      "details": "Monday correctly calculated as weekday 0"
+    },
+    {
+      "test": "1.6 Day of Week Field Accuracy",
+      "success": true,
+      "details": "All day_of_week fields match weekday calculations"
+    },
+    {
+      "test": "1.7 First Week Starts Monday",
+      "success": false,
+      "details": "First item is not Monday: 2025-11-11 (Tuesday)"
     }
   ]
 }
