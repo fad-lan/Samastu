@@ -1,8 +1,8 @@
 {
-  "timestamp": "2025-11-10T10:40:20.167639",
-  "total_tests": 31,
-  "passed_tests": 31,
-  "success_rate": 100.0,
+  "timestamp": "2025-11-11T09:21:03.309819",
+  "total_tests": 20,
+  "passed_tests": 18,
+  "success_rate": 90.0,
   "results": [
     {
       "test": "User Registration",
@@ -86,78 +86,23 @@
     },
     {
       "test": "1.3 Generate Schedule with Auto AI Plans",
-      "success": true,
-      "details": "Status: 200, Scheduled 16 items"
+      "success": false,
+      "details": "Status: 500, Error: {'detail': 'Failed to generate AI workouts: Failed to generate chat completion: litellm.ServiceUnavailableError: GeminiException - {\\n  \"error\": {\\n    \"code\": 503,\\n    \"message\": \"Visibility check was unavailable. Please retry the request and contact support if the problem persists\",\\n    \"status\": \"UNAVAILABLE\"\\n  }\\n}\\n'}"
     },
     {
-      "test": "1.4 Verify AI Plans Auto-Generated",
+      "test": "1.1 Create Test User for Journey Fix",
       "success": true,
       "details": "Status: 200, Expected: 200"
     },
     {
-      "test": "1.5 Verify Scheduled Workouts Created",
+      "test": "1.2 Set Complete Profile",
       "success": true,
       "details": "Status: 200, Expected: 200"
     },
     {
-      "test": "1.6 AI Plans Referenced in Schedule",
-      "success": true,
-      "details": "AI plans properly referenced in 16 scheduled items"
-    },
-    {
-      "test": "2.1 Generate Schedule Again",
-      "success": true,
-      "details": "Status: 200"
-    },
-    {
-      "test": "2.2 Verify AI Plans Reused",
-      "success": true,
-      "details": "Status: 200, Expected: 200"
-    },
-    {
-      "test": "2.3 AI Plans Reuse Verification",
-      "success": true,
-      "details": "AI plans properly reused"
-    },
-    {
-      "test": "3.1 Reset Schedule and AI Plans",
-      "success": true,
-      "details": "Status: 200, Deleted 16 schedule + 7 AI plans"
-    },
-    {
-      "test": "3.2 Verify Schedule Deleted",
-      "success": true,
-      "details": "Status: 200, Expected: 200"
-    },
-    {
-      "test": "3.3 Verify AI Plans Deleted",
-      "success": true,
-      "details": "Status: 200, Expected: 200"
-    },
-    {
-      "test": "3.4 Generate Schedule After Reset",
-      "success": true,
-      "details": "Status: 200"
-    },
-    {
-      "test": "3.5 Verify NEW AI Plans Generated",
-      "success": true,
-      "details": "Status: 200, Expected: 200"
-    },
-    {
-      "test": "3.6 New AI Plans ID Verification",
-      "success": true,
-      "details": "Generated 7 new AI plans with different IDs"
-    },
-    {
-      "test": "3.7 Verify New Schedule with New AI Plans",
-      "success": true,
-      "details": "Status: 200, Expected: 200"
-    },
-    {
-      "test": "3.8 New Schedule Uses New AI Plans",
-      "success": true,
-      "details": "Schedule properly references new AI plans"
+      "test": "1.3 Generate AI Plans and Schedule",
+      "success": false,
+      "details": "Status: 500"
     }
   ]
 }
