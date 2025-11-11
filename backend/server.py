@@ -997,7 +997,7 @@ Return ONLY the JSON array, no other text."""
     
     for week in range(total_weeks):
         for day_offset in range(7):
-            schedule_date = today + timedelta(days=week * 7 + day_offset)
+            schedule_date = start_date + timedelta(days=week * 7 + day_offset)
             day_name = days_of_week[schedule_date.weekday()]
             
             # Check if user is available on this day
