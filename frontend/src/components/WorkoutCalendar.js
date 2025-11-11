@@ -34,6 +34,9 @@ const WorkoutCalendar = ({ schedule }) => {
     if (item.is_rest_day) {
       return; // Can't click on rest days
     }
+    if (item.is_locked) {
+      return; // Can't click on locked (future) workouts
+    }
     if (!item.is_completed) {
       navigate(`/workout/${item.workout_plan_id}`);
     }
