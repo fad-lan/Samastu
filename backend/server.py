@@ -1021,10 +1021,13 @@ Return ONLY the JSON array, no other text."""
                         is_completed=False
                     )
                     workout_index += 1
+                    consecutive_workout_count += 1  # Increment consecutive counter
                 
                 schedule.append(scheduled.model_dump())
                 schedule[-1]['created_at'] = schedule[-1]['created_at'].isoformat()
-                workout_count += 1
+            else:
+                # Day not available for user - natural rest day, reset consecutive counter
+                consecutive_workout_count = 0
     
     if schedule:
         await db.scheduled_workouts.insert_many(schedule)
