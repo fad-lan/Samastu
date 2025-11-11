@@ -122,6 +122,12 @@ backend:
       - working: true
         agent: "testing"
         comment: "COMPREHENSIVE TESTING COMPLETED: Part 1 (New User Onboarding) - ✅ Created test user with complete profile (experience_level, goal, equipment, available_days). ✅ Called POST /schedule/generate and verified success with scheduled_count=16. ✅ Verified AI plans were auto-generated in ai_workout_plans collection (7 plans). ✅ Verified scheduled workouts created in scheduled_workouts collection. ✅ Verified scheduled workouts reference AI-generated plan IDs. Backend logs confirm: 'No AI plans found for user, generating now...' and 'Successfully generated 7 AI workout plans'. AI generation takes 5-10 seconds as expected."
+      - working: "NA"
+        agent: "user"
+        comment: "User reported: web does not display any workout plan after workout generation. Workouts not showing on home page."
+      - working: "NA"
+        agent: "main"
+        comment: "CRITICAL BUG FIXED: Journey endpoint was looking for workout plans in db.workout_plans collection, but AI plans are stored in db.ai_workout_plans collection. Updated 6 endpoints to prioritize ai_workout_plans: /workouts/journey, /workouts/plans, /workouts/complete, /schedule/calendar, /schedule/complete. All include fallback to workout_plans for backwards compatibility. Backend restarted successfully."
 
   - task: "Reset Schedule with AI Regeneration"
     implemented: true
