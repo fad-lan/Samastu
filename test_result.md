@@ -107,11 +107,11 @@ user_problem_statement: "Make ALL workout plan generation use Gemini AI automati
 backend:
   - task: "Auto AI Workout Generation in Schedule Creation"
     implemented: true
-    working: true
+    working: "NA"
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: true
         agent: "testing"
