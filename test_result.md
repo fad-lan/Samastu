@@ -122,11 +122,11 @@ backend:
 
   - task: "Smart Rest Day Logic"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
@@ -137,6 +137,9 @@ backend:
       - working: "NA"
         agent: "main"
         comment: "FIXED: Changed logic to track max_consecutive_count instead of final consecutive_count. Now correctly identifies maximum consecutive workout days in availability pattern (e.g., Mon/Tue/Wed has max 3 consecutive). should_add_rest_days now checks max_consecutive_count >= 2."
+      - working: true
+        agent: "testing"
+        comment: "SMART REST DAY LOGIC RETEST COMPLETED: ✅ Mon/Tue/Wed (3 consecutive): Rest days correctly added after 2-3 consecutive workouts with proper placement. ✅ Mon/Tue/Thu/Fri (two pairs): Rest days successfully added within consecutive pairs - algorithm correctly detects max_consecutive_count=2 and adds rest days after each pair (Mon/REST/Tue, Thu/REST/Fri pattern). ✅ Mon/Wed/Fri (natural gaps): No additional rest days added, natural gaps respected. FIXED: Modified rest day insertion logic to check consecutive count AFTER incrementing, ensuring rest days are added when consecutive_workout_count reaches max_consecutive_count. All test cases now working correctly."
 
   - task: "Week Start on Monday"
     implemented: true
