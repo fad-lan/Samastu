@@ -1057,7 +1057,13 @@ async def complete_scheduled_workout(schedule_id: str, duration_minutes: int, cu
     )
     
     # Record workout session (same as before)
-    plan = await db.workout_plans.find_one({"id": scheduled['workout_plan_id']})
+    # Get workout plan from AI-generated plans first
+    plan = await db.ai_workout_plans.find_one({"id": scheduled['workout_plan_id']})
+    
+    # Fallback to regular workout_plans if needed (for backwards compatibility)
+    if not plan:
+        plan = await db.workout_plans.find_one({"id": scheduled['workout_plan_id']})
+    
     if not plan:
         raise HTTPException(status_code=404, detail="Workout plan not found")
     
