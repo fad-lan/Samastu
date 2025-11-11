@@ -1,0 +1,165 @@
+{
+  "timestamp": "2025-11-11T09:23:52.005837",
+  "total_tests": 22,
+  "passed_tests": 22,
+  "success_rate": 100.0,
+  "results": [
+    {
+      "test": "1.1 GET /workouts/journey returns 200",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "1.2 Journey response contains workout array (not empty)",
+      "success": true,
+      "details": "Type: <class 'list'>, Length: 16"
+    },
+    {
+      "test": "1.3 Journey contains workout items (non-rest days)",
+      "success": true,
+      "details": "Workout items: 11, Rest days: 5"
+    },
+    {
+      "test": "1.4 Workout has required fields",
+      "success": true,
+      "details": "All required fields present"
+    },
+    {
+      "test": "1.5 Exercises array is populated",
+      "success": true,
+      "details": "Exercises count: 5"
+    },
+    {
+      "test": "1.6 Workout IDs match AI-generated plan IDs",
+      "success": true,
+      "details": "Matching IDs: 6/6"
+    },
+    {
+      "test": "1.7 Journey structure complete",
+      "success": true,
+      "details": "Total items: 16, Workouts: 11, Rest days: 5"
+    },
+    {
+      "test": "2.1 GET /schedule/calendar returns 200",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "2.2 Calendar contains workout items",
+      "success": true,
+      "details": "Workout items: 11"
+    },
+    {
+      "test": "2.3 Calendar items have workout_details",
+      "success": {
+        "name": "Resistance Band Burn - Lower Body",
+        "difficulty": "Intermediate",
+        "target_muscles": "Legs, Glutes",
+        "duration_minutes": 30,
+        "xp_reward": 60,
+        "exercises": [
+          {
+            "name": "Resistance Band Squats",
+            "reps": "12-15 reps",
+            "sets": 3,
+            "rest_seconds": 45,
+            "icon": "activity"
+          },
+          {
+            "name": "Resistance Band Glute Bridges",
+            "reps": "15-20 reps",
+            "sets": 3,
+            "rest_seconds": 45,
+            "icon": "activity"
+          },
+          {
+            "name": "Resistance Band Clamshells",
+            "reps": "15-20 reps",
+            "sets": 3,
+            "rest_seconds": 30,
+            "icon": "activity"
+          },
+          {
+            "name": "Resistance Band Standing Leg Abduction",
+            "reps": "12-15 reps per leg",
+            "sets": 3,
+            "rest_seconds": 30,
+            "icon": "activity"
+          },
+          {
+            "name": "Cool-down Stretch (Quad Stretch)",
+            "reps": "30 seconds per leg",
+            "sets": 1,
+            "rest_seconds": 0,
+            "icon": "repeat"
+          }
+        ],
+        "id": "1c7e59dc-2bcb-4117-93c0-fada0ea0dd56",
+        "user_id": "e8385d73-6f7e-412b-a479-bfba6a613067",
+        "created_at": "2025-11-11T09:23:34.897885+00:00"
+      },
+      "details": "workout_details field present and populated"
+    },
+    {
+      "test": "2.4 Workout details include name",
+      "success": "Resistance Band Burn - Lower Body",
+      "details": "Workout name: 'Resistance Band Burn - Lower Body'"
+    },
+    {
+      "test": "3.1 GET /workouts/plans returns 200",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "3.2 Plans endpoint returns data",
+      "success": true,
+      "details": "Plans count: 7"
+    },
+    {
+      "test": "3.3 Plans endpoint returns AI-generated plans",
+      "success": true,
+      "details": "AI plans match: 7/7"
+    },
+    {
+      "test": "4.1 Create NEW test user",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "4.2 Set complete profile",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "4.3 Auto-generate AI plans via schedule",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "4.4 GET journey immediately after generation",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "4.5 Journey populated immediately after AI generation",
+      "success": true,
+      "details": "Journey items: 12"
+    },
+    {
+      "test": "4.6 Journey contains workout items",
+      "success": true,
+      "details": "Workout items: 7"
+    },
+    {
+      "test": "4.7 Workout data is populated",
+      "success": true,
+      "details": "Name: 'Week 1 - Bodyweight Blast', Exercises: 7"
+    },
+    {
+      "test": "4.8 Journey uses AI-generated plan IDs",
+      "success": true,
+      "details": "Matching IDs: 3/3"
+    }
+  ],
+  "fix_working": true
+}
