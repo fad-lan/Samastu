@@ -1877,6 +1877,14 @@ class SamastuAPITester:
         print("🔥" * 35)
         self.test_workout_journey_display_fix()
         
+        # Test new features (CURRENT FOCUS)
+        print("\n" + "🆕" * 35)
+        print("🆕 NEW FEATURES: CUSTOM DURATION, SMART REST, MONDAY START")
+        print("🆕" * 35)
+        self.test_custom_plan_duration()
+        self.test_smart_rest_day_logic()
+        self.test_week_start_monday()
+        
         # Print summary
         print("\n" + "=" * 50)
         print(f"📊 Test Summary: {self.tests_passed}/{self.tests_run} tests passed")
