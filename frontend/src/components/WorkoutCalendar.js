@@ -70,6 +70,8 @@ const WorkoutCalendar = ({ schedule }) => {
               const details = item.workout_details;
               const today = isToday(item.scheduled_date);
               const past = isPast(item.scheduled_date);
+              const future = isFuture(item.scheduled_date);
+              const isLocked = item.is_locked || future;
               
               return (
                 <div
@@ -81,6 +83,8 @@ const WorkoutCalendar = ({ schedule }) => {
                       ? 'border-gray-200 bg-gray-50 cursor-default'
                       : item.is_completed
                       ? 'border-[#D4AF37] bg-[#D4AF37]/10 cursor-default'
+                      : isLocked
+                      ? 'border-gray-300 bg-gray-100 cursor-not-allowed opacity-60'
                       : today
                       ? 'border-[#D4AF37] bg-[#D4AF37]/5 cursor-pointer hover:bg-[#D4AF37]/15 gold-border'
                       : past && !item.is_completed
