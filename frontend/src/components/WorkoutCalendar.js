@@ -52,6 +52,11 @@ const WorkoutCalendar = ({ schedule }) => {
     return dateStr < today;
   };
 
+  const isFuture = (dateStr) => {
+    const today = new Date().toISOString().split('T')[0];
+    return dateStr > today;
+  };
+
   return (
     <div className="space-y-6">
       {weekKeys.slice(0, 4).map((weekKey, weekIdx) => (
