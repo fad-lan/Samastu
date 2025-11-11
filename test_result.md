@@ -176,13 +176,41 @@ backend:
         comment: "COMPREHENSIVE TESTING COMPLETED: Part 2 (Schedule Reuse) - ✅ Called POST /schedule/generate again for same user and verified AI plans were reused (same IDs and timestamps). ✅ New schedule created but AI plans NOT regenerated as expected. Part 3 (Reset and Regenerate) - ✅ Called DELETE /schedule/reset and verified response indicates both schedule (16 items) and AI plans (7 items) were deleted. ✅ Called POST /schedule/generate again and verified NEW AI plans generated with different IDs than before. ✅ Verified new schedule created with new AI plan IDs. All 31 backend tests passed including comprehensive integrated AI schedule flow testing."
 
 frontend:
-  - task: "Remove AI Generate Button and Update Onboarding"
+  - task: "Add Plan Duration Step in Onboarding"
     implemented: true
-    working: true
-    file: "/app/frontend/src/pages/Home.js, /app/frontend/src/pages/Onboarding.js"
+    working: "NA"
+    file: "/app/frontend/src/pages/Onboarding.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added step 7 to onboarding for plan duration selection. Includes number input for duration and dropdown for unit (weeks/months/years). Validation ensures max 3 years (156 weeks/36 months). Updated progress bar to show 7 steps. Form data includes plan_duration and plan_duration_unit fields."
+
+  - task: "Lock Future Workouts in Calendar View"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/WorkoutCalendar.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Updated WorkoutCalendar component to check is_locked and prevent clicking on future workouts. Added isFuture() helper function. Locked workouts show opacity-60 with cursor-not-allowed. Matches journey view locking behavior."
+
+  - task: "Fix Week Start to Monday in Calendar"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/WorkoutCalendar.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Updated groupByWeek function to calculate week start from Monday instead of Sunday. Proper calculation for all days: Sunday goes back 6 days, Monday stays, other days adjust accordingly."
     status_history:
       - working: "NA"
         agent: "main"
