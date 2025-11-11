@@ -178,6 +178,8 @@ test_plan:
 agent_communication:
   - agent: "main"
     message: "Integrated AI workout generation into core schedule flow. Changes: 1) /schedule/generate now auto-generates AI plans if none exist, 2) /schedule/reset deletes both schedule and AI plans for regeneration, 3) Removed AI Generate button from Home.js, 4) Updated onboarding to show loading during AI generation, 5) Reset Plan button now indicates it will regenerate AI plans. Test full flow: onboarding → auto AI generation → schedule display → reset button → new AI plans."
+  - agent: "main"
+    message: "CRITICAL BUG FIX: User reported workouts not displaying after AI generation. Root cause: Journey and other endpoints were querying db.workout_plans instead of db.ai_workout_plans. Fixed 6 endpoints: /workouts/journey, /workouts/plans, /workouts/complete, /schedule/calendar, /schedule/complete, journey fallback. All now prioritize ai_workout_plans with backwards-compatible fallback. Please test end-to-end journey display."
   - agent: "testing"
     message: "BACKEND TESTING COMPLETE - All integrated AI workout generation flow tests PASSED (31/31 tests). Comprehensive testing covered: 1) New user onboarding with auto AI generation during schedule creation, 2) Schedule reuse verification (AI plans properly reused), 3) Reset and regeneration flow (both schedule and AI plans deleted, then new AI plans generated). Backend logs confirm proper AI integration with Gemini API. All endpoints working correctly with 5-10 second AI generation time as expected. Ready for main agent to summarize and finish."
   - agent: "testing"
