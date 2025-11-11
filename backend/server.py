@@ -990,7 +990,7 @@ Return ONLY the JSON array, no other text."""
                 is_rest = should_add_rest_days and (consecutive_workout_count > 0 and consecutive_workout_count % rest_frequency == 0)
                 
                 if is_rest:
-                    # Schedule rest day
+                    # Schedule rest day on available day
                     scheduled = ScheduledWorkout(
                         user_id=current_user.id,
                         workout_plan_id="rest",
@@ -999,6 +999,7 @@ Return ONLY the JSON array, no other text."""
                         is_rest_day=True,
                         is_completed=False
                     )
+                    consecutive_workout_count = 0  # Reset counter after rest
                 else:
                     # Get time available for this day
                     minutes_available = day_minutes_map[day_name]
