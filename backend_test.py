@@ -1,7 +1,7 @@
 import requests
 import sys
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 
 class SamastuAPITester:
     def __init__(self, base_url="https://fitgame-app-1.preview.emergentagent.com"):
