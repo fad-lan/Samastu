@@ -236,10 +236,11 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Auto AI Workout Generation in Schedule Creation"
-    - "Reset Schedule with AI Regeneration"
-    - "Remove AI Generate Button and Update Onboarding"
-  stuck_tasks: []
+    - "Smart Rest Day Logic"
+    - "Week Start on Monday"
+  stuck_tasks: 
+    - "Smart Rest Day Logic"
+    - "Week Start on Monday"
   test_all: false
   test_priority: "high_first"
 
