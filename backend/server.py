@@ -416,8 +416,18 @@ async def delete_account(current_user: User = Depends(get_current_user)):
 
 @api_router.get("/workouts/plans", response_model=List[WorkoutPlan])
 async def get_workout_plans(current_user: User = Depends(get_current_user)):
-    plans = await db.workout_plans.find({}, {"_id": 0}).to_list(100)
-    return plans
+    # First try to get user's AI-generated plans
+    ai_plans = await db.ai_workout_plans.find(
+        {"user_id": current_user.id}, 
+        {"_id": 0}
+    ).to_list(100)
+    
+    # Fallback to default workout plans if no AI plans exist
+    if not ai_plans:
+        plans = await db.workout_plans.find({}, {"_id": 0}).to_list(100)
+        return plans
+    
+    return ai_plans
 
 @api_router.get("/workouts/journey")
 async def get_workout_journey(current_user: User = Depends(get_current_user)):
