@@ -753,6 +753,415 @@ class SamastuAPITester:
         
         return True
 
+    def test_workout_journey_display_fix(self):
+        """Test the specific fix for workout journey display after AI generation"""
+        print(f"\n🎯 TESTING WORKOUT JOURNEY DISPLAY FIX")
+        print("=" * 60)
+        print("Testing the fix for: 'workouts don't display on home page after AI generation'")
+        
+        # Part 1: Verify Journey Endpoint Returns AI Plans
+        print(f"\n📋 PART 1: VERIFY JOURNEY ENDPOINT RETURNS AI PLANS")
+        print("-" * 50)
+        
+        # Create a new test user with AI-generated plans and schedule
+        timestamp = datetime.now().strftime('%H%M%S')
+        user_data = {
+            "email": f"journey_test_{timestamp}@example.com",
+            "password": "TestPass123!",
+            "name": f"Journey Test User {timestamp}"
+        }
+        
+        # Register new user
+        response = self.run_test(
+            "1.1 Create Test User for Journey Fix",
+            "POST",
+            "auth/register",
+            200,
+            data=user_data
+        )
+        
+        if not response or 'access_token' not in response:
+            print("❌ Failed to create test user, stopping journey fix test")
+            return False
+        
+        # Store token for this test user
+        test_token = response['access_token']
+        test_user_id = response['user']['id']
+        
+        # Update profile with complete data
+        profile_data = {
+            "experience_level": "intermediate",
+            "goal": "Strong & Defined",
+            "equipment": ["dumbbells", "resistance_bands"],
+            "available_days": [
+                {"day": "Monday", "minutes": 45},
+                {"day": "Wednesday", "minutes": 30},
+                {"day": "Friday", "minutes": 45},
+                {"day": "Sunday", "minutes": 60}
+            ]
+        }
+        
+        # Temporarily switch to test user token
+        original_token = self.token
+        self.token = test_token
+        
+        self.run_test(
+            "1.2 Set Complete Profile",
+            "PUT",
+            "user/profile",
+            200,
+            data=profile_data
+        )
+        
+        # Generate AI plans and schedule
+        print(f"\n🤖 Generating AI plans and schedule (may take 5-10 seconds)...")
+        
+        url = f"{self.base_url}/api/schedule/generate"
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Bearer {test_token}'
+        }
+        
+        try:
+            response = requests.post(url, headers=headers, timeout=60)
+            
+            success = response.status_code == 200
+            if success:
+                data = response.json()
+                if data.get('success'):
+                    print(f"   ✅ AI plans and schedule generated successfully")
+                else:
+                    success = False
+            
+            self.log_test("1.3 Generate AI Plans and Schedule", success, f"Status: {response.status_code}")
+            
+            if not success:
+                self.token = original_token
+                return False
+                
+        except Exception as e:
+            self.log_test("1.3 Generate AI Plans and Schedule", False, f"Exception: {str(e)}")
+            self.token = original_token
+            return False
+        
+        # Test GET /workouts/journey with auth token
+        print(f"\n🔍 Testing GET /workouts/journey endpoint...")
+        
+        journey_response = self.run_test(
+            "1.4 GET /workouts/journey",
+            "GET",
+            "workouts/journey",
+            200
+        )
+        
+        if not journey_response:
+            self.token = original_token
+            return False
+        
+        # Verify response contains workout array with actual workout data (not empty)
+        if not isinstance(journey_response, list):
+            self.log_test("1.5 Journey Response Format", False, "Response is not an array")
+            self.token = original_token
+            return False
+        
+        if len(journey_response) == 0:
+            self.log_test("1.5 Journey Response Content", False, "Journey response is empty - workouts not displaying!")
+            self.token = original_token
+            return False
+        
+        print(f"   ✅ Journey contains {len(journey_response)} items")
+        
+        # Verify each workout has required fields
+        workout_items = [item for item in journey_response if not item.get('is_rest_day', False)]
+        
+        if len(workout_items) == 0:
+            self.log_test("1.6 Journey Workout Items", False, "No workout items found in journey (only rest days)")
+            self.token = original_token
+            return False
+        
+        print(f"   ✅ Found {len(workout_items)} workout items (non-rest days)")
+        
+        # Check first workout item for required fields
+        first_workout = workout_items[0]
+        required_fields = ['name', 'difficulty', 'exercises', 'target_muscles', 'duration_minutes', 'xp_reward']
+        missing_fields = [field for field in required_fields if field not in first_workout or not first_workout[field]]
+        
+        if missing_fields:
+            self.log_test("1.7 Journey Workout Fields", False, f"Missing or empty fields: {missing_fields}")
+            self.token = original_token
+            return False
+        
+        print(f"   ✅ Workout has all required fields: {required_fields}")
+        print(f"   ✅ Workout name: '{first_workout['name']}'")
+        print(f"   ✅ Difficulty: '{first_workout['difficulty']}'")
+        print(f"   ✅ Target muscles: '{first_workout['target_muscles']}'")
+        print(f"   ✅ Duration: {first_workout['duration_minutes']} minutes")
+        print(f"   ✅ XP reward: {first_workout['xp_reward']}")
+        
+        # Verify exercises array is populated for workout days
+        if not isinstance(first_workout['exercises'], list) or len(first_workout['exercises']) == 0:
+            self.log_test("1.8 Journey Workout Exercises", False, "Exercises array is empty or not a list")
+            self.token = original_token
+            return False
+        
+        print(f"   ✅ Exercises array populated with {len(first_workout['exercises'])} exercises")
+        
+        # Verify workout IDs match AI-generated plan IDs in database
+        ai_plans_response = self.run_test(
+            "1.9 Get AI Plans for ID Verification",
+            "GET",
+            "workouts/ai-plans",
+            200
+        )
+        
+        if not ai_plans_response:
+            self.token = original_token
+            return False
+        
+        ai_plan_ids = set(plan['id'] for plan in ai_plans_response)
+        journey_workout_ids = set(item.get('id') or item.get('workout_plan_id') for item in workout_items)
+        
+        matching_ids = journey_workout_ids.intersection(ai_plan_ids)
+        
+        if len(matching_ids) == 0:
+            self.log_test("1.10 Journey Uses AI Plan IDs", False, "Journey workout IDs don't match AI-generated plan IDs")
+            self.token = original_token
+            return False
+        
+        print(f"   ✅ Journey workout IDs match AI-generated plan IDs ({len(matching_ids)} matches)")
+        
+        # Verify journey includes both workout days and rest days
+        rest_days = [item for item in journey_response if item.get('is_rest_day', False)]
+        
+        if len(rest_days) == 0:
+            print(f"   ⚠️  No rest days found in journey (this may be expected)")
+        else:
+            print(f"   ✅ Journey includes {len(rest_days)} rest days")
+        
+        self.log_test("1.11 Journey Structure Complete", True, f"Journey properly displays {len(workout_items)} workouts and {len(rest_days)} rest days")
+        
+        # Part 2: Verify Calendar Endpoint Returns AI Plans
+        print(f"\n📅 PART 2: VERIFY CALENDAR ENDPOINT RETURNS AI PLANS")
+        print("-" * 50)
+        
+        calendar_response = self.run_test(
+            "2.1 GET /schedule/calendar",
+            "GET",
+            "schedule/calendar",
+            200
+        )
+        
+        if not calendar_response:
+            self.token = original_token
+            return False
+        
+        # Verify calendar data includes workout details
+        calendar_workouts = [item for item in calendar_response if not item.get('is_rest_day', False)]
+        
+        if len(calendar_workouts) == 0:
+            self.log_test("2.2 Calendar Workout Details", False, "No workout items in calendar")
+            self.token = original_token
+            return False
+        
+        # Check if workout details are enriched from ai_workout_plans collection
+        first_calendar_workout = calendar_workouts[0]
+        
+        if 'workout_details' not in first_calendar_workout:
+            self.log_test("2.3 Calendar Workout Enrichment", False, "Calendar items missing workout_details")
+            self.token = original_token
+            return False
+        
+        workout_details = first_calendar_workout['workout_details']
+        
+        if not workout_details or 'name' not in workout_details:
+            self.log_test("2.4 Calendar Workout Details Content", False, "Calendar workout_details is empty or missing name")
+            self.token = original_token
+            return False
+        
+        print(f"   ✅ Calendar includes enriched workout details")
+        print(f"   ✅ Calendar workout: '{workout_details['name']}'")
+        
+        self.log_test("2.5 Calendar AI Plans Integration", True, f"Calendar properly enriched with AI plan details")
+        
+        # Part 3: Verify Workout Plans Endpoint Returns AI Plans
+        print(f"\n📋 PART 3: VERIFY WORKOUT PLANS ENDPOINT RETURNS AI PLANS")
+        print("-" * 50)
+        
+        plans_response = self.run_test(
+            "3.1 GET /workouts/plans",
+            "GET",
+            "workouts/plans",
+            200
+        )
+        
+        if not plans_response:
+            self.token = original_token
+            return False
+        
+        if not isinstance(plans_response, list) or len(plans_response) == 0:
+            self.log_test("3.2 Workout Plans Content", False, "Workout plans endpoint returned empty or invalid data")
+            self.token = original_token
+            return False
+        
+        # Verify it returns user's AI-generated plans (not default plans)
+        plans_ids = set(plan['id'] for plan in plans_response)
+        ai_plans_match = plans_ids.intersection(ai_plan_ids)
+        
+        if len(ai_plans_match) == 0:
+            self.log_test("3.3 Plans Endpoint Uses AI Plans", False, "Workout plans endpoint doesn't return AI-generated plans")
+            self.token = original_token
+            return False
+        
+        print(f"   ✅ Workout plans endpoint returns {len(plans_response)} AI-generated plans")
+        
+        self.log_test("3.4 Workout Plans AI Integration", True, f"Plans endpoint properly returns AI-generated plans")
+        
+        # Part 4: Complete Flow Test
+        print(f"\n🔄 PART 4: COMPLETE FLOW TEST (NEW USER)")
+        print("-" * 50)
+        
+        # Create a BRAND NEW test user
+        new_timestamp = datetime.now().strftime('%H%M%S') + "new"
+        new_user_data = {
+            "email": f"complete_flow_{new_timestamp}@example.com",
+            "password": "TestPass123!",
+            "name": f"Complete Flow Test {new_timestamp}"
+        }
+        
+        # Register new user
+        new_response = self.run_test(
+            "4.1 Create Brand New Test User",
+            "POST",
+            "auth/register",
+            200,
+            data=new_user_data
+        )
+        
+        if not new_response or 'access_token' not in new_response:
+            self.token = original_token
+            return False
+        
+        new_test_token = new_response['access_token']
+        self.token = new_test_token
+        
+        # Set profile with experience_level, goal, equipment, available_days
+        complete_profile = {
+            "experience_level": "beginner",
+            "goal": "weight_loss",
+            "equipment": ["bodyweight"],
+            "available_days": [
+                {"day": "Tuesday", "minutes": 30},
+                {"day": "Thursday", "minutes": 30},
+                {"day": "Saturday", "minutes": 45}
+            ]
+        }
+        
+        self.run_test(
+            "4.2 Set Complete Profile for New User",
+            "PUT",
+            "user/profile",
+            200,
+            data=complete_profile
+        )
+        
+        # Call POST /schedule/generate (should auto-generate AI plans)
+        print(f"\n🤖 Auto-generating AI plans for new user (may take 5-10 seconds)...")
+        
+        new_url = f"{self.base_url}/api/schedule/generate"
+        new_headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Bearer {new_test_token}'
+        }
+        
+        try:
+            response = requests.post(new_url, headers=new_headers, timeout=60)
+            
+            success = response.status_code == 200
+            if success:
+                data = response.json()
+                if data.get('success'):
+                    print(f"   ✅ Auto AI generation successful")
+                else:
+                    success = False
+            
+            self.log_test("4.3 Auto-Generate AI Plans", success, f"Status: {response.status_code}")
+            
+            if not success:
+                self.token = original_token
+                return False
+                
+        except Exception as e:
+            self.log_test("4.3 Auto-Generate AI Plans", False, f"Exception: {str(e)}")
+            self.token = original_token
+            return False
+        
+        # Immediately call GET /workouts/journey
+        print(f"\n🔍 Testing immediate journey display after AI generation...")
+        
+        immediate_journey = self.run_test(
+            "4.4 GET Journey Immediately After AI Generation",
+            "GET",
+            "workouts/journey",
+            200
+        )
+        
+        if not immediate_journey:
+            self.token = original_token
+            return False
+        
+        # Verify journey returns populated workout data with AI-generated plans
+        if not isinstance(immediate_journey, list) or len(immediate_journey) == 0:
+            self.log_test("4.5 Immediate Journey Display", False, "Journey is empty immediately after AI generation - BUG STILL EXISTS!")
+            self.token = original_token
+            return False
+        
+        immediate_workouts = [item for item in immediate_journey if not item.get('is_rest_day', False)]
+        
+        if len(immediate_workouts) == 0:
+            self.log_test("4.6 Immediate Journey Workouts", False, "No workout items in journey after AI generation - BUG STILL EXISTS!")
+            self.token = original_token
+            return False
+        
+        # Verify workout data is populated (not empty)
+        first_immediate_workout = immediate_workouts[0]
+        
+        if not first_immediate_workout.get('name') or not first_immediate_workout.get('exercises'):
+            self.log_test("4.7 Immediate Journey Workout Data", False, "Workout data is empty after AI generation - BUG STILL EXISTS!")
+            self.token = original_token
+            return False
+        
+        print(f"   ✅ Journey immediately displays {len(immediate_workouts)} populated workouts")
+        print(f"   ✅ First workout: '{first_immediate_workout['name']}'")
+        print(f"   ✅ Exercises: {len(first_immediate_workout['exercises'])} exercises")
+        
+        # Verify all workout IDs match AI plan IDs
+        new_ai_plans = self.run_test(
+            "4.8 Get New User AI Plans",
+            "GET",
+            "workouts/ai-plans",
+            200
+        )
+        
+        if new_ai_plans:
+            new_ai_plan_ids = set(plan['id'] for plan in new_ai_plans)
+            immediate_workout_ids = set(item.get('id') or item.get('workout_plan_id') for item in immediate_workouts)
+            
+            immediate_matches = immediate_workout_ids.intersection(new_ai_plan_ids)
+            
+            if len(immediate_matches) > 0:
+                print(f"   ✅ Journey workout IDs match AI plan IDs ({len(immediate_matches)} matches)")
+                self.log_test("4.9 Journey Uses AI Plan IDs", True, "Journey properly uses AI-generated plan IDs")
+            else:
+                self.log_test("4.9 Journey Uses AI Plan IDs", False, "Journey doesn't use AI-generated plan IDs")
+        
+        # Restore original token
+        self.token = original_token
+        
+        print(f"\n🎯 WORKOUT JOURNEY DISPLAY FIX TEST COMPLETED")
+        print("=" * 60)
+        
+        return True
+
     def run_all_tests(self):
         """Run all API tests"""
         print("🚀 Starting Samastu API Tests")
@@ -795,6 +1204,12 @@ class SamastuAPITester:
         print("🚀 NEW MAIN FOCUS: INTEGRATED AI SCHEDULE FLOW")
         print("🚀" * 30)
         self.test_integrated_ai_schedule_flow()
+        
+        # Test workout journey display fix (CRITICAL BUG FIX TEST)
+        print("\n" + "🔥" * 35)
+        print("🔥 CRITICAL BUG FIX: WORKOUT JOURNEY DISPLAY")
+        print("🔥" * 35)
+        self.test_workout_journey_display_fix()
         
         # Print summary
         print("\n" + "=" * 50)
