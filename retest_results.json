@@ -1,8 +1,8 @@
 {
-  "timestamp": "2025-11-11T10:44:36.450667",
-  "total_tests": 20,
-  "passed_tests": 17,
-  "success_rate": 85.0,
+  "timestamp": "2025-11-11T10:46:11.768112",
+  "total_tests": 23,
+  "passed_tests": 22,
+  "success_rate": 95.65217391304348,
   "results": [
     {
       "test": "Create Test User consecutive3",
@@ -25,9 +25,14 @@
       "details": "Status: 200, Expected: 200"
     },
     {
+      "test": "1.4 Rest Days After Consecutive Workouts",
+      "success": true,
+      "details": "Rest days properly placed after 0 consecutive workouts"
+    },
+    {
       "test": "1.4 Smart Rest Logic - 3 Consecutive",
-      "success": false,
-      "details": "No rest days added for 3 consecutive workout days"
+      "success": true,
+      "details": "Added 2 rest days for 3 consecutive workout days"
     },
     {
       "test": "Create Test User twopairs",
@@ -66,8 +71,18 @@
     },
     {
       "test": "3.2 Generate Schedule Mon/Wed/Fri",
-      "success": false,
-      "details": "Exception: HTTPSConnectionPool(host='fitgame-app-1.preview.emergentagent.com', port=443): Read timed out. (read timeout=30)"
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "3.3 Get Schedule Mon/Wed/Fri",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "3.4 Natural Gaps Respected",
+      "success": true,
+      "details": "Correctly avoided adding rest days with natural gaps"
     },
     {
       "test": "Create Test User monday",
