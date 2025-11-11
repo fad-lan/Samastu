@@ -180,7 +180,7 @@ const Onboarding = ({ user, theme, onToggleTheme }) => {
         
         <div className="mb-8">
           <div className="flex justify-between items-center mb-4">
-            {[1, 2, 3, 4, 5, 6].map((s) => (
+            {[1, 2, 3, 4, 5, 6, 7].map((s) => (
               <div
                 key={s}
                 className={`h-2 flex-1 mx-1 rounded-full transition-all ${
@@ -189,7 +189,7 @@ const Onboarding = ({ user, theme, onToggleTheme }) => {
               />
             ))}
           </div>
-          <p className="text-center" style={{ color: 'var(--text-secondary)' }}>Step {step} of 6</p>
+          <p className="text-center" style={{ color: 'var(--text-secondary)' }}>Step {step} of 7</p>
         </div>
 
         <div className="rounded-3xl p-8 premium-shadow border" style={{ 
