@@ -140,11 +140,11 @@ backend:
 
   - task: "Week Start on Monday"
     implemented: true
-    working: false
+    working: "NA"
     file: "/app/backend/server.py"
     stuck_count: 1
     priority: "medium"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "main"
