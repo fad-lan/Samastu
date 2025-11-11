@@ -1162,6 +1162,672 @@ class SamastuAPITester:
         
         return True
 
+    def test_custom_plan_duration(self):
+        """Test custom plan duration feature with different units"""
+        print(f"\n🎯 TESTING CUSTOM PLAN DURATION FEATURE")
+        print("=" * 60)
+        
+        # Part 1: Test 8 weeks duration
+        print(f"\n📋 PART 1: TEST 8 WEEKS DURATION")
+        print("-" * 40)
+        
+        # Create a new test user
+        timestamp = datetime.now().strftime('%H%M%S')
+        user_data = {
+            "email": f"duration_test_{timestamp}@example.com",
+            "password": "TestPass123!",
+            "name": f"Duration Test User {timestamp}"
+        }
+        
+        response = self.run_test(
+            "1.1 Create Test User for Duration",
+            "POST",
+            "auth/register",
+            200,
+            data=user_data
+        )
+        
+        if not response or 'access_token' not in response:
+            print("❌ Failed to create test user, stopping duration test")
+            return False
+        
+        test_token = response['access_token']
+        original_token = self.token
+        self.token = test_token
+        
+        # Set profile with 8 weeks duration
+        profile_data = {
+            "experience_level": "intermediate",
+            "goal": "muscle_building",
+            "equipment": ["dumbbells"],
+            "available_days": [
+                {"day": "Monday", "minutes": 45},
+                {"day": "Wednesday", "minutes": 30},
+                {"day": "Friday", "minutes": 45}
+            ],
+            "plan_duration": 8,
+            "plan_duration_unit": "weeks"
+        }
+        
+        self.run_test(
+            "1.2 Set Profile with 8 Weeks Duration",
+            "PUT",
+            "user/profile",
+            200,
+            data=profile_data
+        )
+        
+        # Generate schedule
+        url = f"{self.base_url}/api/schedule/generate"
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Bearer {test_token}'
+        }
+        
+        try:
+            response = requests.post(url, headers=headers, timeout=60)
+            success = response.status_code == 200
+            
+            if success:
+                data = response.json()
+                if data.get('success'):
+                    scheduled_count = data.get('scheduled_count', 0)
+                    print(f"   ✅ 8 weeks schedule generated with {scheduled_count} items")
+                    
+                    # Verify approximately 8 weeks worth of items (8*3 = 24 available days)
+                    expected_min = 20  # Allow some variance
+                    expected_max = 30
+                    
+                    if expected_min <= scheduled_count <= expected_max:
+                        print(f"   ✅ Schedule count {scheduled_count} is within expected range for 8 weeks")
+                        self.log_test("1.3 8 Weeks Schedule Count", True, f"Generated {scheduled_count} items for 8 weeks")
+                    else:
+                        self.log_test("1.3 8 Weeks Schedule Count", False, f"Expected {expected_min}-{expected_max} items, got {scheduled_count}")
+                else:
+                    success = False
+            
+            self.log_test("1.3 Generate 8 Weeks Schedule", success, f"Status: {response.status_code}")
+            
+        except Exception as e:
+            self.log_test("1.3 Generate 8 Weeks Schedule", False, f"Exception: {str(e)}")
+        
+        # Part 2: Test 2 months duration
+        print(f"\n📋 PART 2: TEST 2 MONTHS DURATION")
+        print("-" * 40)
+        
+        # Update profile to 2 months
+        profile_data["plan_duration"] = 2
+        profile_data["plan_duration_unit"] = "months"
+        
+        self.run_test(
+            "2.1 Update Profile to 2 Months Duration",
+            "PUT",
+            "user/profile",
+            200,
+            data=profile_data
+        )
+        
+        # Reset and generate new schedule
+        reset_url = f"{self.base_url}/api/schedule/reset"
+        try:
+            requests.delete(reset_url, headers=headers, timeout=30)
+            
+            response = requests.post(url, headers=headers, timeout=60)
+            success = response.status_code == 200
+            
+            if success:
+                data = response.json()
+                if data.get('success'):
+                    scheduled_count = data.get('scheduled_count', 0)
+                    print(f"   ✅ 2 months schedule generated with {scheduled_count} items")
+                    
+                    # Verify approximately 2 months worth (2*4*3 = 24 available days)
+                    expected_min = 20
+                    expected_max = 30
+                    
+                    if expected_min <= scheduled_count <= expected_max:
+                        print(f"   ✅ Schedule count {scheduled_count} is within expected range for 2 months")
+                        self.log_test("2.2 2 Months Schedule Count", True, f"Generated {scheduled_count} items for 2 months")
+                    else:
+                        self.log_test("2.2 2 Months Schedule Count", False, f"Expected {expected_min}-{expected_max} items, got {scheduled_count}")
+                else:
+                    success = False
+            
+            self.log_test("2.2 Generate 2 Months Schedule", success, f"Status: {response.status_code}")
+            
+        except Exception as e:
+            self.log_test("2.2 Generate 2 Months Schedule", False, f"Exception: {str(e)}")
+        
+        # Part 3: Test 1 year duration
+        print(f"\n📋 PART 3: TEST 1 YEAR DURATION")
+        print("-" * 40)
+        
+        # Update profile to 1 year
+        profile_data["plan_duration"] = 1
+        profile_data["plan_duration_unit"] = "years"
+        
+        self.run_test(
+            "3.1 Update Profile to 1 Year Duration",
+            "PUT",
+            "user/profile",
+            200,
+            data=profile_data
+        )
+        
+        # Reset and generate new schedule
+        try:
+            requests.delete(reset_url, headers=headers, timeout=30)
+            
+            response = requests.post(url, headers=headers, timeout=60)
+            success = response.status_code == 200
+            
+            if success:
+                data = response.json()
+                if data.get('success'):
+                    scheduled_count = data.get('scheduled_count', 0)
+                    print(f"   ✅ 1 year schedule generated with {scheduled_count} items")
+                    
+                    # Verify approximately 1 year worth (52*3 = 156 available days)
+                    expected_min = 140
+                    expected_max = 170
+                    
+                    if expected_min <= scheduled_count <= expected_max:
+                        print(f"   ✅ Schedule count {scheduled_count} is within expected range for 1 year")
+                        self.log_test("3.2 1 Year Schedule Count", True, f"Generated {scheduled_count} items for 1 year")
+                    else:
+                        self.log_test("3.2 1 Year Schedule Count", False, f"Expected {expected_min}-{expected_max} items, got {scheduled_count}")
+                else:
+                    success = False
+            
+            self.log_test("3.2 Generate 1 Year Schedule", success, f"Status: {response.status_code}")
+            
+        except Exception as e:
+            self.log_test("3.2 Generate 1 Year Schedule", False, f"Exception: {str(e)}")
+        
+        # Restore original token
+        self.token = original_token
+        
+        print(f"\n🎯 CUSTOM PLAN DURATION TEST COMPLETED")
+        print("=" * 60)
+        
+        return True
+
+    def test_smart_rest_day_logic(self):
+        """Test smart rest day logic with different availability patterns"""
+        print(f"\n🎯 TESTING SMART REST DAY LOGIC")
+        print("=" * 60)
+        
+        # Part 1: Test Mon/Wed/Fri (natural gaps) - should NOT add rest days
+        print(f"\n📋 PART 1: TEST MON/WED/FRI (NATURAL GAPS)")
+        print("-" * 50)
+        
+        # Create test user
+        timestamp = datetime.now().strftime('%H%M%S')
+        user_data = {
+            "email": f"rest_test1_{timestamp}@example.com",
+            "password": "TestPass123!",
+            "name": f"Rest Test User 1 {timestamp}"
+        }
+        
+        response = self.run_test(
+            "1.1 Create Test User for Rest Logic",
+            "POST",
+            "auth/register",
+            200,
+            data=user_data
+        )
+        
+        if not response or 'access_token' not in response:
+            print("❌ Failed to create test user, stopping rest day test")
+            return False
+        
+        test_token = response['access_token']
+        original_token = self.token
+        self.token = test_token
+        
+        # Set profile with Mon/Wed/Fri availability (natural gaps)
+        profile_data = {
+            "experience_level": "intermediate",
+            "goal": "muscle_building",
+            "equipment": ["dumbbells"],
+            "available_days": [
+                {"day": "Monday", "minutes": 45},
+                {"day": "Wednesday", "minutes": 45},
+                {"day": "Friday", "minutes": 45}
+            ],
+            "plan_duration": 2,
+            "plan_duration_unit": "weeks"
+        }
+        
+        self.run_test(
+            "1.2 Set Profile with Mon/Wed/Fri",
+            "PUT",
+            "user/profile",
+            200,
+            data=profile_data
+        )
+        
+        # Generate schedule
+        url = f"{self.base_url}/api/schedule/generate"
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Bearer {test_token}'
+        }
+        
+        try:
+            response = requests.post(url, headers=headers, timeout=60)
+            success = response.status_code == 200
+            
+            if success:
+                data = response.json()
+                if data.get('success'):
+                    print(f"   ✅ Schedule generated successfully")
+                else:
+                    success = False
+            
+            self.log_test("1.3 Generate Mon/Wed/Fri Schedule", success, f"Status: {response.status_code}")
+            
+        except Exception as e:
+            self.log_test("1.3 Generate Mon/Wed/Fri Schedule", False, f"Exception: {str(e)}")
+        
+        # Check schedule for rest days
+        schedule_response = self.run_test(
+            "1.4 Get Mon/Wed/Fri Schedule",
+            "GET",
+            "schedule/calendar",
+            200
+        )
+        
+        if schedule_response:
+            rest_days = [item for item in schedule_response if item.get('is_rest_day', False)]
+            workout_days = [item for item in schedule_response if not item.get('is_rest_day', False)]
+            
+            print(f"   📊 Schedule analysis:")
+            print(f"   - Total items: {len(schedule_response)}")
+            print(f"   - Workout days: {len(workout_days)}")
+            print(f"   - Rest days: {len(rest_days)}")
+            
+            # Verify NO additional rest days are added (only workout days on Mon/Wed/Fri)
+            if len(rest_days) == 0:
+                print(f"   ✅ No additional rest days added (natural gaps respected)")
+                self.log_test("1.5 No Additional Rest Days", True, "Smart logic correctly avoided adding rest days with natural gaps")
+            else:
+                print(f"   ❌ {len(rest_days)} rest days were added despite natural gaps")
+                self.log_test("1.5 No Additional Rest Days", False, f"Added {len(rest_days)} rest days despite natural gaps")
+            
+            # Verify workouts are only on Mon/Wed/Fri
+            workout_days_of_week = [item['day_of_week'] for item in workout_days]
+            expected_days = ['Monday', 'Wednesday', 'Friday']
+            unexpected_days = [day for day in workout_days_of_week if day not in expected_days]
+            
+            if len(unexpected_days) == 0:
+                print(f"   ✅ Workouts only scheduled on Mon/Wed/Fri")
+                self.log_test("1.6 Correct Workout Days", True, "Workouts only on available days")
+            else:
+                print(f"   ❌ Workouts scheduled on unexpected days: {set(unexpected_days)}")
+                self.log_test("1.6 Correct Workout Days", False, f"Unexpected workout days: {set(unexpected_days)}")
+        
+        # Part 2: Test Mon/Tue/Wed (consecutive) - should add rest days
+        print(f"\n📋 PART 2: TEST MON/TUE/WED (CONSECUTIVE DAYS)")
+        print("-" * 50)
+        
+        # Create another test user
+        user_data2 = {
+            "email": f"rest_test2_{timestamp}@example.com",
+            "password": "TestPass123!",
+            "name": f"Rest Test User 2 {timestamp}"
+        }
+        
+        response = self.run_test(
+            "2.1 Create Test User for Consecutive Days",
+            "POST",
+            "auth/register",
+            200,
+            data=user_data2
+        )
+        
+        if response and 'access_token' in response:
+            test_token2 = response['access_token']
+            self.token = test_token2
+            
+            # Set profile with Mon/Tue/Wed availability (consecutive days)
+            profile_data2 = {
+                "experience_level": "intermediate",
+                "goal": "muscle_building",
+                "equipment": ["dumbbells"],
+                "available_days": [
+                    {"day": "Monday", "minutes": 45},
+                    {"day": "Tuesday", "minutes": 45},
+                    {"day": "Wednesday", "minutes": 45}
+                ],
+                "plan_duration": 2,
+                "plan_duration_unit": "weeks"
+            }
+            
+            self.run_test(
+                "2.2 Set Profile with Mon/Tue/Wed",
+                "PUT",
+                "user/profile",
+                200,
+                data=profile_data2
+            )
+            
+            # Generate schedule
+            headers2 = {
+                'Content-Type': 'application/json',
+                'Authorization': f'Bearer {test_token2}'
+            }
+            
+            try:
+                response = requests.post(url, headers=headers2, timeout=60)
+                success = response.status_code == 200
+                
+                if success:
+                    data = response.json()
+                    if data.get('success'):
+                        print(f"   ✅ Consecutive days schedule generated successfully")
+                    else:
+                        success = False
+                
+                self.log_test("2.3 Generate Mon/Tue/Wed Schedule", success, f"Status: {response.status_code}")
+                
+            except Exception as e:
+                self.log_test("2.3 Generate Mon/Tue/Wed Schedule", False, f"Exception: {str(e)}")
+            
+            # Check schedule for rest days
+            schedule_response2 = self.run_test(
+                "2.4 Get Mon/Tue/Wed Schedule",
+                "GET",
+                "schedule/calendar",
+                200
+            )
+            
+            if schedule_response2:
+                rest_days2 = [item for item in schedule_response2 if item.get('is_rest_day', False)]
+                workout_days2 = [item for item in schedule_response2 if not item.get('is_rest_day', False)]
+                
+                print(f"   📊 Consecutive days schedule analysis:")
+                print(f"   - Total items: {len(schedule_response2)}")
+                print(f"   - Workout days: {len(workout_days2)}")
+                print(f"   - Rest days: {len(rest_days2)}")
+                
+                # Verify rest days ARE added after consecutive workouts
+                if len(rest_days2) > 0:
+                    print(f"   ✅ Rest days added for consecutive workout days")
+                    self.log_test("2.5 Rest Days Added for Consecutive", True, f"Added {len(rest_days2)} rest days for consecutive workouts")
+                else:
+                    print(f"   ❌ No rest days added despite consecutive workout days")
+                    self.log_test("2.5 Rest Days Added for Consecutive", False, "No rest days added for consecutive workouts")
+        
+        # Part 3: Test Mon/Tue/Thu/Fri (two pairs of consecutive)
+        print(f"\n📋 PART 3: TEST MON/TUE/THU/FRI (TWO PAIRS)")
+        print("-" * 50)
+        
+        # Create third test user
+        user_data3 = {
+            "email": f"rest_test3_{timestamp}@example.com",
+            "password": "TestPass123!",
+            "name": f"Rest Test User 3 {timestamp}"
+        }
+        
+        response = self.run_test(
+            "3.1 Create Test User for Two Pairs",
+            "POST",
+            "auth/register",
+            200,
+            data=user_data3
+        )
+        
+        if response and 'access_token' in response:
+            test_token3 = response['access_token']
+            self.token = test_token3
+            
+            # Set profile with Mon/Tue/Thu/Fri availability (two pairs)
+            profile_data3 = {
+                "experience_level": "intermediate",
+                "goal": "muscle_building",
+                "equipment": ["dumbbells"],
+                "available_days": [
+                    {"day": "Monday", "minutes": 45},
+                    {"day": "Tuesday", "minutes": 45},
+                    {"day": "Thursday", "minutes": 45},
+                    {"day": "Friday", "minutes": 45}
+                ],
+                "plan_duration": 2,
+                "plan_duration_unit": "weeks"
+            }
+            
+            self.run_test(
+                "3.2 Set Profile with Mon/Tue/Thu/Fri",
+                "PUT",
+                "user/profile",
+                200,
+                data=profile_data3
+            )
+            
+            # Generate schedule
+            headers3 = {
+                'Content-Type': 'application/json',
+                'Authorization': f'Bearer {test_token3}'
+            }
+            
+            try:
+                response = requests.post(url, headers=headers3, timeout=60)
+                success = response.status_code == 200
+                
+                if success:
+                    data = response.json()
+                    if data.get('success'):
+                        print(f"   ✅ Two pairs schedule generated successfully")
+                    else:
+                        success = False
+                
+                self.log_test("3.3 Generate Two Pairs Schedule", success, f"Status: {response.status_code}")
+                
+            except Exception as e:
+                self.log_test("3.3 Generate Two Pairs Schedule", False, f"Exception: {str(e)}")
+            
+            # Check schedule for strategic rest day placement
+            schedule_response3 = self.run_test(
+                "3.4 Get Two Pairs Schedule",
+                "GET",
+                "schedule/calendar",
+                200
+            )
+            
+            if schedule_response3:
+                rest_days3 = [item for item in schedule_response3 if item.get('is_rest_day', False)]
+                workout_days3 = [item for item in schedule_response3 if not item.get('is_rest_day', False)]
+                
+                print(f"   📊 Two pairs schedule analysis:")
+                print(f"   - Total items: {len(schedule_response3)}")
+                print(f"   - Workout days: {len(workout_days3)}")
+                print(f"   - Rest days: {len(rest_days3)}")
+                
+                # Verify rest days are strategically placed
+                if len(rest_days3) > 0:
+                    print(f"   ✅ Rest days strategically placed for two consecutive pairs")
+                    self.log_test("3.5 Strategic Rest Day Placement", True, f"Added {len(rest_days3)} rest days for two consecutive pairs")
+                else:
+                    print(f"   ⚠️  No rest days added for two consecutive pairs")
+                    self.log_test("3.5 Strategic Rest Day Placement", False, "No rest days added for two consecutive pairs")
+        
+        # Restore original token
+        self.token = original_token
+        
+        print(f"\n🎯 SMART REST DAY LOGIC TEST COMPLETED")
+        print("=" * 60)
+        
+        return True
+
+    def test_week_start_monday(self):
+        """Test that week starts on Monday in schedule generation"""
+        print(f"\n🎯 TESTING WEEK START ON MONDAY")
+        print("=" * 60)
+        
+        # Create test user
+        timestamp = datetime.now().strftime('%H%M%S')
+        user_data = {
+            "email": f"monday_test_{timestamp}@example.com",
+            "password": "TestPass123!",
+            "name": f"Monday Test User {timestamp}"
+        }
+        
+        response = self.run_test(
+            "1.1 Create Test User for Monday Start",
+            "POST",
+            "auth/register",
+            200,
+            data=user_data
+        )
+        
+        if not response or 'access_token' not in response:
+            print("❌ Failed to create test user, stopping Monday test")
+            return False
+        
+        test_token = response['access_token']
+        original_token = self.token
+        self.token = test_token
+        
+        # Set profile with all days available to see full week pattern
+        profile_data = {
+            "experience_level": "intermediate",
+            "goal": "muscle_building",
+            "equipment": ["dumbbells"],
+            "available_days": [
+                {"day": "Monday", "minutes": 45},
+                {"day": "Tuesday", "minutes": 45},
+                {"day": "Wednesday", "minutes": 45},
+                {"day": "Thursday", "minutes": 45},
+                {"day": "Friday", "minutes": 45},
+                {"day": "Saturday", "minutes": 45},
+                {"day": "Sunday", "minutes": 45}
+            ],
+            "plan_duration": 2,
+            "plan_duration_unit": "weeks"
+        }
+        
+        self.run_test(
+            "1.2 Set Profile with All Days",
+            "PUT",
+            "user/profile",
+            200,
+            data=profile_data
+        )
+        
+        # Generate schedule
+        url = f"{self.base_url}/api/schedule/generate"
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': f'Bearer {test_token}'
+        }
+        
+        try:
+            response = requests.post(url, headers=headers, timeout=60)
+            success = response.status_code == 200
+            
+            if success:
+                data = response.json()
+                if data.get('success'):
+                    print(f"   ✅ Schedule generated successfully")
+                else:
+                    success = False
+            
+            self.log_test("1.3 Generate Full Week Schedule", success, f"Status: {response.status_code}")
+            
+        except Exception as e:
+            self.log_test("1.3 Generate Full Week Schedule", False, f"Exception: {str(e)}")
+        
+        # Get schedule and verify Monday start
+        schedule_response = self.run_test(
+            "1.4 Get Schedule for Monday Verification",
+            "GET",
+            "schedule/calendar",
+            200
+        )
+        
+        if schedule_response and len(schedule_response) > 0:
+            print(f"\n📊 Analyzing week start pattern...")
+            
+            # Group items by date to analyze week structure
+            from datetime import datetime as dt
+            
+            dated_items = []
+            for item in schedule_response:
+                try:
+                    date_obj = dt.fromisoformat(item['scheduled_date']).date()
+                    weekday = date_obj.weekday()  # 0=Monday, 6=Sunday
+                    dated_items.append({
+                        'date': date_obj,
+                        'weekday': weekday,
+                        'day_of_week': item['day_of_week'],
+                        'is_rest_day': item.get('is_rest_day', False)
+                    })
+                except:
+                    continue
+            
+            # Sort by date
+            dated_items.sort(key=lambda x: x['date'])
+            
+            if len(dated_items) >= 7:
+                # Check first week items
+                first_week = dated_items[:7]
+                
+                print(f"   📅 First week schedule:")
+                for item in first_week:
+                    day_name = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][item['weekday']]
+                    print(f"   - {item['date']} ({day_name}): {item['day_of_week']} - {'Rest' if item['is_rest_day'] else 'Workout'}")
+                
+                # Verify Monday is day 0 (weekday calculation)
+                monday_items = [item for item in dated_items if item['weekday'] == 0]  # weekday 0 = Monday
+                
+                if len(monday_items) > 0:
+                    monday_item = monday_items[0]
+                    
+                    if monday_item['day_of_week'] == 'Monday':
+                        print(f"   ✅ Monday correctly identified as weekday 0")
+                        self.log_test("1.5 Monday as Day 0", True, "Monday correctly calculated as weekday 0")
+                    else:
+                        print(f"   ❌ Monday item has day_of_week: {monday_item['day_of_week']}")
+                        self.log_test("1.5 Monday as Day 0", False, f"Monday item has incorrect day_of_week: {monday_item['day_of_week']}")
+                
+                # Verify day_of_week field matches correctly for all days
+                day_mismatches = []
+                expected_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+                
+                for item in dated_items[:7]:  # Check first week
+                    expected_day = expected_days[item['weekday']]
+                    if item['day_of_week'] != expected_day:
+                        day_mismatches.append(f"{item['date']}: expected {expected_day}, got {item['day_of_week']}")
+                
+                if len(day_mismatches) == 0:
+                    print(f"   ✅ All day_of_week fields match correctly")
+                    self.log_test("1.6 Day of Week Field Accuracy", True, "All day_of_week fields match weekday calculations")
+                else:
+                    print(f"   ❌ Day of week mismatches: {day_mismatches}")
+                    self.log_test("1.6 Day of Week Field Accuracy", False, f"Mismatches: {day_mismatches}")
+                
+                # Verify first week starts with Monday dates
+                first_item = dated_items[0]
+                if first_item['weekday'] == 0:  # Monday
+                    print(f"   ✅ First week starts with Monday ({first_item['date']})")
+                    self.log_test("1.7 First Week Starts Monday", True, f"First scheduled item is on Monday: {first_item['date']}")
+                else:
+                    expected_monday = first_item['date'] - timedelta(days=first_item['weekday'])
+                    print(f"   ⚠️  First item is {expected_days[first_item['weekday']]} ({first_item['date']}), Monday would be {expected_monday}")
+                    self.log_test("1.7 First Week Starts Monday", False, f"First item is not Monday: {first_item['date']} ({expected_days[first_item['weekday']]})")
+            
+            else:
+                self.log_test("1.5 Insufficient Schedule Data", False, f"Only {len(dated_items)} items in schedule, need at least 7 for week analysis")
+        
+        # Restore original token
+        self.token = original_token
+        
+        print(f"\n🎯 WEEK START ON MONDAY TEST COMPLETED")
+        print("=" * 60)
+        
+        return True
+
     def run_all_tests(self):
         """Run all API tests"""
         print("🚀 Starting Samastu API Tests")
