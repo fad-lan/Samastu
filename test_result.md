@@ -134,6 +134,9 @@ backend:
       - working: false
         agent: "testing"
         comment: "SMART REST DAY LOGIC TESTING COMPLETED: ✅ Mon/Wed/Fri (natural gaps): Correctly identified no additional rest days needed - only workout days scheduled on available days. ❌ Mon/Tue/Wed (consecutive days): Schedule generation failed with 500 error due to Gemini API rate limiting. ❌ Mon/Tue/Thu/Fri (two pairs): No rest days added for consecutive pairs - algorithm may not be detecting consecutive patterns correctly. CRITICAL ISSUE: Rest day logic for consecutive workout days needs debugging. The algorithm should add rest days after 2-3 consecutive workouts but is not working as expected."
+      - working: "NA"
+        agent: "main"
+        comment: "FIXED: Changed logic to track max_consecutive_count instead of final consecutive_count. Now correctly identifies maximum consecutive workout days in availability pattern (e.g., Mon/Tue/Wed has max 3 consecutive). should_add_rest_days now checks max_consecutive_count >= 2."
 
   - task: "Week Start on Monday"
     implemented: true
