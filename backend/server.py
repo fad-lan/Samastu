@@ -837,10 +837,15 @@ User Profile:
             for day_info in current_user.available_days:
                 user_context += f"- {day_info['day']}: {day_info['minutes']} minutes\n"
         
+        # Get plan duration
+        duration = current_user.plan_duration or 4
+        duration_unit = current_user.plan_duration_unit or "weeks"
+        
         # Create prompt for Gemini
         prompt = f"""{user_context}
+- Plan Duration: {duration} {duration_unit}
 
-Based on this user profile, generate a personalized 4-week workout plan. Create workouts that:
+Based on this user profile, generate a personalized workout plan for {duration} {duration_unit}. Create workouts that:
 1. Match the user's experience level
 2. Align with their fitness goals
 3. Use only available equipment
