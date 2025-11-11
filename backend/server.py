@@ -1012,11 +1012,23 @@ Return ONLY the JSON array, no other text."""
             
             # Check if user is available on this day
             if day_name in available_day_names:
-                # For patterns with max_consecutive_count == 2, add rest days after every 2 consecutive workouts
-                # Check if we should add a rest day AFTER scheduling workouts
+                # First, schedule a workout and increment the counter
+                # Get time available for this day
+                minutes_available = day_minutes_map[day_name]
+                
+                # Filter workouts that fit this day's time
+                day_suitable_plans = [p for p in suitable_plans if p['duration_minutes'] <= minutes_available]
+                
+                if not day_suitable_plans:
+                    day_suitable_plans = suitable_plans  # Fallback
+                
+                # Increment consecutive counter first
+                consecutive_workout_count += 1
+                
+                # Now check if we should convert this to a rest day based on the updated count
                 should_rest_now = False
                 if should_add_rest_days and max_consecutive_count == 2:
-                    # For 2-day patterns, add rest day after every 2 workouts (when consecutive_count reaches 2)
+                    # For 2-day patterns, add rest day when we reach 2 consecutive workouts
                     should_rest_now = consecutive_workout_count == 2
                 elif should_add_rest_days:
                     # For longer patterns, use the original logic
@@ -1025,7 +1037,7 @@ Return ONLY the JSON array, no other text."""
                 logger.info(f"  {schedule_date} ({day_name}): consecutive_count={consecutive_workout_count}, should_rest_now={should_rest_now}")
                 
                 if should_rest_now:
-                    # Schedule rest day on available day
+                    # Convert to rest day
                     scheduled = ScheduledWorkout(
                         user_id=current_user.id,
                         workout_plan_id="rest",
@@ -1036,15 +1048,6 @@ Return ONLY the JSON array, no other text."""
                     )
                     consecutive_workout_count = 0  # Reset counter after rest
                 else:
-                    # Get time available for this day
-                    minutes_available = day_minutes_map[day_name]
-                    
-                    # Filter workouts that fit this day's time
-                    day_suitable_plans = [p for p in suitable_plans if p['duration_minutes'] <= minutes_available]
-                    
-                    if not day_suitable_plans:
-                        day_suitable_plans = suitable_plans  # Fallback
-                    
                     # Schedule workout
                     workout_plan = day_suitable_plans[workout_index % len(day_suitable_plans)]
                     scheduled = ScheduledWorkout(
@@ -1056,7 +1059,6 @@ Return ONLY the JSON array, no other text."""
                         is_completed=False
                     )
                     workout_index += 1
-                    consecutive_workout_count += 1  # Increment consecutive counter
                 
                 schedule.append(scheduled.model_dump())
                 schedule[-1]['created_at'] = schedule[-1]['created_at'].isoformat()
