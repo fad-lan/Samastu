@@ -247,12 +247,8 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus:
-    - "Smart Rest Day Logic"
-    - "Week Start on Monday"
-  stuck_tasks: 
-    - "Smart Rest Day Logic"
-    - "Week Start on Monday"
+  current_focus: []
+  stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
