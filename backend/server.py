@@ -938,31 +938,56 @@ Return ONLY the JSON array, no other text."""
     day_minutes_map = {item['day']: item['minutes'] for item in current_user.available_days}
     available_day_names = list(day_minutes_map.keys())
     
-    # Generate schedule for next 4 weeks
+    # Calculate duration in weeks
+    duration = current_user.plan_duration or 4
+    duration_unit = current_user.plan_duration_unit or "weeks"
+    
+    if duration_unit == "months":
+        total_weeks = duration * 4  # Approximate 4 weeks per month
+    elif duration_unit == "years":
+        total_weeks = duration * 52  # 52 weeks per year
+    else:  # weeks
+        total_weeks = duration
+    
+    # Apply max limit of 3 years (156 weeks)
+    total_weeks = min(total_weeks, 156)
+    
     from datetime import date, timedelta
     today = date.today()
     schedule = []
     
     days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     
-    # Calculate how many workout days per week
-    available_count = len(available_day_names)
+    # Smart rest day logic - check if user has consecutive workout days
+    day_indices = {day: days_of_week.index(day) for day in available_day_names}
+    sorted_indices = sorted(day_indices.values())
     
-    # Determine rest day frequency (every 2-3 workout days)
-    rest_frequency = 3 if available_count >= 4 else 2
+    # Check for consecutive days
+    has_consecutive = False
+    consecutive_count = 1
+    for i in range(1, len(sorted_indices)):
+        if sorted_indices[i] == sorted_indices[i-1] + 1:
+            consecutive_count += 1
+            has_consecutive = True
+        else:
+            consecutive_count = 1
+    
+    # Only add rest days if user has 2+ consecutive workout days
+    should_add_rest_days = has_consecutive and consecutive_count >= 2
+    rest_frequency = 3 if len(available_day_names) >= 4 else 2
     
     workout_index = 0
-    workout_count = 0
+    consecutive_workout_count = 0  # Track consecutive workouts only
     
-    for week in range(4):
+    for week in range(total_weeks):
         for day_offset in range(7):
             schedule_date = today + timedelta(days=week * 7 + day_offset)
             day_name = days_of_week[schedule_date.weekday()]
             
             # Check if user is available on this day
             if day_name in available_day_names:
-                # Check if it should be a rest day
-                is_rest = (workout_count > 0 and workout_count % rest_frequency == 0)
+                # Check if it should be a rest day (only if they have consecutive workout days)
+                is_rest = should_add_rest_days and (consecutive_workout_count > 0 and consecutive_workout_count % rest_frequency == 0)
                 
                 if is_rest:
                     # Schedule rest day
