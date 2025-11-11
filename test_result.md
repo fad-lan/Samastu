@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Make ALL workout plan generation use Gemini AI automatically. AI plans should be generated once during onboarding and used forever unless user resets their plan. Remove standalone AI Generate button and integrate AI generation into the core schedule creation flow."
+user_problem_statement: "Implement custom plan duration, fix week start to Monday, lock future workouts in calendar view, and implement smart rest day logic that doesn't add rest days when user's availability already has natural gaps."
 
 backend:
   - task: "Auto AI Workout Generation in Schedule Creation"
