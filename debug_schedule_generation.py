@@ -60,7 +60,7 @@ def debug_schedule_generation(available_days, total_weeks=2):
             
             # Check if user is available on this day
             if day_name in available_day_names:
-                # Check if it should be a rest day
+                # Check if it should be a rest day (after reaching rest_frequency consecutive workouts)
                 is_rest = should_add_rest_days and (consecutive_workout_count > 0 and consecutive_workout_count % rest_frequency == 0)
                 
                 if is_rest:
