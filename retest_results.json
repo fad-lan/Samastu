@@ -1,0 +1,123 @@
+{
+  "timestamp": "2025-11-11T10:41:23.280010",
+  "total_tests": 23,
+  "passed_tests": 22,
+  "success_rate": 95.65217391304348,
+  "results": [
+    {
+      "test": "Create Test User consecutive3",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "1.1 Set Profile Mon/Tue/Wed",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "1.2 Generate Schedule Mon/Tue/Wed",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "1.3 Get Schedule Mon/Tue/Wed",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "1.4 Rest Days After Consecutive Workouts",
+      "success": true,
+      "details": "Rest days properly placed after 0 consecutive workouts"
+    },
+    {
+      "test": "1.4 Smart Rest Logic - 3 Consecutive",
+      "success": true,
+      "details": "Added 2 rest days for 3 consecutive workout days"
+    },
+    {
+      "test": "Create Test User twopairs",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "2.1 Set Profile Mon/Tue/Thu/Fri",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "2.2 Generate Schedule Mon/Tue/Thu/Fri",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "2.3 Get Schedule Mon/Tue/Thu/Fri",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "2.4 Max Consecutive Count Detection",
+      "success": false,
+      "details": "Algorithm failed to detect max_consecutive_count=2"
+    },
+    {
+      "test": "Create Test User naturalgaps",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "3.1 Set Profile Mon/Wed/Fri",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "3.2 Generate Schedule Mon/Wed/Fri",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "3.3 Get Schedule Mon/Wed/Fri",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "3.4 Natural Gaps Respected",
+      "success": true,
+      "details": "Correctly avoided adding rest days with natural gaps"
+    },
+    {
+      "test": "Create Test User monday",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "1.1 Set Profile for Monday Test",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "1.2 Generate Schedule for Monday Test",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "1.3 Get Schedule for Monday Verification",
+      "success": true,
+      "details": "Status: 200, Expected: 200"
+    },
+    {
+      "test": "1.4 First Item on Monday",
+      "success": true,
+      "details": "First scheduled date 2025-11-10 is Monday"
+    },
+    {
+      "test": "1.5 Nearest Past Monday Start",
+      "success": true,
+      "details": "Schedule correctly starts from 2025-11-10"
+    },
+    {
+      "test": "1.6 Monday-Based Week Alignment",
+      "success": true,
+      "details": "All dates properly aligned with Monday-based weeks"
+    }
+  ]
+}
