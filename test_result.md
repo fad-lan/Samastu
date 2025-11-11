@@ -152,6 +152,9 @@ backend:
       - working: false
         agent: "testing"
         comment: "WEEK START ON MONDAY TESTING COMPLETED: ✅ Monday correctly identified as weekday 0 in calculations. ✅ All day_of_week fields match correctly with weekday calculations. ❌ First week starts on Tuesday (2025-11-11) instead of Monday (expected 2025-11-10). ISSUE: While weekday calculations are correct, the schedule generation doesn't ensure the first scheduled item starts on a Monday. The algorithm should adjust the start date to begin on the nearest Monday."
+      - working: "NA"
+        agent: "main"
+        comment: "FIXED: Added logic to align start_date to nearest past Monday before schedule generation. Calculates days_until_monday and subtracts from today. Schedule now starts from Monday instead of current day. Uses start_date instead of today in schedule loop."
     status_history:
       - working: true
         agent: "testing"
