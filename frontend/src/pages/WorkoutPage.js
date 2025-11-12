@@ -73,8 +73,9 @@ const WorkoutPage = ({ theme, onToggleTheme }) => {
     }
 
     if (currentExercise < workout.exercises.length - 1) {
-      // Start rest timer
-      setRestTimer(exercise.rest_seconds);
+      // Start rest timer - use 30s default if rest_seconds is 0 or undefined
+      const restTime = exercise.rest_seconds || 30;
+      setRestTimer(restTime);
       setIsResting(true);
     } else {
       // All exercises completed
