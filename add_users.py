@@ -42,14 +42,14 @@ def create_user(index):
 
 def main():
     print("=" * 60)
-    print("ADDING 200 USERS TO SAMASTU DATABASE")
+    print("ADDING 147 USERS TO SAMASTU DATABASE")
     print("=" * 60)
     print()
     
     success_count = 0
     fail_count = 0
     
-    for i in range(1, 201):
+    for i in range(1, 148):
         if create_user(i):
             success_count += 1
         else:
@@ -57,7 +57,7 @@ def main():
         
         # Small delay to avoid overwhelming the server
         if i % 10 == 0:
-            print(f"\n--- Progress: {i}/200 users processed ---\n")
+            print(f"\n--- Progress: {i}/147 users processed ---\n")
     
     print()
     print("=" * 60)
