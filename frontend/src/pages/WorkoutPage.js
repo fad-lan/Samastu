@@ -6,8 +6,9 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { Play, Pause, ArrowLeft, Check } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
+import ThemeToggle from '@/components/ThemeToggle';
 
-const WorkoutPage = () => {
+const WorkoutPage = ({ theme, onToggleTheme }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [workout, setWorkout] = useState(null);
