@@ -59,7 +59,7 @@ const Landing = ({ theme, onToggleTheme }) => {
   const stats = [
     { label: 'Workouts Tracked', value: '10K+', icon: Dumbbell },
     { label: 'Completion Rate', value: '95%', icon: CheckCircle },
-    { label: 'Active Users', value: '5K+', icon: Users },
+    { label: 'Active Users', value: usersCount, icon: Users },
     { label: 'Average Rating', value: '4.9', icon: Star }
   ];
 
