@@ -162,7 +162,7 @@ const Home = ({ user, onLogout, theme, onToggleTheme }) => {
             <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>Next Level</span>
             <span className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{Math.floor(xpProgress)}%</span>
           </div>
-          <div className="w-full h-3 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+          <div className="w-full h-3 rounded-full overflow-hidden" style={{ backgroundColor: '#F5F5F5' }}>
             <div
               className="h-full bg-gradient-to-r from-[#D4AF37] to-[#c19b2e] rounded-full transition-all duration-500"
               style={{ width: `${xpProgress}%` }}

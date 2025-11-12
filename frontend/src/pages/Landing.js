@@ -46,9 +46,9 @@ const Landing = ({ theme, onToggleTheme }) => {
       quote: 'Samastu made working out fun again. The gamification keeps me coming back every day!'
     },
     {
-      name: 'Mike R.',
-      avatar: 'MR',
-      quote: 'Love the clean interface and the streak system. It\'s like Duolingo but for fitness!'
+      name: 'Abiyasha',
+      avatar: 'https://i.imgur.com/VeGSlKo.jpeg',
+      quote: "As someone who's used to working out and wants to get back into it, I found Samastu super helpful! The standout feature for me is being able to customize the duration to fit my needs - it doesn't feel overwhelming. Plus, the gamified experience is on point. If they can nail general workouts like Strava does, Samastu might just be the next big thing 🔥🔥🔥"
     },
     {
       name: 'Emma L.',
@@ -237,9 +237,7 @@ const Landing = ({ theme, onToggleTheme }) => {
                 style={{ animationDelay: `${idx * 0.1}s`, boxShadow: 'var(--shadow-lg)'}}
               >
                 <div className="flex items-center gap-4 mb-6" >
-                  <div className="w-14 h-14 bg-[#D4AF37] rounded-full flex items-center justify-center text-white font-bold text-lg">
-                    {testimonial.avatar}
-                  </div>
+                  <img src={testimonial.avatar} alt={testimonial.name} className="w-12 h-12 rounded-full" />
                   <div>
                     <p className="font-bold style={{ color: 'var(--text-secondary)' }}">{testimonial.name}</p>
                     <div className="flex gap-1">

@@ -199,10 +199,10 @@ const Onboarding = ({ user, theme, onToggleTheme }) => {
         }}>
           {step === 1 && (
             <div className="animate-slideUp">
-              <h2 className="text-3xl font-bold text-[#1A1A1A] mb-2">Welcome, {user?.name}!</h2>
-              <p className="text-gray-600 mb-6">Let's personalize your fitness journey</p>
+              <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>Welcome, {user?.name}!</h2>
+              <p className="text-600 mb-6" style={{ color: 'var(--text-primary)' }}>Let's personalize your fitness journey</p>
               
-              <Label className="text-[#1A1A1A] mb-3 block text-lg font-medium">Select Gender</Label>
+              <Label className="mb-3 block text-lg font-medium" style={{ color: 'var(--text-primary)' }}>Select Gender</Label>
               <div className="grid grid-cols-3 gap-3">
                 {['Male', 'Female', 'Other'].map((g) => (
                   <button
@@ -212,8 +212,9 @@ const Onboarding = ({ user, theme, onToggleTheme }) => {
                     className={`p-4 rounded-2xl border-2 font-medium transition-all ${
                       formData.gender === g
                         ? 'border-[#D4AF37] bg-[#D4AF37]/10 text-[#D4AF37]'
-                        : 'border-gray-200 text-gray-600 hover:border-[#D4AF37]/50'
+                        : 'border-gray-200 hover:border-[#D4AF37]/50'
                     }`}
+                    style={{ textColor: 'var(--text-primary)' }}
                   >
                     {g}
                   </button>
@@ -224,12 +225,12 @@ const Onboarding = ({ user, theme, onToggleTheme }) => {
 
           {step === 2 && (
             <div className="animate-slideUp">
-              <h2 className="text-3xl font-bold text-[#1A1A1A] mb-2">Your Stats</h2>
-              <p className="text-gray-600 mb-6">Help us track your progress</p>
+              <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>Your Stats</h2>
+              <p className="text-600 mb-6" style={{ color: 'var(--text-primary)' }}>Help us track your progress</p>
               
               <div className="space-y-5">
                 <div>
-                  <Label htmlFor="height" className="text-[#1A1A1A] mb-2 block font-medium">Height (cm)</Label>
+                  <Label htmlFor="height" className="mb-2 block font-medium" style={{ color: 'var(--text-primary)' }}>Height (cm)</Label>
                   <Input
                     id="height"
                     name="height"
@@ -243,7 +244,7 @@ const Onboarding = ({ user, theme, onToggleTheme }) => {
                 </div>
 
                 <div>
-                  <Label htmlFor="weight" className="text-[#1A1A1A] mb-2 block font-medium">Weight (kg)</Label>
+                  <Label htmlFor="weight" className="mb-2 block font-medium" style={{ color: 'var(--text-primary)' }}>Weight (kg)</Label>
                   <Input
                     id="weight"
                     name="weight"
@@ -261,8 +262,8 @@ const Onboarding = ({ user, theme, onToggleTheme }) => {
 
           {step === 3 && (
             <div className="animate-slideUp">
-              <h2 className="text-3xl font-bold text-[#1A1A1A] mb-2">Your Goal</h2>
-              <p className="text-gray-600 mb-6">What do you want to achieve?</p>
+              <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>Your Goal</h2>
+              <p className="text-600 mb-6" style={{ color: 'var(--text-primary)' }}>What do you want to achieve?</p>
               
               <div className="space-y-3">
                 {goals.map((goal) => (
@@ -273,8 +274,9 @@ const Onboarding = ({ user, theme, onToggleTheme }) => {
                     className={`w-full p-5 rounded-2xl border-2 font-medium text-left transition-all flex items-center justify-between ${
                       formData.goal === goal.id
                         ? 'border-[#D4AF37] bg-[#D4AF37]/10 text-[#D4AF37]'
-                        : 'border-gray-200 text-[#1A1A1A] hover:border-[#D4AF37]/50'
+                        : 'border-gray-200 hover:border-[#D4AF37]/50'
                     }`}
+                    style={{ textColor: 'var(--text-primary)' }}
                   >
                     <span className="flex items-center gap-3">
                       <span className="text-2xl">{goal.icon}</span>
@@ -293,7 +295,7 @@ const Onboarding = ({ user, theme, onToggleTheme }) => {
 
           {step === 4 && (
             <div className="animate-slideUp">
-              <h2 className="text-3xl font-bold text-[#1A1A1A] mb-2">Experience Level</h2>
+              <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>Experience Level</h2>
               <p className="text-gray-600 mb-6">What's your workout experience?</p>
               
               <div className="space-y-3">
@@ -305,8 +307,9 @@ const Onboarding = ({ user, theme, onToggleTheme }) => {
                     className={`w-full p-5 rounded-2xl border-2 font-medium text-left transition-all ${
                       formData.experience_level === level.id
                         ? 'border-[#D4AF37] bg-[#D4AF37]/10 text-[#D4AF37]'
-                        : 'border-gray-200 text-[#1A1A1A] hover:border-[#D4AF37]/50'
+                        : 'border-gray-200 hover:border-[#D4AF37]/50'
                     }`}
+                    style={{ textColor: 'var(--text-primary)' }}
                   >
                     <div className="flex items-center justify-between">
                       <div>
@@ -329,8 +332,8 @@ const Onboarding = ({ user, theme, onToggleTheme }) => {
 
           {step === 5 && (
             <div className="animate-slideUp">
-              <h2 className="text-3xl font-bold text-[#1A1A1A] mb-2">Available Days & Time</h2>
-              <p className="text-gray-600 mb-6">Select days and set how much time you have each day</p>
+              <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>Available Days & Time</h2>
+              <p className="text-600 mb-6" style={{ color: 'var(--text-primary)' }}>Select days and set how much time you have each day</p>
               
               <div className="space-y-3">
                 {daysOfWeek.map((day) => {
@@ -343,8 +346,9 @@ const Onboarding = ({ user, theme, onToggleTheme }) => {
                         className={`w-full p-4 rounded-2xl border-2 font-medium text-left transition-all flex items-center justify-between ${
                           isSelected
                             ? 'border-[#D4AF37] bg-[#D4AF37]/10 text-[#D4AF37]'
-                            : 'border-gray-200 text-[#1A1A1A] hover:border-[#D4AF37]/50'
+                            : 'border-gray-200 hover:border-[#D4AF37]/50'
                         }`}
+                        style={{ textColor: 'var(--text-primary)' }}
                       >
                         {day}
                         {isSelected && (
@@ -356,7 +360,7 @@ const Onboarding = ({ user, theme, onToggleTheme }) => {
                       
                       {isSelected && (
                         <div className="ml-4 animate-slideUp">
-                          <Label className="text-[#1A1A1A] mb-2 block text-sm">Minutes available on {day}</Label>
+                          <Label className=" mb-2 block text-sm" style={{ color: 'var(--text-primary)' }}>Minutes available on {day}</Label>
                           <Input
                             type="number"
                             value={getDayMinutes(day)}
@@ -383,8 +387,8 @@ const Onboarding = ({ user, theme, onToggleTheme }) => {
 
           {step === 6 && (
             <div className="animate-slideUp">
-              <h2 className="text-3xl font-bold text-[#1A1A1A] mb-2">Equipment</h2>
-              <p className="text-gray-600 mb-6">What do you have access to?</p>
+              <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>Equipment</h2>
+              <p className="text-600 mb-6" style={{ color: 'var(--text-primary)' }}>What do you have access to?</p>
               
               <div className="space-y-3">
                 {equipmentOptions.map((equipment) => (
@@ -395,8 +399,9 @@ const Onboarding = ({ user, theme, onToggleTheme }) => {
                     className={`w-full p-4 rounded-2xl border-2 font-medium text-left transition-all flex items-center justify-between ${
                       formData.equipment.includes(equipment.id)
                         ? 'border-[#D4AF37] bg-[#D4AF37]/10 text-[#D4AF37]'
-                        : 'border-gray-200 text-[#1A1A1A] hover:border-[#D4AF37]/50'
+                        : 'border-gray-200 hover:border-[#D4AF37]/50'
                     }`}
+                    style={{ textColor: 'var(--text-primary)' }}
                   >
                     {equipment.label}
                     {formData.equipment.includes(equipment.id) && (
@@ -412,12 +417,12 @@ const Onboarding = ({ user, theme, onToggleTheme }) => {
 
           {step === 7 && (
             <div className="animate-slideUp">
-              <h2 className="text-3xl font-bold text-[#1A1A1A] mb-2">Plan Duration</h2>
-              <p className="text-gray-600 mb-6">How long should your workout plan be?</p>
+              <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>Plan Duration</h2>
+              <p className="text-600 mb-6" style={{ color: 'var(--text-primary)' }}>How long should your workout plan be?</p>
               
               <div className="space-y-4">
                 <div>
-                  <Label className="text-[#1A1A1A] mb-2 block">Duration</Label>
+                  <Label className="mb-2 block" style={{ color: 'var(--text-primary)' }}>Duration</Label>
                   <Input
                     type="number"
                     name="plan_duration"
@@ -431,7 +436,7 @@ const Onboarding = ({ user, theme, onToggleTheme }) => {
                 </div>
                 
                 <div>
-                  <Label className="text-[#1A1A1A] mb-2 block">Unit</Label>
+                  <Label className="mb-2 block" style={{ color: 'var(--text-primary)' }}>Unit</Label>
                   <select
                     name="plan_duration_unit"
                     value={formData.plan_duration_unit}
