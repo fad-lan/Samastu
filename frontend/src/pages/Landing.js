@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Dumbbell, Zap, Target, Trophy, TrendingUp, Users, Star, CheckCircle } from 'lucide-react';
 import ThemeToggle from '@/components/ThemeToggle';
 
+
+
 const Landing = ({ theme, onToggleTheme }) => {
   const navigate = useNavigate();
 
@@ -84,7 +86,7 @@ const Landing = ({ theme, onToggleTheme }) => {
             <Button
               onClick={() => navigate('/register')}
               data-testid="nav-signup-button"
-              className="bg-[#D4AF37] hover:bg-[#060736] text-white font-semibold"
+              className="btn-dynamic font-semibold"
             >
               Get Started
             </Button>
@@ -93,7 +95,7 @@ const Landing = ({ theme, onToggleTheme }) => {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6 bg-gray-100">
+      <section className="pt-32 pb-20 px-6 bg-gray-100 lg:pt-60 lg:pb-48" style={{ backgroundColor: 'var(--bg-secondary)' }}>
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="animate-fadeIn">
@@ -108,7 +110,7 @@ const Landing = ({ theme, onToggleTheme }) => {
                 <Button
                   onClick={() => navigate('/register')}
                   data-testid="hero-get-started-button"
-                  className="bg-[#D4AF37] hover:bg-[#060736] text-white font-semibold h-14 px-8 text-lg rounded-xl"
+                  className="btn-dynamic font-semibold h-14 px-8 text-lg rounded-xl"
                 >
                   Get Started Free
                 </Button>
@@ -128,8 +130,11 @@ const Landing = ({ theme, onToggleTheme }) => {
             </div>
             
             <div className="relative animate-slideUp">
-              <div className="bg-gradient-to-br from-[#D4AF37]/10 to-[#c19b2e]/5 rounded-3xl p-8 premium-shadow">
-                <div className="rounded-2xl p-6 premium-shadow" style={{ backgroundColor: 'var(--card-bg)' }}>
+              <div 
+                className="rounded-2xl p-6 premium-shadow" 
+                style={{ 
+                  backgroundColor: 'var(--card-bg)', 
+                  boxShadow: 'var(--shadow-xl)'}}>
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-12 h-12 bg-[#D4AF37] rounded-full flex items-center justify-center">
                       <Dumbbell className="w-6 h-6 text-white" />
@@ -140,15 +145,15 @@ const Landing = ({ theme, onToggleTheme }) => {
                     </div>
                   </div>
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between p-3 rounded-xl" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+                    <div className="flex items-center justify-between p-3 rounded-xl" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
                       <span className="text-sm" style={{ color: 'var(--text-primary)' }}>Push-ups</span>
                       <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>3 × 10</span>
                     </div>
-                    <div className="flex items-center justify-between p-3 rounded-xl" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+                    <div className="flex items-center justify-between p-3 rounded-xl" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
                       <span className="text-sm" style={{ color: 'var(--text-primary)' }}>Squats</span>
                       <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>3 × 15</span>
                     </div>
-                    <div className="flex items-center justify-between p-3 rounded-xl" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+                    <div className="flex items-center justify-between p-3 rounded-xl" style={{ backgroundColor: 'var(--bg-tertiary)' }}>
                       <span className="text-sm" style={{ color: 'var(--text-primary)' }}>Plank</span>
                       <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>2 × 30s</span>
                     </div>
@@ -156,14 +161,13 @@ const Landing = ({ theme, onToggleTheme }) => {
                   <Button               
                   onClick={() => navigate('/login')}
                   data-testid="nav-login-button" 
-                  className="w-full mt-6 bg-[#060736] hover:bg-[#c19b2e] text-white font-semibold">
+                  className="w-full mt-6 btn-dynamic font-semibold">
                     Start Workout
                   </Button>
                 </div>
               </div>
             </div>
           </div>
-        </div>
       </section>
 
       {/* Features Section */}
@@ -181,7 +185,7 @@ const Landing = ({ theme, onToggleTheme }) => {
                 <div
                   key={idx}
                   className="rounded-2xl p-8 card-hover premium-shadow"
-                  style={{ backgroundColor: 'var(--card-bg)', boxShadow: 'var(--shadow-md)' }}
+                  style={{ backgroundColor: 'var(--card-bg)', boxShadow: 'var(--shadow-lg)' }}
                   data-style={{ animationDelay: `${idx * 0.1}s` }}
                 >
                   <div className="w-14 h-14 bg-[#D4AF37]/10 rounded-xl flex items-center justify-center mb-6">
@@ -197,7 +201,7 @@ const Landing = ({ theme, onToggleTheme }) => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 px-6 bg-gray-100">
+      <section className="py-20 px-6" style={{ backgroundColor: 'var(--bg-secondary)' }}>
         <div className="max-w-7xl mx-auto">
           <div className="bg-gradient-to-br from-[#060736] to-[#c19b2e] rounded-3xl p-12 premium-shadow">
             <h2 className="text-4xl font-bold text-white text-center mb-12">Trusted by Thousands</h2>
@@ -218,10 +222,10 @@ const Landing = ({ theme, onToggleTheme }) => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20 px-6 bg-gray-100">
+      <section className="py-20 px-6" style={{ backgroundColor: 'var(--bg-secondary)' }}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-bold text-[#060736] mb-4">What People Say</h2>
+            <h2 className="text-4xl lg:text-5xl font-bold mb-4 style={{ color: 'var(--text-secondary)' }}">What People Say</h2>
             <p className="text-xl style={{ color: 'var(--text-secondary)' }}">Join our growing community of fitness enthusiasts</p>
           </div>
           
@@ -230,14 +234,14 @@ const Landing = ({ theme, onToggleTheme }) => {
               <div
                 key={idx}
                 className="rounded-2xl p-8 premium-shadow animate-slideUp"
-                style={{ animationDelay: `${idx * 0.1}s` }}
+                style={{ animationDelay: `${idx * 0.1}s`, boxShadow: 'var(--shadow-lg)'}}
               >
-                <div className="flex items-center gap-4 mb-6">
+                <div className="flex items-center gap-4 mb-6" >
                   <div className="w-14 h-14 bg-[#D4AF37] rounded-full flex items-center justify-center text-white font-bold text-lg">
                     {testimonial.avatar}
                   </div>
                   <div>
-                    <p className="font-bold text-[#060736]">{testimonial.name}</p>
+                    <p className="font-bold style={{ color: 'var(--text-secondary)' }}">{testimonial.name}</p>
                     <div className="flex gap-1">
                       {[...Array(5)].map((_, i) => (
                         <Star key={i} className="w-4 h-4 fill-[#D4AF37] text-[#D4AF37]" />
@@ -253,9 +257,9 @@ const Landing = ({ theme, onToggleTheme }) => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6">
+      <section className="py-20 px-6" style={{ backgroundColor: 'var(--bg-secondary)' }}>
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl lg:text-5xl font-bold text-[#060736] mb-6">
+          <h2 className="text-4xl lg:text-5xl font-bold style={{ color: 'var(--text-secondary)' }} mb-6">
             Start Your Fitness Journey Today
           </h2>
           <p className="text-xl style={{ color: 'var(--text-secondary)' }} mb-8">
@@ -264,7 +268,7 @@ const Landing = ({ theme, onToggleTheme }) => {
           <Button
             onClick={() => navigate('/register')}
             data-testid="cta-get-started-button"
-            className="bg-[#D4AF37] hover:bg-[#060736] text-white font-bold h-14 px-12 text-lg rounded-xl"
+            className="cta-dynamic font-bold h-14 px-12 text-lg rounded-xl"
           >
             Get Started Free
           </Button>
@@ -273,7 +277,7 @@ const Landing = ({ theme, onToggleTheme }) => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#060736] text-white py-12 px-6">
+      <footer className="text-white py-12 px-6" style={{ backgroundColor: 'var(--bg-footer)' }} >
         <div className="max-w-7xl mx-auto text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
             <Dumbbell className="w-8 h-8 text-[#D4AF37]" />

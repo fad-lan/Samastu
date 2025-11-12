@@ -40,9 +40,15 @@ const Register = ({ onRegister, theme, onToggleTheme }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4" style={{ backgroundColor: 'var(--bg-primary)' }}>
-      <div className="w-full max-w-md animate-fadeIn">
-        <div className="flex items-center justify-between mb-6">
+    <div className="min-h-screen flex items-center justify-center p-6" style={{ backgroundColor: 'var(--bg-primary)' }}>
+      <div
+        className="w-full max-w-lg animate-fadeIn rounded-3xl transition-all duration-300"
+        style={{
+          backgroundColor: 'var(--bg-secondary)',
+          borderRadius: '2rem', // extra round corners
+        }}
+      >
+        <div className="flex items-center justify-between mb-6 px-8 pt-8">
           <button
             onClick={() => navigate('/')}
             className="flex items-center gap-2 transition-colors"
@@ -54,22 +60,27 @@ const Register = ({ onRegister, theme, onToggleTheme }) => {
           <ThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
         </div>
 
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-[#D4AF37] rounded-full mb-4">
-            <Dumbbell className="w-8 h-8 text-white" />
+        <div className="text-center mb-8 px-8">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-[#D4AF37] rounded-full mb-4">
+            <Dumbbell className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-4xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>Create Account</h1>
           <p className="text-lg" style={{ color: 'var(--text-secondary)' }}>Start your fitness journey today</p>
         </div>
 
-        <div className="rounded-3xl p-8 premium-shadow border" style={{ 
-          backgroundColor: 'var(--card-bg)',
-          borderColor: 'var(--border-color)',
-          boxShadow: 'var(--shadow-md)'
-        }}>
+        <div
+          className="rounded-3xl p-10 border"
+          style={{
+            backgroundColor: 'var(--card-bg)',
+            borderColor: 'var(--border-color)',
+            margin: '0 2rem 2rem',
+          }}
+        >
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <Label htmlFor="name" className="mb-2 block font-medium" style={{ color: 'var(--text-primary)' }}>Name</Label>
+              <Label htmlFor="name" className="mb-2 block font-medium" style={{ color: 'var(--text-primary)' }}>
+                Name
+              </Label>
               <Input
                 id="name"
                 name="name"
@@ -79,17 +90,19 @@ const Register = ({ onRegister, theme, onToggleTheme }) => {
                 required
                 data-testid="register-name-input"
                 className="rounded-xl h-12"
-                style={{ 
+                style={{
                   backgroundColor: 'var(--bg-secondary)',
                   borderColor: 'var(--border-color)',
-                  color: 'var(--text-primary)'
+                  color: 'var(--text-primary)',
                 }}
                 placeholder="Your name"
               />
             </div>
 
             <div>
-              <Label htmlFor="email" className="mb-2 block font-medium" style={{ color: 'var(--text-primary)' }}>Email</Label>
+              <Label htmlFor="email" className="mb-2 block font-medium" style={{ color: 'var(--text-primary)' }}>
+                Email
+              </Label>
               <Input
                 id="email"
                 name="email"
@@ -99,17 +112,19 @@ const Register = ({ onRegister, theme, onToggleTheme }) => {
                 required
                 data-testid="register-email-input"
                 className="rounded-xl h-12"
-                style={{ 
+                style={{
                   backgroundColor: 'var(--bg-secondary)',
                   borderColor: 'var(--border-color)',
-                  color: 'var(--text-primary)'
+                  color: 'var(--text-primary)',
                 }}
                 placeholder="your@email.com"
               />
             </div>
 
             <div>
-              <Label htmlFor="password" className="mb-2 block font-medium" style={{ color: 'var(--text-primary)' }}>Password</Label>
+              <Label htmlFor="password" className="mb-2 block font-medium" style={{ color: 'var(--text-primary)' }}>
+                Password
+              </Label>
               <Input
                 id="password"
                 name="password"
@@ -118,11 +133,12 @@ const Register = ({ onRegister, theme, onToggleTheme }) => {
                 onChange={handleChange}
                 required
                 data-testid="register-password-input"
+                autocomplete="new-password"
                 className="rounded-xl h-12"
-                style={{ 
+                style={{
                   backgroundColor: 'var(--bg-secondary)',
                   borderColor: 'var(--border-color)',
-                  color: 'var(--text-primary)'
+                  color: 'var(--text-primary)',
                 }}
                 placeholder="••••••••"
               />

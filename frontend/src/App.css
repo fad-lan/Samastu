@@ -4,32 +4,75 @@
   --bg-primary: #FFFFFF;
   --bg-secondary: #F5F5F5;
   --bg-tertiary: #FAFAFA;
+  --bg-footer: #060736;
   --text-primary: #1A1A1A;
   --text-secondary: #6B7280;
   --text-tertiary: #9CA3AF;
   --border-color: #E5E7EB;
   --card-bg: #FFFFFF;
+  --button-bg : #D4AF37;
+  --button-bg-hover: #060736;
+  --button-txt: #FFFFFF;
+  --cta-button-bg: #D4AF37;
+  --cta-button-hover: #060736;
+  --cta-button-txt: #FFFFFF;
   --accent-primary: #D4AF37;
   --accent-hover: #c19b2e;
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 8px 30px rgba(0, 0, 0, 0.08);
 }
 
 [data-theme="dark"] {
   --bg-primary: #0D0D0D;
-  --bg-secondary: #1A1A1A;
-  --bg-tertiary: #262626;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #272424;
+  --bg-footer: #171515;
   --text-primary: #FFFFFF;
   --text-secondary: #B0B0B0;
   --text-tertiary: #808080;
   --border-color: #333333;
   --card-bg: #1A1A1A;
+  --button-bg : #FFFFFF;
+  --button-bg-hover: #D4AF37;
+  --button-txt: #1A1A1A;
+  --cta-button-bg: #D4AF37;
+  --cta-button-hover: #FFFFFF;
+  --cta-button-txt: #1A1A1A;
   --accent-primary: #D4AF37;
   --accent-hover: #c19b2e;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.2);
-  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 1px 3px rgba(175, 172, 61, 0.2);
+  --shadow-md: 0 4px 20px rgba(175, 172, 61, 0.2);
+  --shadow-lg: 0 8px 30px rgba(175, 172, 61, 0.2);
+  --shadow-xl: 0 0px 100px 15px rgba(175, 172, 61, 0.2);
+}
+
+.btn-dynamic {
+  background-color: var(--button-bg);
+  color: var(--button-txt);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.btn-dynamic:hover {
+  background-color: var(--button-bg-hover);
+  color: var(--button-txt);
+  border-color: var(--accent-hover);
+}
+
+.cta-dynamic {
+  background-color: var(--cta-button-bg);
+  color: var(--cta-button-txt);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.cta-dynamic:hover {
+  background-color: var(--cta-button-hover);
+  color: var(--cta-button-txt);
+  border: 1.5px solid;
+  border-color: var(--accent-hover);
 }
 
 * {

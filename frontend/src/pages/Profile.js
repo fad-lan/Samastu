@@ -107,7 +107,6 @@ const Profile = ({ user, onLogout, theme, onToggleTheme }) => {
       <div className="border-b p-6 sticky top-0 z-10 premium-shadow" style={{ 
         backgroundColor: 'var(--card-bg)', 
         borderColor: 'var(--border-color)',
-        boxShadow: 'var(--shadow-md)'
       }}>
         <div className="max-w-4xl mx-auto">
           <button
@@ -139,15 +138,18 @@ const Profile = ({ user, onLogout, theme, onToggleTheme }) => {
 
       <div className="max-w-4xl mx-auto px-6 py-8 space-y-6">
         {/* User Info Card */}
-        <div className="bg-white rounded-3xl p-8">
+        <div className="rounded-3xl p-8" 
+          style={{ backgroundColor: 'var(--bg-secondary)',
+          border: '1px solid #D4AF37'
+          }} >
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-4">
               <div className="w-20 h-20 bg-[#D4AF37] rounded-full flex items-center justify-center">
                 <User className="w-10 h-10 text-[#0D0D0D]" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-[#1A1A1A]">{user?.name}</h2>
-                <p className="text-gray-600">{user?.email}</p>
+                <h2 className="text-2xl font-bold " style={{ color: 'var(--text-primary)' }}>{user?.name}</h2>
+                <p className="text-600" style={{ color: 'var(--text-primary)' }}>{user?.email}</p>
               </div>
             </div>
             
@@ -246,35 +248,47 @@ const Profile = ({ user, onLogout, theme, onToggleTheme }) => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-white rounded-2xl p-6 text-center">
+          <div className="rounded-2xl p-6 text-center"           
+          style={{ backgroundColor: 'var(--bg-secondary)',
+          border: '1px solid #D4AF37'
+          }}>
             <div className="flex items-center justify-center gap-2 mb-2">
               <Trophy className="w-6 h-6 text-[#D4AF37]" />
-              <span className="text-gray-600">Level</span>
+              <span className="text-600" style={{ color: 'var(--text-primary)' }}>Level</span>
             </div>
-            <p className="text-3xl font-bold text-[#1A1A1A]" data-testid="profile-level-display">{progress?.level || 1}</p>
+            <p className="text-3xl font-bold" style={{ color: 'var(--text-primary)' }} data-testid="profile-level-display">{progress?.level || 1}</p>
           </div>
           
-          <div className="bg-white rounded-2xl p-6 text-center">
+          <div className="rounded-2xl p-6 text-center"           
+          style={{ backgroundColor: 'var(--bg-secondary)',
+          border: '1px solid #D4AF37'
+          }}>
             <div className="flex items-center justify-center gap-2 mb-2">
               <Zap className="w-6 h-6 text-[#D4AF37]" />
-              <span className="text-gray-600">Total XP</span>
+              <span className="text-600" style={{ color: 'var(--text-primary)' }}>Total XP</span>
             </div>
-            <p className="text-3xl font-bold text-[#1A1A1A]" data-testid="profile-xp-display">{progress?.total_xp || 0}</p>
+            <p className="text-3xl font-bold" style={{ color: 'var(--text-primary)' }} data-testid="profile-xp-display">{progress?.total_xp || 0}</p>
           </div>
           
-          <div className="bg-white rounded-2xl p-6 text-center">
+          <div className="rounded-2xl p-6 text-center"           
+          style={{ backgroundColor: 'var(--bg-secondary)',
+          border: '1px solid #D4AF37'
+          }}>
             <div className="flex items-center justify-center gap-2 mb-2">
               <Flame className="w-6 h-6 text-[#D4AF37]" />
-              <span className="text-gray-600">Streak</span>
+              <span className="text-600" style={{ color: 'var(--text-primary)' }}>Streak</span>
             </div>
-            <p className="text-3xl font-bold text-[#1A1A1A]" data-testid="profile-streak-display">{progress?.streak || 0} days</p>
+            <p className="text-3xl font-bold" style={{ color: 'var(--text-primary)' }} data-testid="profile-streak-display">{progress?.streak || 0} days</p>
           </div>
         </div>
 
         {/* XP Progress */}
-        <div className="bg-white rounded-2xl p-6">
+        <div className="rounded-2xl p-6"           
+        style={{ backgroundColor: 'var(--bg-secondary)',
+        border: '1px solid #D4AF37'
+          }}>
           <div className="flex justify-between items-center mb-3">
-            <h3 className="text-xl font-bold text-[#1A1A1A]">Level Progress</h3>
+            <h3 className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>Level Progress</h3>
             <span className="text-[#D4AF37] font-semibold">{Math.floor(xpProgress)}%</span>
           </div>
           <div className="w-full h-4 bg-white rounded-full overflow-hidden">
@@ -283,16 +297,19 @@ const Profile = ({ user, onLogout, theme, onToggleTheme }) => {
               style={{ width: `${xpProgress}%` }}
             />
           </div>
-          <p className="text-gray-600 text-sm mt-2">
+          <p className="text-600 text-sm mt-2" style={{ color: 'var(--text-primary)' }}>
             {500 - (progress?.total_xp % 500)} XP until Level {(progress?.level || 1) + 1}
           </p>
         </div>
 
         {/* Achievements */}
-        <div className="bg-white rounded-3xl p-8">
+        <div className="rounded-3xl p-8"         
+        style={{ backgroundColor: 'var(--bg-secondary)',
+        border: '1px solid #D4AF37'
+          }}>
           <div className="flex items-center gap-3 mb-6">
             <Award className="w-6 h-6 text-[#D4AF37]" />
-            <h3 className="text-2xl font-bold text-[#1A1A1A]">Achievements</h3>
+            <h3 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>Achievements</h3>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -332,9 +349,9 @@ const Profile = ({ user, onLogout, theme, onToggleTheme }) => {
         </div>
 
         {/* Danger Zone */}
-        <div className="bg-white rounded-3xl p-8 border-2 border-red-200">
+        <div className="rounded-3xl p-8 border-2 border-red-700" style={{ backgroundColor: 'var(--bg-secondary)'}}>
           <h3 className="text-xl font-bold text-red-600 mb-2">Danger Zone</h3>
-          <p className="text-gray-600 mb-4">Once you delete your account, there is no going back. Please be certain.</p>
+          <p className="text-600 mb-4" style={{ color: 'var(--text-primary)' }}>Once you delete your account, there is no going back. Please be certain.</p>
           <Button
             onClick={handleDeleteAccount}
             data-testid="delete-account-button"

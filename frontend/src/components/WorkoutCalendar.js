@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, Dumbbell, Coffee, CheckCircle } from 'lucide-react';
+import { toast } from 'sonner';
 
 const WorkoutCalendar = ({ schedule }) => {
   const navigate = useNavigate();
@@ -64,8 +65,8 @@ const WorkoutCalendar = ({ schedule }) => {
   return (
     <div className="space-y-6">
       {weekKeys.slice(0, 4).map((weekKey, weekIdx) => (
-        <div key={weekKey} className="bg-white rounded-2xl p-6 premium-shadow border border-gray-100">
-          <h3 className="text-lg font-bold text-[#1A1A1A] mb-4">
+        <div key={weekKey} className=" rounded-2xl p-6 premium-shadow border border-gray-100" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+          <h3 className="text-lg font-bold mb-4" style={{ color: 'var(--text-primary)' }}>
             Week {weekIdx + 1} - Starting {formatDate(weekKey)}
           </h3>
           
@@ -80,7 +81,16 @@ const WorkoutCalendar = ({ schedule }) => {
               return (
                 <div
                   key={idx}
-                  onClick={() => handleWorkoutClick(item)}
+                  onClick={() => {
+                    if (isLocked || item.is_rest_day) {
+                      toast.error(
+                        'This workout is scheduled for a future date. Come back on ' +
+                        new Date(item.scheduled_date).toLocaleDateString()
+                      );
+                      return; // prevent clicking
+                    }
+                    handleWorkoutClick(item);
+                  }}
                   data-testid={`calendar-item-${item.id}`}
                   className={`p-4 rounded-xl border-2 transition-all ${
                     item.is_rest_day
