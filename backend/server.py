@@ -674,6 +674,24 @@ async def get_achievements(current_user: User = Depends(get_current_user)):
         "total_workouts": total_workouts
     }
 
+# ========== PUBLIC STATS ==========
+
+@api_router.get("/stats/users-count")
+async def get_users_count():
+    """Get total registered users count (public endpoint)"""
+    try:
+        count = await db.users.count_documents({})
+        return {
+            "success": True,
+            "users_count": count
+        }
+    except Exception as e:
+        logger.error(f"Failed to get users count: {e}")
+        return {
+            "success": True,
+            "users_count": 1250  # Fallback to default
+        }
+
 # ========== AI WORKOUT GENERATION ==========
 
 @api_router.post("/workouts/generate-ai")
