@@ -58,16 +58,16 @@ const Landing = ({ theme, onToggleTheme }) => {
 
   const stats = [
     { label: 'Workouts Tracked', value: '10K+', icon: Dumbbell },
-    { label: 'Completion Rate', value: '95%', icon: CheckCircle },
+    { label: 'Completion Rate', value: '80%', icon: CheckCircle },
     { label: 'Active Users', value: usersCount, icon: Users },
     { label: 'Average Rating', value: '4.9', icon: Star }
   ];
 
   const testimonials = [
     {
-      name: 'Sarah M.',
-      avatar: 'SM',
-      quote: 'Samastu made working out fun again. The gamification keeps me coming back every day!'
+      name: 'Damar',
+      avatar: 'https://i.imgur.com/xxUN2bG.jpeg',
+      quote: 'As a college student with a packed schedule, I often struggle to find time for consistent workouts. Samastu has been incredibly helpful in making fitness more manageable. Its smart workout planner adjusts routines based on my weekly availability and fitness goals, making the planning process so much easier. Overall, Samastu’s thoughtful features help me stay organized, flexible, and motivated — even with a busy lifestyle.'
     },
     {
       name: 'Abiyasha',
@@ -75,9 +75,9 @@ const Landing = ({ theme, onToggleTheme }) => {
       quote: "As someone who's used to working out and wants to get back into it, I found Samastu super helpful! The standout feature for me is being able to customize the duration to fit my needs - it doesn't feel overwhelming. Plus, the gamified experience is on point. If they can nail general workouts like Strava does, Samastu might just be the next big thing 🔥🔥🔥"
     },
     {
-      name: 'Emma L.',
-      avatar: 'EL',
-      quote: 'Finally, a workout app that doesn\'t feel overwhelming. Simple, beautiful, effective.'
+      name: 'Fadlan',
+      avatar: 'https://i.imgur.com/XrNcpqS.jpeg',
+      quote: 'I truly hope Samastu continues to make an impact and inspire more people to live a healthy lifestyle. Let it be a motivation for those who want to start working out, a solution for those who lack the time, and a reminder for everyone to keep maintaining a healthy life.'
     }
   ];
 
@@ -228,7 +228,7 @@ const Landing = ({ theme, onToggleTheme }) => {
       <section className="py-20 px-6" style={{ backgroundColor: 'var(--bg-secondary)' }}>
         <div className="max-w-7xl mx-auto">
           <div className="bg-gradient-to-br from-[#060736] to-[#c19b2e] rounded-3xl p-12 premium-shadow">
-            <h2 className="text-4xl font-bold text-white text-center mb-12">Trusted by Thousands</h2>
+            <h2 className="text-4xl font-bold text-white text-center mb-12">Trusted by Hundreds</h2>
             <div className="grid md:grid-cols-4 gap-8">
               {stats.map((stat, idx) => {
                 const Icon = stat.icon;
@@ -263,7 +263,7 @@ const Landing = ({ theme, onToggleTheme }) => {
                 <div className="flex items-center gap-4 mb-6" >
                   <img src={testimonial.avatar} alt={testimonial.name} className="w-12 h-12 rounded-full" />
                   <div>
-                    <p className="font-bold style={{ color: 'var(--text-secondary)' }}">{testimonial.name}</p>
+                    <p className="font-bold style={{ color: 'var(--text-secondary)'}}">{testimonial.name}</p>
                     <div className="flex gap-1">
                       {[...Array(5)].map((_, i) => (
                         <Star key={i} className="w-4 h-4 fill-[#D4AF37] text-[#D4AF37]" />
@@ -271,7 +271,7 @@ const Landing = ({ theme, onToggleTheme }) => {
                     </div>
                   </div>
                 </div>
-                <p className="style={{ color: 'var(--text-secondary)' }} italic leading-relaxed">"{testimonial.quote}"</p>
+                <p className="style={{ color: 'var(--text-secondary)'}} italic leading-relaxed text-justify">"{testimonial.quote}"</p>
               </div>
             ))}
           </div>
@@ -285,7 +285,7 @@ const Landing = ({ theme, onToggleTheme }) => {
             Start Your Fitness Journey Today
           </h2>
           <p className="text-xl style={{ color: 'var(--text-secondary)' }} mb-8">
-            Join thousands of users making workouts fun and consistent with Samastu.
+            Join hundreds of users making workouts fun and consistent with Samastu.
           </p>
           <Button
             onClick={() => navigate('/register')}
