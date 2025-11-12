@@ -8,7 +8,7 @@ import axios from 'axios';
 
 const Landing = ({ theme, onToggleTheme }) => {
   const navigate = useNavigate();
-  const [usersCount, setUsersCount] = useState('5K+');
+  const [usersCount, setUsersCount] = useState('');
 
   useEffect(() => {
     // Fetch real users count from database
