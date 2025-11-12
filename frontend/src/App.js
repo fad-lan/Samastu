@@ -31,7 +31,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [theme, setTheme] = useState('light'); // light or dark
+  const [theme, setTheme] = useState('dark'); // default to dark mode
 
   useEffect(() => {
     // Load theme from localStorage, default to dark mode
