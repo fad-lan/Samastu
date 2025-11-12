@@ -34,8 +34,8 @@ function App() {
   const [theme, setTheme] = useState('light'); // light or dark
 
   useEffect(() => {
-    // Load theme from localStorage
-    const savedTheme = localStorage.getItem('theme') || 'light';
+    // Load theme from localStorage, default to dark mode
+    const savedTheme = localStorage.getItem('theme') || 'dark';
     setTheme(savedTheme);
     document.documentElement.setAttribute('data-theme', savedTheme);
   }, []);
