@@ -105,6 +105,18 @@
 user_problem_statement: "Fix rest timer defaulting to 30s when 0, add dark mode to workout page, and connect to cloud MongoDB database (Samastu)."
 
 backend:
+  - task: "Connect to Cloud MongoDB Database"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/.env"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Updated MONGO_URL to user's cloud MongoDB Atlas connection string (mongodb+srv://fadlan@effendialogue). Changed DB_NAME from 'test_database' to 'Samastu'. All user data, workout plans, schedules, and progress will now be stored in cloud database."
+
   - task: "Custom Plan Duration with Validation"
     implemented: true
     working: true
