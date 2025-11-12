@@ -163,39 +163,51 @@ const WorkoutPage = ({ theme, onToggleTheme }) => {
       <div className="max-w-4xl mx-auto px-6 py-8">
         {isResting ? (
           <div className="animate-fadeIn text-center">
-            <div className="bg-white rounded-3xl p-12 mb-6 premium-shadow border border-gray-100">
+            <div className="rounded-3xl p-12 mb-6 premium-shadow border" style={{ 
+              backgroundColor: 'var(--card-bg)',
+              borderColor: 'var(--border-color)'
+            }}>
               <Pause className="w-16 h-16 text-[#D4AF37] mx-auto mb-4" />
-              <h2 className="text-3xl font-bold text-[#1A1A1A] mb-2">Rest Time</h2>
-              <p className="text-gray-600 mb-6">Get ready for the next exercise</p>
+              <h2 className="text-3xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>Rest Time</h2>
+              <p className="mb-6" style={{ color: 'var(--text-secondary)' }}>Get ready for the next exercise</p>
               
               <div className="text-7xl font-bold text-[#D4AF37] mb-4">{restTimer}</div>
-              <p className="text-gray-600">seconds</p>
+              <p style={{ color: 'var(--text-secondary)' }}>seconds</p>
             </div>
           </div>
         ) : (
           <div className="animate-fadeIn">
             {/* Exercise Card */}
-            <div className="bg-white rounded-3xl p-8 mb-6 premium-shadow border border-gray-100">
+            <div className="rounded-3xl p-8 mb-6 premium-shadow border" style={{ 
+              backgroundColor: 'var(--card-bg)',
+              borderColor: 'var(--border-color)'
+            }}>
               <div className="flex items-center justify-center w-20 h-20 bg-[#D4AF37]/10 rounded-full mx-auto mb-6">
                 <Icon className="w-10 h-10 text-[#D4AF37]" />
               </div>
               
-              <h2 className="text-3xl font-bold text-[#1A1A1A] text-center mb-4">{exercise.name}</h2>
+              <h2 className="text-3xl font-bold text-center mb-4" style={{ color: 'var(--text-primary)' }}>{exercise.name}</h2>
               
               <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="bg-gray-50 rounded-2xl p-4 text-center border border-gray-100">
-                  <p className="text-gray-600 text-sm mb-1">Reps</p>
-                  <p className="text-2xl font-bold text-[#1A1A1A]">{exercise.reps}</p>
+                <div className="rounded-2xl p-4 text-center border" style={{ 
+                  backgroundColor: 'var(--bg-primary)',
+                  borderColor: 'var(--border-color)'
+                }}>
+                  <p className="text-sm mb-1" style={{ color: 'var(--text-secondary)' }}>Reps</p>
+                  <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{exercise.reps}</p>
                 </div>
                 
-                <div className="bg-gray-50 rounded-2xl p-4 text-center border border-gray-100">
-                  <p className="text-gray-600 text-sm mb-1">Sets</p>
-                  <p className="text-2xl font-bold text-[#1A1A1A]">{exercise.sets}</p>
+                <div className="rounded-2xl p-4 text-center border" style={{ 
+                  backgroundColor: 'var(--bg-primary)',
+                  borderColor: 'var(--border-color)'
+                }}>
+                  <p className="text-sm mb-1" style={{ color: 'var(--text-secondary)' }}>Sets</p>
+                  <p className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>{exercise.sets}</p>
                 </div>
               </div>
 
               <div className="bg-[#D4AF37]/10 border-2 border-[#D4AF37] rounded-2xl p-4 text-center">
-                <p className="text-[#D4AF37] font-semibold">Rest: {exercise.rest_seconds}s after completion</p>
+                <p className="text-[#D4AF37] font-semibold">Rest: {exercise.rest_seconds || 30}s after completion</p>
               </div>
             </div>
 
