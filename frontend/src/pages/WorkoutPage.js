@@ -114,8 +114,8 @@ const WorkoutPage = ({ theme, onToggleTheme }) => {
 
   if (!workout) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-[#1A1A1A] text-xl">Loading workout...</div>
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--bg-primary)' }}>
+        <div style={{ color: 'var(--text-primary)' }} className="text-xl">Loading workout...</div>
       </div>
     );
   }
