@@ -148,13 +148,13 @@ const WorkoutPage = ({ theme, onToggleTheme }) => {
           <h1 className="text-2xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>{workout.name}</h1>
           
           {/* Progress Bar */}
-          <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+          <div className="w-full h-2 rounded-full overflow-hidden" style={{ backgroundColor: 'var(--border-color)' }}>
             <div
               className="h-full bg-gradient-to-r from-[#D4AF37] to-[#c19b2e] rounded-full transition-all duration-500"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
-          <p className="text-gray-600 text-sm mt-2">
+          <p className="text-sm mt-2" style={{ color: 'var(--text-secondary)' }}>
             Exercise {currentExercise + 1} of {workout.exercises.length}
           </p>
         </div>
