@@ -12,7 +12,7 @@ import CompletionPage from '@/pages/CompletionPage';
 import Profile from '@/pages/Profile';
 import { Toaster } from '@/components/ui/sonner';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const BACKEND_URL = 'https://samastu.onrender.com';
 export const API = `${BACKEND_URL}/api`;
 
 // Axios interceptor for auth token
