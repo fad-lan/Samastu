@@ -1,13 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Dumbbell, Zap, Target, Trophy, TrendingUp, Users, Star, CheckCircle } from 'lucide-react';
 import ThemeToggle from '@/components/ThemeToggle';
-
-
+import { API } from '@/App';
+import axios from 'axios';
 
 const Landing = ({ theme, onToggleTheme }) => {
   const navigate = useNavigate();
+  const [usersCount, setUsersCount] = useState('5K+');
+
+  useEffect(() => {
+    // Fetch real users count from database
+    const fetchUsersCount = async () => {
+      try {
+        const response = await axios.get(`${API}/stats/users-count`);
+        if (response.data.success) {
+          const count = response.data.users_count;
+          // Format the count
+          if (count >= 1000) {
+            setUsersCount(`${(count / 1000).toFixed(1)}K+`);
+          } else {
+            setUsersCount(count.toString());
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch users count:', error);
+        // Keep default value
+      }
+    };
+    
+    fetchUsersCount();
+  }, []);
 
   const features = [
     {
