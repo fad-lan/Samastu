@@ -209,6 +209,30 @@ backend:
         comment: "COMPREHENSIVE TESTING COMPLETED: Part 2 (Schedule Reuse) - ✅ Called POST /schedule/generate again for same user and verified AI plans were reused (same IDs and timestamps). ✅ New schedule created but AI plans NOT regenerated as expected. Part 3 (Reset and Regenerate) - ✅ Called DELETE /schedule/reset and verified response indicates both schedule (16 items) and AI plans (7 items) were deleted. ✅ Called POST /schedule/generate again and verified NEW AI plans generated with different IDs than before. ✅ Verified new schedule created with new AI plan IDs. All 31 backend tests passed including comprehensive integrated AI schedule flow testing."
 
 frontend:
+  - task: "Fix Rest Timer Default to 30s"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/WorkoutPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Fixed handleCompleteExercise to use 30s default if exercise.rest_seconds is 0 or undefined (const restTime = exercise.rest_seconds || 30). Also updated display to show default: {exercise.rest_seconds || 30}s. Prevents users from being stuck with 0s rest timer."
+
+  - task: "Add Dark Mode to Workout Page"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/WorkoutPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added theme support to WorkoutPage component. Imported ThemeToggle component and passed theme/onToggleTheme props. Updated all color styles to use CSS variables (var(--bg-primary), var(--text-primary), var(--card-bg), var(--border-color), var(--text-secondary)). Theme toggle button added to header. Workout page now respects light/dark mode settings."
+
   - task: "Add Plan Duration Step in Onboarding"
     implemented: true
     working: "NA"
