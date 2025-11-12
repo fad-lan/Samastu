@@ -125,20 +125,27 @@ const WorkoutPage = ({ theme, onToggleTheme }) => {
   const progressPercent = ((currentExercise + 1) / workout.exercises.length) * 100;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)' }}>
       {/* Header */}
-      <div className="bg-white border-b border-gray-100 p-6 sticky top-0 z-10 premium-shadow">
+      <div className="border-b p-6 sticky top-0 z-10 premium-shadow" style={{ 
+        backgroundColor: 'var(--card-bg)',
+        borderColor: 'var(--border-color)'
+      }}>
         <div className="max-w-4xl mx-auto">
-          <button
-            onClick={() => navigate('/home')}
-            data-testid="workout-back-button"
-            className="flex items-center gap-2 text-gray-600 hover:text-[#1A1A1A] transition-colors mb-4"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            <span>Back to Journey</span>
-          </button>
+          <div className="flex items-center justify-between mb-4">
+            <button
+              onClick={() => navigate('/home')}
+              data-testid="workout-back-button"
+              className="flex items-center gap-2 transition-colors"
+              style={{ color: 'var(--text-secondary)' }}
+            >
+              <ArrowLeft className="w-5 h-5" />
+              <span>Back to Journey</span>
+            </button>
+            <ThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
+          </div>
           
-          <h1 className="text-2xl font-bold text-[#1A1A1A] mb-2">{workout.name}</h1>
+          <h1 className="text-2xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>{workout.name}</h1>
           
           {/* Progress Bar */}
           <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
