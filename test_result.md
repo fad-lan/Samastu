@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Implement custom plan duration, fix week start to Monday, lock future workouts in calendar view, and implement smart rest day logic that doesn't add rest days when user's availability already has natural gaps."
+user_problem_statement: "Fix rest timer defaulting to 30s when 0, add dark mode to workout page, and connect to cloud MongoDB database (Samastu)."
 
 backend:
   - task: "Custom Plan Duration with Validation"
