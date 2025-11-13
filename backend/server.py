@@ -904,7 +904,7 @@ Return ONLY the JSON array, no other text."""
             
             genai.configure(api_key=gemini_key)
             model = genai.GenerativeModel(
-                'gemini-2.0-flash-exp',
+                'gemini-2.5-flash-lite',
                 system_instruction="You are a professional fitness trainer and workout planner. Generate realistic, safe, and effective workout plans in valid JSON format."
             )
             
