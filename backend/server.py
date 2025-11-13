@@ -13,6 +13,7 @@ from datetime import datetime, timezone, timedelta
 from passlib.context import CryptContext
 import jwt
 import json
+import google.generativeai as genai
 
 
 ROOT_DIR = Path(__file__).parent
