@@ -752,23 +752,20 @@ Generate 6-8 varied workouts. Each workout should:
 Return ONLY the JSON array, no other text."""
 
     try:
-        # Initialize Gemini chat
+        # Initialize Gemini API
         gemini_key = os.environ.get('GEMINI_API_KEY')
         if not gemini_key:
             raise HTTPException(status_code=500, detail="Gemini API key not configured")
         
-        chat = LlmChat(
-            api_key=gemini_key,
-            session_id=f"workout_gen_{current_user.id}",
-            system_message="You are a professional fitness trainer and workout planner. Generate realistic, safe, and effective workout plans in valid JSON format."
-        ).with_model("gemini", "gemini-2.0-flash")
+        genai.configure(api_key=gemini_key)
+        model = genai.GenerativeModel(
+            'gemini-2.0-flash-exp',
+            system_instruction="You are a professional fitness trainer and workout planner. Generate realistic, safe, and effective workout plans in valid JSON format."
+        )
         
-        user_message = UserMessage(text=prompt)
-        response_obj = await chat.send_message(user_message)
-        
-        # Get the text response
-        response_text = response_obj.text if hasattr(response_obj, 'text') else str(response_obj)
-        response_text = response_text.strip()
+        # Generate content
+        response = model.generate_content(prompt)
+        response_text = response.text.strip()
         
         # Remove markdown code blocks if present
         if response_text.startswith('```'):
